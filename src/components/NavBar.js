@@ -6,8 +6,7 @@ import '../styles/NavBar.css';
 export const NavBar = function () {
   const navLinkStyles = ({ isActive }) => {
     return {
-      fontWeight: isActive ? 'bold' : 'normal',
-      textDecoration: isActive ? 'none' : 'underline'
+      fontWeight: isActive ? 'bold' : 'normal'
     }
   }
 
