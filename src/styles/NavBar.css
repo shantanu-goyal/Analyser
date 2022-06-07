@@ -4,8 +4,10 @@
   padding: 16px 32px;
   display:flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap:20px;
   justify-content: space-around;
+  align-items: flex-start;
   border:1px solid black
 }
 
