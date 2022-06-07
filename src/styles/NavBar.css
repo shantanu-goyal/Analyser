@@ -1,0 +1,14 @@
+
+.primary-nav{
+  background-color: white;
+  padding: 16px 32px;
+  display:flex;
+  flex-direction: row;
+  gap:20px;
+  justify-content: space-around;
+  border:1px solid black
+}
+
+nav a{
+  margin-right: 16px;
+}
