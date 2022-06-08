@@ -2,6 +2,9 @@ import { useContext,useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "./NavBar";
 import Table from "./Table";
+import DoughnutChart from "./Graphs/DoughnutChart";
+import "../styles/Graph.css"
+
 
 function extractDurationTime(data) {
   let durationTimeData = data.items.map(item => {
@@ -19,7 +22,7 @@ function extractDurationTime(data) {
 function generateGraph(data){
   const details = data.details;
   const durationTimeData=extractDurationTime(details);
-  return <div>Graph</div>
+  return <DoughnutChart data={durationTimeData} title={"Durartion of Network Requests"} />
 }
 
 
@@ -38,8 +41,12 @@ export default function NetworkRequests() {
     <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Network Requests</h1>
-      <Table id={'network-requests'} headings={data.details.headings} items={data.details.items} passData={passData} />
-      {graph &&(generateGraph(data))}
+      <div className="table-container">
+        <Table id={'network-requests'} headings={data.details.headings} items={data.details.items} passData={passData} />
+        <div className="graph-container">
+          {graph &&(generateGraph(data))}
+        </div>
+      </div>
     </div>
   )
 }

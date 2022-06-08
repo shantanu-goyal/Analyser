@@ -1,8 +1,9 @@
 import { useContext,useState } from "react";
 import { DataContext } from "../contexts/DataContext";
+import DoughnutChart from "./Graphs/DoughnutChart";
 import { NavBar } from "./NavBar";
 import Table from "./Table";
-
+import "../styles/Graph.css"
 
 function extractRTTTime(data) {
   let RTTData = data.items.map(item => {
@@ -18,7 +19,7 @@ function extractRTTTime(data) {
 function generateGraph(data){
   const details = data.details;
   const timeData=extractRTTTime(details);
-  return <div>Graph</div>
+  return <DoughnutChart data={timeData} title={"Network RTT"}></DoughnutChart>
 }
 
 
@@ -36,9 +37,12 @@ export default function NetworkRTT() {
     <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Network RTT</h1>
-      <Table id={'network-rtt'} headings={data.details.headings} items={data.details.items} passData={passData} />
-      {graph &&(generateGraph(data))}
-
+      <div className="table-container">
+        <Table id={'network-rtt'} headings={data.details.headings} items={data.details.items} passData={passData} />
+        <div className="graph-container">
+            {graph &&(generateGraph(data))}
+        </div>
+      </div>
     </div>
   )
 }

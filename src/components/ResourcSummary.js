@@ -2,8 +2,8 @@ import { useContext, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "./NavBar";
 import Table from "./Table";
-
-
+import DoughnutChart from './Graphs/DoughnutChart'
+import "../styles/Graph.css"
 
 function extractTransferSize(data) {
   let transferSizeData = data.items.map(item => {
@@ -19,7 +19,7 @@ function extractTransferSize(data) {
 function generateGraph(data){
   const details = data.details;
   const transferSizeData=extractTransferSize(details);
-  return <div>Graph</div>
+  return (<DoughnutChart data={transferSizeData} title={"Resource Summary"} />)
 }
 
 
@@ -37,8 +37,12 @@ export default function ResourceSummary() {
     <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Resource Summary</h1>
-      <Table id={'resource-summary'} headings={data.details.headings} items={data.details.items} passData={passData}/>
-      {graph &&(generateGraph(data))}
+      <div className="table-container">
+        <Table id={'resource-summary'} headings={data.details.  headings} items={data.details.items} passData={passData}/>
+        <div className="graph-container">
+        {graph &&(generateGraph(data))}
+        </div>
+      </div>
     </div>
   )
 }

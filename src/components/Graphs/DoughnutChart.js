@@ -13,7 +13,7 @@ function DoughnutChart({ data, title }) {
   }, [data, title]);
   return (
     <>
-      <canvas id={"mychart" + title} width={"800"} height={"400"} ></canvas>
+      <canvas id={"mychart" + title}  width={"400"} height={"200"}/>
     </>)
 }
 

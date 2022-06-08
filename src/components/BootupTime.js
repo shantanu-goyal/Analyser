@@ -64,6 +64,8 @@ export default function BootupTime() {
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Bootup Time</h1>
       <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items} passData={passData} />
+
+      
       {graph &&(generateGraph(data))}
     </div>
   )

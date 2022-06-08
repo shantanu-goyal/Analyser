@@ -2,6 +2,8 @@ import { useContext,useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "./NavBar";
 import Table from "./Table";
+import '../styles/Graph.css'
+import DoughnutChart from "./Graphs/DoughnutChart";
 
 
 function extractTotalTime(data) {
@@ -19,7 +21,7 @@ function extractTotalTime(data) {
 function generateGraph(data){
   const details = data.details;
   const durationData=extractTotalTime(details);
-  return <div>Graph</div>
+  return <DoughnutChart data={durationData} title={"Main Thread Work Breakdown"}/>
 }
 
 
@@ -37,8 +39,12 @@ export default function MainThreadWorkBreakdown() {
     <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Main Thread Work Breakdown</h1>
-      <Table id={'mainthread-work-breakdown'} headings={data.details.headings} items={data.details.items} passData={passData} />
-      {graph &&(generateGraph(data))}
+      <div className="table-container">
+        <Table id={'mainthread-work-breakdown'} headings={data.details.headings} items={data.details.items} passData={passData} />
+        <div className="graph-container">
+          {graph &&(generateGraph(data))}
+        </div>
+      </div>      
     </div>
   )
 }
