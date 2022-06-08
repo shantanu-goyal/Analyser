@@ -7,11 +7,14 @@ export default function ThirdPartySummary() {
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data['third-party-summary'];
+
   return (
     <div>
       <NavBar />
-      <h1 style={{ textAlign: "center" }}>Third Party Summary</h1>
-      <ThirdPartyTable id={'third-party-summary'} headings={data.details.headings} items={data.details.items} />
+      {data.details && (<>
+        <h1 style={{ textAlign: "center" }}>Third Party Summary</h1>
+        <ThirdPartyTable id={'third-party-summary'} headings={data.details.headings} items={data.details.items} />
+      </>)}
     </div>
   )
 }

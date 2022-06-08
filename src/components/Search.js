@@ -26,6 +26,7 @@ export default function Search() {
       });
       setLoading(false);
       dataContext.setData({ type: "changeData", data: result.data });
+      console.log(result.data);
       navigate('/bootup-time');
     } catch (error) {
       setError(true);
