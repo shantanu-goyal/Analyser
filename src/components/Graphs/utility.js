@@ -44,12 +44,12 @@ function processChart(data, title, type) {
       hoverOffset: 4
     },
     options: {
-      responsive: true,
+      responsive:true,
       plugins: {
         title: {
           display: true,
           text: title,
-          position: 'bottom'
+          position: 'top'
         },
         legend: {
           display: true,

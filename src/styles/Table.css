@@ -2,7 +2,6 @@ table {
     box-sizing: border-box;
     border-collapse: collapse;
     font-size:smaller;
-    margin-left: 1em;
     font-family: sans-serif;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     width: calc(100% - 2em);
@@ -76,13 +75,21 @@ input:focus{
     align-items: center;
 }
 
-button{
+button {
     font-size: 15px;
     background-color: #107EFF;
     color: aliceblue;
-    width: 10em;
+    width: 8em;
     height: 2em;
-    margin-right: 2em;
+    margin-right: 1em;
     border: none;
     cursor: pointer;
-  }
+}
+
+
+.right-row{
+    display:flex;
+    flex-direction: row;
+    justify-content: right;
+
+}

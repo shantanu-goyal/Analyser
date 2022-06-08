@@ -2,7 +2,7 @@ import { useState } from "react";
 import Table from "./Table";
 import '../styles/ThirdPartyTable.css'
 
-function ThirdPartyTable({ id, headings, items }) {
+function ThirdPartyTable({ id, headings, items, passData }) {
   const [view, setView] = useState("entity");
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([...headings]);
   const [thirdPartyItems, setThirdPartyItems] = useState([...items]);
@@ -36,12 +36,12 @@ function ThirdPartyTable({ id, headings, items }) {
   }
 
   return (
-    <div className="third-party-wrapper">
+    <div className="third-party-wrapper" style={{marginLeft:"1em"}}>
       <select id="select-box" value={view} onChange={changeView}>
         <option value="entity">Entity View</option>
         <option value="script">Script View</option>
       </select>
-      <Table id={id} headings={thirdPartyHeadings} items={thirdPartyItems} />
+      <Table id={id} headings={thirdPartyHeadings} items={thirdPartyItems} passData={passData} />
     </div>
   );
 }
