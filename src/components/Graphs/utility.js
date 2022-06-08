@@ -44,6 +44,7 @@ function processChart(data, title, type) {
       hoverOffset: 4
     },
     options: {
+      responsive:true,
       plugins: {
         title: {
           display: true,
