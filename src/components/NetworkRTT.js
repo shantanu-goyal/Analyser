@@ -7,7 +7,6 @@ import Table from "./Table";
 export default function NetworkRTT() {
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
-  console.log(data);
   data = data['network-rtt'];
   return (
     <div>

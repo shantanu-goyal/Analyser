@@ -6,7 +6,6 @@ import Table from "./Table";
 export default function ResourceSummary() {
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
-  console.log(data);
   data = data['resource-summary'];
   return (
     <div>

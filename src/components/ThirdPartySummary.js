@@ -6,7 +6,6 @@ import ThirdPartyTable from "./ThirdPartyTable";
 export default function ThirdPartySummary() {
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
-  console.log(data);
   data = data['third-party-summary'];
   return (
     <div>

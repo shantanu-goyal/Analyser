@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function Search() {
+  const URL = process.env.REACT_APP_SERVER_URL;
   const dataContext = useContext(DataContext);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ export default function Search() {
     setFormSubmitted(true);
     setLoading(true);
     try {
-      const result = await axios.get("http://localhost:8080/", {
+      const result = await axios.get(URL, {
         method: "GET",
         params: {
           url

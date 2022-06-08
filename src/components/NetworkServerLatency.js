@@ -7,7 +7,6 @@ import Table from "./Table";
 export default function NetworkServerLatency() {
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
-  console.log(data);
   data = data['network-server-latency'];
   return (
     <div>

@@ -12,6 +12,7 @@ export const NavBar = function () {
 
   return (
     <nav className="primary-nav">
+      <NavLink style={navLinkStyles} to='/'>Home</NavLink>
       <NavLink style={navLinkStyles} to='/bootup-time'>Bootup Time</NavLink>
       <NavLink style={navLinkStyles} to='/mainthread-work-breakdown'>Main Thread Work BreakDown</NavLink>
       <NavLink style={navLinkStyles} to='/network-requests'>Network Requests</NavLink>

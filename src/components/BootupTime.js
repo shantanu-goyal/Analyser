@@ -8,9 +8,7 @@ export default function BootupTime() {
 
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
-  console.log(data);
   data = data['bootup-time'];
-  console.log(data);
   return (
     <div>
       <NavBar />
