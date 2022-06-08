@@ -2,7 +2,7 @@ import { useState } from "react";
 import Table from "./Table";
 import '../styles/ThirdPartyTable.css'
 
-function ThirdPartyTable({ id, headings, items }) {
+function ThirdPartyTable({ id, headings, items, passData }) {
   const [view, setView] = useState("entity");
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([...headings]);
   const [thirdPartyItems, setThirdPartyItems] = useState([...items]);
@@ -41,7 +41,7 @@ function ThirdPartyTable({ id, headings, items }) {
         <option value="entity">Entity View</option>
         <option value="script">Script View</option>
       </select>
-      <Table id={id} headings={thirdPartyHeadings} items={thirdPartyItems} />
+      <Table id={id} headings={thirdPartyHeadings} items={thirdPartyItems} passData={passData} />
     </div>
   );
 }
