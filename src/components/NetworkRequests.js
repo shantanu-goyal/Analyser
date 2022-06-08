@@ -4,6 +4,7 @@ import { NavBar } from "./NavBar";
 import Table from "./Table";
 import DoughnutChart from "./Graphs/DoughnutChart";
 import "../styles/Graph.css"
+import { Navigate } from "react-router";
 
 
 function extractDurationTime(data) {
@@ -38,7 +39,10 @@ export default function NetworkRequests() {
   }
 
   return (
-    <div>
+    <>
+    {!data && (<Navigate to="/" />)}
+    {data && (
+      <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Network Requests</h1>
       <div className="table-container">
@@ -48,5 +52,8 @@ export default function NetworkRequests() {
         </div>
       </div>
     </div>
+    )}
+    </>
+    
   )
 }

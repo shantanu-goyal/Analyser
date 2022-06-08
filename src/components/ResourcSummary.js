@@ -4,6 +4,7 @@ import { NavBar } from "./NavBar";
 import Table from "./Table";
 import DoughnutChart from './Graphs/DoughnutChart'
 import "../styles/Graph.css"
+import { Navigate } from "react-router";
 
 function extractTransferSize(data) {
   let transferSizeData = data.items.map(item => {
@@ -34,7 +35,9 @@ export default function ResourceSummary() {
 
 
   return (
-    <div>
+    <>
+    {!data && (<Navigate to="/" />)}
+    {data && (<div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Resource Summary</h1>
       <div className="table-container">
@@ -43,6 +46,8 @@ export default function ResourceSummary() {
         {graph &&(generateGraph(data))}
         </div>
       </div>
-    </div>
+    </div>)}
+    </>
+    
   )
 }

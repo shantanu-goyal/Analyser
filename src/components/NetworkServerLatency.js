@@ -4,6 +4,7 @@ import DoughnutChart from "./Graphs/DoughnutChart";
 import { NavBar } from "./NavBar";
 import Table from "./Table";
 import "../styles/Graph.css"
+import { Navigate } from "react-router";
 
 function extractNetworkServerLatencyTime(data) {
   let totalTimeData = data.items.map(item => {
@@ -36,7 +37,10 @@ export default function NetworkServerLatency() {
   }
   
   return (
-    <div>
+    <>
+    {!data && (<Navigate to="/" />)}
+    {data && (
+      <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Network Server Latency</h1>
       <div className="table-container">
@@ -45,7 +49,8 @@ export default function NetworkServerLatency() {
           {graph &&(generateGraph(data))}
         </div>
       </div>
-      
     </div>
+    )}
+    </>  
   )
 }

@@ -4,6 +4,7 @@ import { NavBar } from "./NavBar";
 import ThirdPartyTable from "./ThirdPartyTable";
 import DoughnutChart from "./Graphs/DoughnutChart";
 import "../styles/Graph.css"
+import { Navigate } from "react-router";
 
 function extractMainThreadTime(data) {
   let mainThreadTimeData = data.items.map(item => {
@@ -91,25 +92,28 @@ export default function ThirdPartySummary() {
   }
 
   return (
-    <div>
-      <NavBar />
-      {data.details && (<>
-        <h1 style={{ textAlign: "center" }}>Third Party Summary</h1>
-        <div className="table-container">
-        <ThirdPartyTable id={'third-party-summary'} headings={data.details.headings} items={data.details.items} passData={passData}/>
-          
-          <div className="graph-container">
-            
-              {graph &&(<>
-                <select value={value} onChange={changeHandler} style={{marginTop:"2em"}}>
-                  <option value="mainthread">Main Thread Time</option>
-                  <option value="blocking">Blocking Time</option>
-                </select>
-                {generateGraph(data,value)}
-              </>)}
-            </div>
-        </div>
-      </>)}
-    </div>
+    <>
+      {!data && (<Navigate to="/" />)}
+      {data && (
+        <div>
+        <NavBar />
+        {data.details && (<>
+          <h1 style={{ textAlign: "center" }}>Third Party Summary</h1>
+          <div className="table-container">
+          <ThirdPartyTable id={'third-party-summary'} headings={data.details.headings} items={data.details.items} passData={passData}/>
+            <div className="graph-container">
+                {graph &&(<>
+                  <select value={value} onChange={changeHandler} style={{marginTop:"2em"}}>
+                    <option value="mainthread">Main Thread Time</option>
+                    <option value="blocking">Blocking Time</option>
+                  </select>
+                  {generateGraph(data,value)}
+                </>)}
+              </div>
+          </div>
+        </>)}
+      </div>
+      )}
+   </>
   )
 }

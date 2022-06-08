@@ -4,6 +4,7 @@ import { NavBar } from "./NavBar";
 import Table from "./Table";
 import '../styles/Graph.css'
 import DoughnutChart from "./Graphs/DoughnutChart";
+import { Navigate } from "react-router";
 
 
 function extractTotalTime(data) {
@@ -36,7 +37,11 @@ export default function MainThreadWorkBreakdown() {
   }
 
   return (
-    <div>
+    <>
+     {!data && (
+      <Navigate to="/"></Navigate>
+    )}
+    {data && (<div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Main Thread Work Breakdown</h1>
       <div className="table-container">
@@ -45,6 +50,7 @@ export default function MainThreadWorkBreakdown() {
           {graph &&(generateGraph(data))}
         </div>
       </div>      
-    </div>
+    </div>)}
+    </>
   )
 }

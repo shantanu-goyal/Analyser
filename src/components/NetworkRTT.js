@@ -4,6 +4,7 @@ import DoughnutChart from "./Graphs/DoughnutChart";
 import { NavBar } from "./NavBar";
 import Table from "./Table";
 import "../styles/Graph.css"
+import { Navigate } from "react-router";
 
 function extractRTTTime(data) {
   let RTTData = data.items.map(item => {
@@ -34,7 +35,10 @@ export default function NetworkRTT() {
   }
 
   return (
-    <div>
+    <>
+    {!data && (<Navigate to="/" />)}
+    {data && (
+      <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Network RTT</h1>
       <div className="table-container">
@@ -44,5 +48,8 @@ export default function NetworkRTT() {
         </div>
       </div>
     </div>
+    )}
+    </>
+    
   )
 }

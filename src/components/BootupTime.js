@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import {Navigate} from 'react-router-dom'
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "./NavBar";
 import Table from "./Table";
@@ -66,33 +67,36 @@ export default function BootupTime() {
   function changeHandler(e){
     setValue(e.target.value);
   }
-
-
   const passData=(data)=>{
     setGraph(data);
   }
-  
   return (
-    <div>
-      <NavBar />
-      <h1 style={{ textAlign: "center" }}>Bootup Time</h1>
-
-      <div className="table-container">
-        <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items} passData={passData} />
-        <div className="graph-container">
-          {graph &&(
-            <>
-            <select value={value} onChange={changeHandler} style= {{marginTop:"2em"}}>
-                <option value="total">Total CPU Time</option>
-                <option value="script-evaluation">Script Evaluation Time</option>
-                <option value="script-parsing">Script Parsing Time</option>
-              </select>
-              {generateGraph(data,value)}
-            </>
-            )}
+    <>
+    {!data && (
+      <Navigate to="/"></Navigate>
+    )}
+    {data && (
+          <div>
+          <NavBar />
+          <h1 style={{ textAlign: "center" }}>Bootup Time</h1>
+    
+          <div className="table-container">
+            <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items} passData={passData} />
+            <div className="graph-container">
+              {graph &&(
+                <>
+                <select value={value} onChange={changeHandler} style= {{marginTop:"2em"}}>
+                    <option value="total">Total CPU Time</option>
+                    <option value="script-evaluation">Script Evaluation Time</option>
+                    <option value="script-parsing">Script Parsing Time</option>
+                  </select>
+                  {generateGraph(data,value)}
+                </>
+                )}
+            </div>
+          </div>
         </div>
-      </div>
-      
-    </div>
+    )}
+    </>
   )
 }
