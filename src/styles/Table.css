@@ -69,6 +69,7 @@ button{
     color: aliceblue;
     width: 10em;
     height: 2em;
+    margin-right: 2em;
     border: none;
     cursor: pointer;
   }
