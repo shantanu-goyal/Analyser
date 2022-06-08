@@ -11,10 +11,10 @@ function ThirdPartyTable({ id, headings, items }) {
     if (e.target.value === "script") {
       setView("script");
       setThirdPartyHeadings([
-        { key: "url", text: "URL" },
-        { key: "mainThreadTime", text: "Main Thread Time" },
-        { key: "blockingTime", text: "Blocking Time" },
-        { key: "transferSize", text: "Transfer Size" },
+        { key: "url", text: "URL", itemType: "text" },
+        { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
+        { key: "blockingTime", text: "Blocking Time", itemType: "ms" },
+        { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
       ]);
       setThirdPartyItems(
         items.reduce((arr, item) => {

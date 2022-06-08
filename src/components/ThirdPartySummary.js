@@ -11,10 +11,10 @@ export default function ThirdPartySummary() {
   return (
     <div>
       <NavBar />
-      {data.details && (<>
+      {data.details ? (<>
         <h1 style={{ textAlign: "center" }}>Third Party Summary</h1>
         <ThirdPartyTable id={'third-party-summary'} headings={data.details.headings} items={data.details.items} />
-      </>)}
+      </>) : <h2 style={{ textAlign: "center" }}> Nothing to show here... </h2>}
     </div>
   )
 }

@@ -34,6 +34,19 @@ table thead tr td , table tbody tr td{
 
 }
 
+.showcase {
+    position: sticky;
+    top: 0;
+    margin-bottom: -100vh;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../../public/sprinklr.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.2;
+    z-index: -1;
+}
 
 table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
