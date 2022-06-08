@@ -63,13 +63,21 @@ input:focus{
     align-items: center;
 }
 
-button{
+button {
     font-size: 15px;
     background-color: #107EFF;
     color: aliceblue;
-    width: 10em;
+    width: 8em;
     height: 2em;
-    margin-right: 2em;
+    margin-right: 1em;
     border: none;
     cursor: pointer;
-  }
+}
+
+
+.right-row{
+    display:flex;
+    flex-direction: row;
+    justify-content: right;
+
+}

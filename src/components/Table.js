@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import "../styles/Table.css";
 
-function Table({ id, headings, items }) {
+function Table({ id, headings, items,passData }) {
   const [filteredItems, setFilteredItems] = useState([]);
+  const [graph,setGraph]=useState(false);
   const [order, setOrder] = useState(headings.reduce((obj, { key }) => {
     Object.assign(obj, {
       [key]: 'asc'
@@ -52,6 +53,12 @@ function Table({ id, headings, items }) {
     }))
   }
 
+  function handleToggle(e){
+    e.preventDefault();
+    setGraph(!graph);
+    passData(!graph);
+  }
+
   async function downloadJSON() {
     const fileName = id;
     const json = JSON.stringify(filteredItems);
@@ -73,7 +80,10 @@ function Table({ id, headings, items }) {
           placeholder="Type here to search..."
           onChange={onSearch}
         />
-        <button onClick={downloadJSON}>Download JSON</button>
+        <div className="right-row">
+          <button onClick={handleToggle}>Toggle Graph</button>
+          <button onClick={downloadJSON}>Download JSON</button>
+        </div>
       </div>
       <table id={id}>
         <thead>
