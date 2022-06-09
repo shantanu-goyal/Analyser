@@ -94,7 +94,7 @@ function Table({ id, headings, items,passData }) {
           <tr>
             {headings.map(({ key, text, itemType }) => (
               <th key={key} id={key} onClick={sortItems}>
-                {text} ({itemType})
+                {text} {itemType === 'ms' || itemType === 'bytes' ? `(${itemType})` : ''}
               </th>
             ))}
           </tr>

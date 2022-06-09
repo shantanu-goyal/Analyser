@@ -44,6 +44,7 @@ export default function MainThreadWorkBreakdown() {
     {data && (<div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Main Thread Work Breakdown</h1>
+      <h5 style={{ textAlign: "center" }}>Time Devoted by Main-Thread on Various Categories of Works</h5>
       <div className="table-container">
         <Table id={'mainthread-work-breakdown'} headings={data.details.headings} items={data.details.items} passData={passData} />
       </div>

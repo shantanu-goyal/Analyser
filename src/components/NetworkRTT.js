@@ -41,6 +41,7 @@ export default function NetworkRTT() {
       <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Network RTT</h1>
+      <h5 style={{ textAlign: "center" }}>Network Round Trip Times</h5>
       <div className="table-container">
         <Table id={'network-rtt'} headings={data.details.headings} items={data.details.items} passData={passData} />
       </div>

@@ -46,6 +46,7 @@ export default function NetworkRequests() {
       <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Network Requests</h1>
+      <h5 style={{ textAlign: "center" }}>Network Requests Made by Main-Thread</h5>
       <div className="table-container">
         <Table id={'network-requests'} headings={data.details.headings} items={data.details.items} passData={passData} />
       </div>

@@ -43,6 +43,7 @@ export default function NetworkServerLatency() {
       <div>
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Network Server Latency</h1>
+      <h5 style={{ textAlign: "center" }}>Server Backend Latencies</h5>
       <div className="table-container">
         <Table id={'network-server-latency'} headings={data.details.headings} items={data.details.items} passData={passData} />
       </div>

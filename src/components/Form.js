@@ -49,6 +49,7 @@ function Form({ onFormSubmit }) {
                         ...headers.slice(index + 1),
                       ]);
                     }}
+                    spellcheck="false"
                   />
                 </td>
                 <td>
@@ -62,6 +63,7 @@ function Form({ onFormSubmit }) {
                         ...headers.slice(index + 1),
                       ]);
                     }}
+                    spellcheck="false"
                   />
                 </td>
                 <td>
@@ -91,6 +93,7 @@ function Form({ onFormSubmit }) {
                   });
                 }}
                 placeholder="Key"
+                spellcheck="false"
               />
             </td>
             <td>
@@ -104,6 +107,7 @@ function Form({ onFormSubmit }) {
                   });
                 }}
                 placeholder="Value"
+                spellcheck="false"
               />
             </td>
             <td>

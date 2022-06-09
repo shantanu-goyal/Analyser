@@ -99,6 +99,7 @@ export default function ThirdPartySummary() {
         <NavBar />
         {data.details ? (<>
           <h1 style={{ textAlign: "center" }}>Third Party Summary</h1>
+          <h5 style={{ textAlign: "center" }}>Execution And Blocking Times For Various Third Party Scripts And Entities</h5>
           <div className="table-container">
           <ThirdPartyTable id={'third-party-summary'} headings={data.details.headings} items={data.details.items} passData={passData}/>
           </div>

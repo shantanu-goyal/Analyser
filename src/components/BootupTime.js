@@ -79,7 +79,7 @@ export default function BootupTime() {
           <div>
           <NavBar />
           <h1 style={{ textAlign: "center" }}>Bootup Time</h1>
-    
+          <h5 style={{ textAlign: "center" }}> Scripts With Execution Time Greater Than or Equal to 50ms  </h5>
           <div className="table-container">
             <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items} passData={passData} />
           </div>

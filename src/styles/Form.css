@@ -10,12 +10,13 @@
 
 .url-form input{
   box-sizing: border-box;
-  width: 25em;
+  max-width: 40em;
+  width: 60vw;
   height: 2em;
   border: none;
   border-bottom: 1px solid black;
-  font-size: 15px;
   margin: 1em;
+  font-size: 1.2em;
 }
 
 .url-form input:focus{
@@ -31,19 +32,24 @@
   border: none;
   cursor: pointer;
 }
-  
-.header-input, .header-input thead, .header-input  td {
+
+.header-input{
+  width: 80vw;
+  min-width: 40em;
   border-collapse: collapse;
+}
+
+.header-input, .header-input thead, .header-input  td {
   border: 1px solid rgb(180, 180, 180);
-  width: 50em;
   overflow: scroll;
-  min-width: 5em;
   text-align: center;
 }
 
 .header-input input {
   border: 1px solid rgb(180, 180, 180);
   padding: 1em;
+  font-size: 1em;
+  width: 90%;
 }
 
 .header-input th{
@@ -55,6 +61,7 @@
 .header-input img{
   width: 30px;
   height: 30px;
+  cursor: pointer;
 }
 
 .danger-button{
@@ -63,4 +70,13 @@
 
 .header-text{
   margin: 1em;
+}
+
+.url-input{
+  display: flex;
+  align-items: center;
+}
+
+.url-input input{
+  min-width:20em;
 }
