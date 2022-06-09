@@ -101,7 +101,8 @@ export default function ThirdPartySummary() {
           <h1 style={{ textAlign: "center" }}>Third Party Summary</h1>
           <div className="table-container">
           <ThirdPartyTable id={'third-party-summary'} headings={data.details.headings} items={data.details.items} passData={passData}/>
-            <div className="graph-container">
+          </div>
+          <div className="graph-container">
                 {graph &&(<>
                   <select value={value} onChange={changeHandler} style={{marginTop:"2em"}}>
                     <option value="mainthread">Main Thread Time</option>
@@ -110,7 +111,6 @@ export default function ThirdPartySummary() {
                   {generateGraph(data,value)}
                 </>)}
               </div>
-          </div>
         </>) : <h2 style={{ textAlign: "center" }}> Nothing to show here... </h2>}
       </div>
       )}

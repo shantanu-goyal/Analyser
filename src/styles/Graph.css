@@ -12,9 +12,13 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
 }
 
-.graph-container select{
-    margin-left:45%;
+select {
+    border: 1px solid black;
+    width: 150px;
+    height: 30px;
+    margin-bottom: 2em;
 }
+

@@ -32,7 +32,7 @@ function processChart(data, title, type) {
       label: title,
       backgroundColor: bgColor,
       data: values,
-      borderWidth: 1
+      hoverOffset:4
     }
   ]
 
@@ -44,7 +44,6 @@ function processChart(data, title, type) {
       hoverOffset: 4
     },
     options: {
-      responsive:true,
       plugins: {
         title: {
           display: true,
@@ -52,27 +51,7 @@ function processChart(data, title, type) {
           position: 'top'
         },
         legend: {
-          display: true,
-          position: 'right',
-          align: 'center',
-          title: {
-            display: true,
-            text: 'Legend',
-            font: {
-              size: 16,
-              weight: 'bold'
-            }
-
-
-
-          },
-          generateLabels: (chart) => {
-            const datasets = chart.data.datasets;
-            return datasets[0].data.map((data, i) => ({
-              text: minify(chart.data.labels[i]) + `${data}`,
-              fillStyle: datasets[0].backgroundColor[i],
-            }))
-          }
+          display: false,
         }
       }
     }

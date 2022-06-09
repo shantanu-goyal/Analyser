@@ -37,11 +37,13 @@ function ThirdPartyTable({ id, headings, items, passData }) {
 
   return (
     <div className="third-party-wrapper" style={{marginLeft:"1em"}}>
-      <select id="select-box" value={view} onChange={changeView}>
+      <select style={{marginLeft:"1em"}} id="select-box" value={view} onChange={changeView}>
         <option value="entity">Entity View</option>
         <option value="script">Script View</option>
       </select>
-      <Table id={id} headings={thirdPartyHeadings} items={thirdPartyItems} passData={passData} />
+      <div className="table-container">
+        <Table id={id} headings={thirdPartyHeadings} items={thirdPartyItems} passData={passData} />
+      </div>
     </div>
   );
 }
