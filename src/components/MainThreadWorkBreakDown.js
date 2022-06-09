@@ -46,10 +46,10 @@ export default function MainThreadWorkBreakdown() {
       <h1 style={{ textAlign: "center" }}>Main Thread Work Breakdown</h1>
       <div className="table-container">
         <Table id={'mainthread-work-breakdown'} headings={data.details.headings} items={data.details.items} passData={passData} />
-        <div className="graph-container">
+      </div>
+      <div className="graph-container">
           {graph &&(generateGraph(data))}
-        </div>
-      </div>      
+        </div>      
     </div>)}
     </>
   )

@@ -82,10 +82,11 @@ export default function BootupTime() {
     
           <div className="table-container">
             <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items} passData={passData} />
-            <div className="graph-container">
+          </div>
+          <div className="graph-container">
               {graph &&(
                 <>
-                <select value={value} onChange={changeHandler} style= {{marginTop:"2em"}}>
+                 <select value={value} onChange={changeHandler} style= {{marginTop:"2em"}}>
                     <option value="total">Total CPU Time</option>
                     <option value="script-evaluation">Script Evaluation Time</option>
                     <option value="script-parsing">Script Parsing Time</option>
@@ -94,7 +95,6 @@ export default function BootupTime() {
                 </>
                 )}
             </div>
-          </div>
         </div>
     )}
     </>

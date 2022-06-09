@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import DataContextProvider from '../contexts/DataContext'
 import BootupTime from './BootupTime'
 import MainThreadWorkBreakdown from './MainThreadWorkBreakDown'
@@ -21,6 +21,7 @@ export default function App() {
           <Route path='/network-server-latency' element={<NetworkServerLatency />}></Route>
           <Route path='/resource-summary' element={<ResourceSummary />}></Route>
           <Route path='/third-party-summary' element={<ThirdPartySummary />}></Route>
+          <Route path="*" element={<Navigate to='/' />} />
         </Routes>
       </DataContextProvider>
     </>

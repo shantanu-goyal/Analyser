@@ -48,10 +48,10 @@ export default function NetworkRequests() {
       <h1 style={{ textAlign: "center" }}>Network Requests</h1>
       <div className="table-container">
         <Table id={'network-requests'} headings={data.details.headings} items={data.details.items} passData={passData} />
-        <div className="graph-container">
+      </div>
+      <div className="graph-container">
           {graph &&(generateGraph(data))}
         </div>
-      </div>
     </div>
     )}
     </>

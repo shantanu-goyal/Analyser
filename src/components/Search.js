@@ -13,7 +13,7 @@ export default function Search() {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   async function onFormSubmit(url, headers) {
-    console.log(headers)
+    console.log(headers);
     setFormSubmitted(true);
     setLoading(true);
     try {
@@ -23,7 +23,6 @@ export default function Search() {
           url,
           headers,
         },
-        
       });
       setLoading(false);
       dataContext.setData({ type: "changeData", data: result.data });
@@ -38,7 +37,7 @@ export default function Search() {
   return (
     <div className="container">
       {!formSubmitted && <Form onFormSubmit={onFormSubmit} />}
-      {formSubmitted && loading && !error && <h1>Loading...</h1>}
+      {formSubmitted && loading && !error && <div class="loader"></div>}
       {formSubmitted && error && <h1>Error..</h1>}
     </div>
   );

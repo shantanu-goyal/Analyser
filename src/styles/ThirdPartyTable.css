@@ -1,17 +1,17 @@
-select{
-    outline: none;
-    border: 1px solid #107eff;
-    width: 10em;
-    height: 2em;
-    align-self:flex-start;
-    margin-left: 2.5em;
-}
-
-select:focus{
-    outline: none;
-}
-
 .third-party-wrapper{
     width:100%;
     height: 100%;
+}
+
+.table-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#select-box{
+    border: 1px solid black;
+    width: 100px;
+    height: 30px;
 }
