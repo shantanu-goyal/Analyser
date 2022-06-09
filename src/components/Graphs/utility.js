@@ -10,13 +10,13 @@ function generateRandomBackgroundColors() {
   return bgColor;
 }
 
-function minify(label) {
-  const MAX_LENGTH = 40;
-  if (label.length > MAX_LENGTH) {
-    return label.substring(0, 15) + "..." + label.slice(-10);
-  }
-  return label;
-}
+// function minify(label) {
+//   const MAX_LENGTH = 40;
+//   if (label.length > MAX_LENGTH) {
+//     return label.substring(0, 15) + "..." + label.slice(-10);
+//   }
+//   return label;
+// }
 
 
 function processChart(data, title, type) {

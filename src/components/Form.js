@@ -29,8 +29,8 @@ function Form({ onFormSubmit }) {
       <table className="header-input">
         <thead>
           <tr>
-            <th>Key</th>
-            <th>Value</th>
+            <th>KEY</th>
+            <th>VALUE</th>
             <th></th>
           </tr>
         </thead>
@@ -90,6 +90,7 @@ function Form({ onFormSubmit }) {
                     value: newHeader.value,
                   });
                 }}
+                placeholder="Key"
               />
             </td>
             <td>
@@ -102,6 +103,7 @@ function Form({ onFormSubmit }) {
                     value: e.target.value,
                   });
                 }}
+                placeholder="Value"
               />
             </td>
             <td>
@@ -109,8 +111,8 @@ function Form({ onFormSubmit }) {
                 src="add.png"
                 alt="Add"
                 onClick={() => {
-                  setHeaders([...headers, {...newHeader}])
-                  setNewHeader({key:'', value:''})
+                  setHeaders([...headers, { ...newHeader }]);
+                  setNewHeader({ key: "", value: "" });
                 }}
               />
             </td>
