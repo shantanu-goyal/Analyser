@@ -4,7 +4,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 80vw;
 }
+
 
 .url-form input{
   box-sizing: border-box;
@@ -13,7 +15,7 @@
   border: none;
   border-bottom: 1px solid gray;
   font-size: 15px;
-  margin-bottom: 1em;
+  margin: 1em;
 }
 
 .url-form input:focus{
@@ -31,4 +33,35 @@
   cursor: pointer;
 }
   
-  
+.header-input, .header-input thead, .header-input  td {
+  border-collapse: collapse;
+  border: 1px solid rgb(180, 180, 180);
+  width: 50em;
+  overflow: scroll;
+  min-width: 5em;
+  text-align: center;
+}
+
+.header-input input {
+  border: 1px solid rgb(180, 180, 180);
+  padding: 1em;
+}
+
+.header-input th{
+  background-color: #333;
+  color: white;
+  font-size: large;
+}
+
+.header-input img{
+  width: 30px;
+  height: 30px;
+}
+
+.danger-button{
+  background-color: red;
+}
+
+.header-text{
+  margin: 1em;
+}

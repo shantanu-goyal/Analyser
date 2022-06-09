@@ -89,7 +89,7 @@ function Table({ id, headings, items,passData }) {
         </div>
       </div>
       <div className="showcase"></div>
-      <table id={id}>
+      <table id={id} className="styled-table">
         <thead>
           <tr>
             {headings.map(({ key, text, itemType }) => (
@@ -104,7 +104,7 @@ function Table({ id, headings, items,passData }) {
             return (
               <tr key={index}>
                 {headings.map(({ key }) => (
-                  <td key={key}>
+                  <td key={key} title={typeof item[key] === 'string' ? item[key] : ''}>
                     {isNaN(item[key]) ? (
                       item[key] &&
                       item[key].type &&
