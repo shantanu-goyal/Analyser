@@ -5,8 +5,6 @@ import axios from "axios";
 import { DataContext } from "../contexts/DataContext";
 import { useNavigate } from "react-router-dom";
 
-
-
 export default function Search() {
   const URL = process.env.REACT_APP_SERVER_URL;
   const dataContext = useContext(DataContext);
@@ -39,7 +37,9 @@ export default function Search() {
   return (
     <div className="container">
       {!formSubmitted && (<Form onFormSubmit={onFormSubmit} />)}
-      {formSubmitted && loading && !error && (<h1>Loading...</h1>)}
+      {formSubmitted && loading && !error && (
+        <div class="loader"></div>
+      )}
       {formSubmitted && error && (<h1>Error..</h1>)}
     </div>
   )
