@@ -15,6 +15,7 @@ function extractDurationTime(data) {
         data: item.endTime-item.startTime
       }
     }
+    return {}
   }).filter(value => Object.keys(value).length !== 0);
   return durationTimeData;
 }

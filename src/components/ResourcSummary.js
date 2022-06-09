@@ -41,7 +41,7 @@ export default function ResourceSummary() {
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Resource Summary</h1>
       <div className="table-container">
-        <Table id={'resource-summary'} headings={data.details.  headings} items={data.details.items} passData={passData}/>
+        <Table id={'resource-summary'} headings={data.details.headings} items={data.details.items} passData={passData}/>
         <div className="graph-container">
         {graph &&(generateGraph(data))}
         </div>

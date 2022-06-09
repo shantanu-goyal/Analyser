@@ -44,7 +44,7 @@ export default function NetworkServerLatency() {
       <NavBar />
       <h1 style={{ textAlign: "center" }}>Network Server Latency</h1>
       <div className="table-container">
-        <Table id={'network-server-latency'} headings={data.details.  headings} items={data.details.items} passData={passData} />
+        <Table id={'network-server-latency'} headings={data.details.headings} items={data.details.items} passData={passData} />
         <div className="graph-container">
           {graph &&(generateGraph(data))}
         </div>

@@ -49,7 +49,7 @@ function generateGraph(data,value){
   if(value==="total"){
     return <DoughnutChart title={"Total CPU Time"} data={total}></DoughnutChart>
   }
-  else if(value=="script-parsing"){
+  else if(value==="script-parsing"){
     return <DoughnutChart title={"Script Parsing Time"} data={parsing}></DoughnutChart>
   }
   return <DoughnutChart title={"Script Evaluation Time"} data={evaluation} />
