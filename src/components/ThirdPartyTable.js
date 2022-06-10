@@ -37,7 +37,7 @@ function ThirdPartyTable({ id, headings, items, passData }) {
 
   return (
     <div className="third-party-wrapper" style={{marginLeft:"1em"}}>
-      <select style={{marginLeft:"1em"}} id="select-box" value={view} onChange={changeView}>
+      <select id="select-box" value={view} onChange={changeView}>
         <option value="entity">Entity View</option>
         <option value="script">Script View</option>
       </select>
