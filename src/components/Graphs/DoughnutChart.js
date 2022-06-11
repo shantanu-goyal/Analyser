@@ -1,6 +1,6 @@
 import { Chart, registerables } from 'chart.js';
 import { useEffect, useRef } from "react";
-import { processChart } from './utility'
+import { processChart } from '../../utility/graphUtility'
 import "../../styles/DoughnutChart.css"
 
 // Register the component with the chart.js library
