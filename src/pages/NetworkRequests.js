@@ -5,9 +5,9 @@ import { Navigate } from "react-router";
 import { DataContext } from "../contexts/DataContext";
 
 // Importing the components
-import { NavBar } from "./NavBar";
-import Table from "./Table";
-import DoughnutChart from "./Graphs/DoughnutChart";
+import { NavBar } from "../components/NavBar";
+import Table from "../components/Table";
+import DoughnutChart from "../components/Graphs/DoughnutChart";
 
 // Importing the CSS
 import "../styles/Graph.css"

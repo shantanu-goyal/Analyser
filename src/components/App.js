@@ -5,14 +5,14 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import DataContextProvider from '../contexts/DataContext'
 
 // Importing the components
-import BootupTime from './BootupTime'
-import MainThreadWorkBreakdown from './MainThreadWorkBreakDown'
-import NetworkRequests from './NetworkRequests'
-import NetworkRTT from './NetworkRTT'
-import NetworkServerLatency from './NetworkServerLatency'
-import ResourceSummary from './ResourceSummary'
-import Search from './Search'
-import ThirdPartySummary from './ThirdPartySummary'
+import BootupTime from '../pages/BootupTime'
+import MainThreadWorkBreakdown from '../pages/MainThreadWorkBreakDown'
+import NetworkRequests from '../pages/NetworkRequests'
+import NetworkRTT from '../pages/NetworkRTT'
+import NetworkServerLatency from '../pages/NetworkServerLatency'
+import ResourceSummary from '../pages/ResourceSummary'
+import Search from '../pages/Search'
+import ThirdPartySummary from '../pages/ThirdPartySummary'
 
 
 

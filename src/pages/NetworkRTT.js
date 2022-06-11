@@ -5,9 +5,9 @@ import { useContext, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 
 // Importing the components
-import DoughnutChart from "./Graphs/DoughnutChart";
-import { NavBar } from "./NavBar";
-import Table from "./Table";
+import DoughnutChart from "../components/Graphs/DoughnutChart";
+import { NavBar } from "../components/NavBar";
+import Table from "../components/Table";
 
 // Importing the CSS
 import "../styles/Graph.css"

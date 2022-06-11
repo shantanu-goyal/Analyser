@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import Form from "./Form";
+import Form from "../components/Form";
 import "../styles/Search.css";
 import axios from "axios";
 import { DataContext } from "../contexts/DataContext";
