@@ -61,23 +61,22 @@ function processChart(data, title, type) {
     data: {
       labels,
       datasets,
-      hoverOffset: 4
+      hoverOffset: 4,
     },
     options: {
       plugins: {
         title: {
           display: true,
           text: title,
-          position: 'top'
+          position: "top",
         },
         legend: {
           display: false,
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  };
   return data;
 }
 
-module.exports = { processChart };
-
+export { processChart };

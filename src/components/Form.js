@@ -1,13 +1,27 @@
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import "../styles/Form.css";
-import { useState } from "react";
 
+/**
+ * Function to handle form submission to get url and headers of website
+ * @param {Function} onFormSubmit function to be called when the url form gets submitted to pass data to parent component
+ * @returns jsx for the url submission form
+ */
 function Form({ onFormSubmit }) {
+  // State to hold url for the website
   const [url, setUrl] = useState("");
+  // State to hold list of headers for the website
   const [headers, setHeaders] = useState([]);
+  // State to hold the key, value of the new header to be added to header list
   const [newHeader, setNewHeader] = useState({});
 
-  function handleUrlSubmit(e) {
-    e.preventDefault();
+  /**
+   * Handle the form submission
+   * @param {object} event Object which holds form submit event data
+   */
+  function handleUrlSubmit(event) {
+    event.preventDefault();
+    // Covert header list into header object
     let headerObject = headers.reduce((obj, { key, value }) => {
       obj[key] = value;
       return obj;
@@ -25,7 +39,9 @@ function Form({ onFormSubmit }) {
         />
         <button onClick={handleUrlSubmit}>Submit</button>
       </div>
+
       <h1 className="header-text">Headers</h1>
+
       <table className="header-input">
         <thead>
           <tr>
@@ -34,6 +50,7 @@ function Form({ onFormSubmit }) {
             <th></th>
           </tr>
         </thead>
+
         <tbody>
           {headers.map(({ key, value }, index) => {
             return (
@@ -49,7 +66,7 @@ function Form({ onFormSubmit }) {
                         ...headers.slice(index + 1),
                       ]);
                     }}
-                    spellcheck="false"
+                    spellCheck="false"
                   />
                 </td>
                 <td>
@@ -63,7 +80,7 @@ function Form({ onFormSubmit }) {
                         ...headers.slice(index + 1),
                       ]);
                     }}
-                    spellcheck="false"
+                    spellCheck="false"
                   />
                 </td>
                 <td>
@@ -81,6 +98,7 @@ function Form({ onFormSubmit }) {
               </tr>
             );
           })}
+
           <tr>
             <td>
               <input
@@ -93,7 +111,7 @@ function Form({ onFormSubmit }) {
                   });
                 }}
                 placeholder="Key"
-                spellcheck="false"
+                spellCheck="false"
               />
             </td>
             <td>
@@ -107,7 +125,7 @@ function Form({ onFormSubmit }) {
                   });
                 }}
                 placeholder="Value"
-                spellcheck="false"
+                spellCheck="false"
               />
             </td>
             <td>
@@ -126,5 +144,9 @@ function Form({ onFormSubmit }) {
     </div>
   );
 }
+
+Form.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired,
+};
 
 export default Form;

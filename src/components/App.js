@@ -11,7 +11,6 @@ import NetworkRequests from '../pages/NetworkRequests'
 import NetworkRTT from '../pages/NetworkRTT'
 import NetworkServerLatency from '../pages/NetworkServerLatency'
 import ResourceSummary from '../pages/ResourceSummary'
-import Search from '../pages/Search'
 import ThirdPartySummary from '../pages/ThirdPartySummary'
 
 
@@ -25,19 +24,26 @@ export default function App() {
     <>
       <DataContextProvider>
         <Routes>
-          <Route path="/" element={<Search />}></Route>
-          <Route path='/bootup-time' element={<BootupTime />}></Route>
-          <Route path='/mainthread-work-breakdown' element={<MainThreadWorkBreakdown />}></Route>
-          <Route path='/network-requests' element={<NetworkRequests />}></Route>
-          <Route path='/network-rtt' element={<NetworkRTT />}></Route>
-          <Route path='/network-server-latency' element={<NetworkServerLatency />}></Route>
-          <Route path='/resource-summary' element={<ResourceSummary />}></Route>
-          <Route path='/third-party-summary' element={<ThirdPartySummary />}></Route>
-          <Route path="*" element={<Navigate to='/' />} />
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/bootup-time" element={<BootupTime />}></Route>
+          <Route
+            path="/mainthread-work-breakdown"
+            element={<MainThreadWorkBreakdown />}
+          ></Route>
+          <Route path="/network-requests" element={<NetworkRequests />}></Route>
+          <Route path="/network-rtt" element={<NetworkRTT />}></Route>
+          <Route
+            path="/network-server-latency"
+            element={<NetworkServerLatency />}
+          ></Route>
+          <Route path="/resource-summary" element={<ResourceSummary />}></Route>
+          <Route
+            path="/third-party-summary"
+            element={<ThirdPartySummary />}
+          ></Route>
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </DataContextProvider>
     </>
-
-  )
+  );
 }
-

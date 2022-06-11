@@ -1,30 +1,52 @@
-import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import "../styles/Table.css";
 
+/**
+ * Function to create JSX of table element
+ * @param {String} id id of the audit for which the table is rendered
+ * @param {Array} headings Array of objects containing the table headers
+ * @param {Array} items Array of objects containing the table data
+ * @param {Function} passData Callback to pass data to graph renderer
+ * @returns table jsx
+ */
 function Table({ id, headings, items, passData }) {
+  // State to hold table data items filtered on the search text
   const [filteredItems, setFilteredItems] = useState([]);
-  const [graph, setGraph] = useState(false);
-  const [order, setOrder] = useState(headings.reduce((obj, { key }) => {
-    Object.assign(obj, {
-      [key]: 'asc'
-    })
-    return obj
-  }, {}));
+  // State to indicate whether the graph is visible
+  const [isGraphVisible, setGraphVisible] = useState(false);
+  // State to hold current columnwise sorting order for table data items
+  const [order, setOrder] = useState(
+    headings.reduce((obj, { key }) => {
+      // Initial sorting order should be ascending
+      Object.assign(obj, {
+        [key]: "asc",
+      });
+      return obj;
+    }, {})
+  );
 
   useEffect(() => {
+    // When items change, consider all items as filtered
     setFilteredItems([...items]);
   }, [items]);
 
-  function onSearch(e) {
-    let searchText = e.target.value.toLowerCase();
+  /**
+   * Function to trigger search for items on value change in the input field
+   * @param {Object} event Object containing the event data that triggered search
+   */
+  function onSearch(event) {
+    // Case insensitive filtering
+    const searchText = event.target.value.toLowerCase();
     setFilteredItems(
       items.filter((item) => {
+        // Return true if any of the columns match search value
         return headings.some(({ key }) => {
           if (!item[key]) return false;
           if (isNaN(item[key])) {
-            if (item[key] && item[key].type && item[key].type === "link") {
+            if (item[key] && item[key].type && item[key].type === "link")
               return item[key].text.toLowerCase().indexOf(searchText) !== -1;
-            } else return item[key].toLowerCase().indexOf(searchText) !== -1;
+            else return item[key].toLowerCase().indexOf(searchText) !== -1;
           } else {
             return item[key].toString().indexOf(searchText) !== -1;
           }
@@ -33,45 +55,56 @@ function Table({ id, headings, items, passData }) {
     );
   }
 
-  function sortItems(e) {
-    let columnKey = e.target.id;
-
-    setFilteredItems((prev) =>
-      prev.sort((x, y) => {
-        if (order === "asc") {
-          setOrder("desc");
-          if (typeof x[columnKey] === "number") {
-            return x[columnKey] - y[columnKey];
-          } else if (x[columnKey] && x[columnKey].text)
-            return x[columnKey].text < y[columnKey].text ? -1 : 1;
-          else return x[columnKey] < y[columnKey] ? -1 : 1;
-        } else {
-          setOrder("asc");
-          if (typeof x[columnKey] === "number")
-            return y[columnKey] - x[columnKey];
-          else if (x[columnKey] && x[columnKey].text)
-            return x[columnKey].text > y[columnKey].text ? -1 : 1;
-          else return x[columnKey] > y[columnKey] ? -1 : 1;
-        }
+  /**
+   * Sort items in an order opposite to current sort order
+   * @param {object} event data corresponding to event which triggered sorting
+   */
+  function sortItems(event) {
+    // Key of the column which was clicked
+    let columnKey = event.target.id;
+    setFilteredItems((prevItems) =>
+      prevItems.sort((firstItem, secondItem) => {
+        // Variable to store order between firstItem and secondItem
+        let itemOrder;
+        // Set the itemOrder using ascending order sorting
+        if (typeof firstItem[columnKey] === "number")
+          itemOrder = firstItem[columnKey] - secondItem[columnKey];
+        else if (firstItem[columnKey] && firstItem[columnKey].text)
+          itemOrder =
+            firstItem[columnKey].text < secondItem[columnKey].text ? -1 : 1;
+        else itemOrder = firstItem[columnKey] < secondItem[columnKey] ? -1 : 1;
+        setOrder(order === "asc" ? "desc" : "asc");
+        // Invert the itemOrder if the current sorting order is descending
+        return order === "asc" ? itemOrder : itemOrder * -1;
       })
     );
   }
 
-  function handleToggle(e) {
-    e.preventDefault();
-    setGraph(!graph);
-    passData(!graph);
+  /**
+   * Function to toggle the visibility of the graph
+   * @param {object} event data corresponding to event which triggered graph visibility change
+   */
+  function handleGraphToggle(event) {
+    event.preventDefault();
+    setGraphVisible(!isGraphVisible);
+    passData(!isGraphVisible);
   }
 
+  /**
+   * Download current filtered items as JSON object
+   */
   async function downloadJSON() {
+    // Set filename as id of the audit
     const fileName = id;
     const json = JSON.stringify(filteredItems);
     const blob = new Blob([json], { type: "application/json" });
     const href = URL.createObjectURL(blob);
+    // Create a link to download the blob
     const link = document.createElement("a");
     link.href = href;
     link.download = fileName + ".json";
     document.body.appendChild(link);
+    // Click the link to download blob and then remove it from document
     link.click();
     document.body.removeChild(link);
   }
@@ -85,7 +118,7 @@ function Table({ id, headings, items, passData }) {
           onChange={onSearch}
         />
         <div className="right-row">
-          <button onClick={handleToggle}>Toggle Graph</button>
+          <button onClick={handleGraphToggle}>Toggle Graph</button>
           <button onClick={downloadJSON}>Download JSON</button>
         </div>
       </div>
@@ -95,7 +128,10 @@ function Table({ id, headings, items, passData }) {
           <tr>
             {headings.map(({ key, text, itemType }) => (
               <th key={key} id={key} onClick={sortItems}>
-                {text} {itemType === 'ms' || itemType === 'bytes' ? `(${itemType})` : ''}
+                {text} {/* Unit of data */}
+                {itemType === "ms" || itemType === "bytes"
+                  ? `(${itemType})`
+                  : ""}
               </th>
             ))}
           </tr>
@@ -105,7 +141,10 @@ function Table({ id, headings, items, passData }) {
             return (
               <tr key={index}>
                 {headings.map(({ key }) => (
-                  <td key={key} title={typeof item[key] === 'string' ? item[key] : ''}>
+                  <td
+                    key={key}
+                    title={typeof item[key] === "string" ? item[key] : ""}
+                  >
                     {isNaN(item[key]) ? (
                       item[key] &&
                         item[key].type &&
@@ -115,6 +154,7 @@ function Table({ id, headings, items, passData }) {
                         item[key]
                       )
                     ) : (
+                      // Round the number to two digits past decimal point
                       Math.round(item[key] * 100) / 100
                     )}
                   </td>
@@ -127,5 +167,12 @@ function Table({ id, headings, items, passData }) {
     </>
   );
 }
+
+Table.propTypes = {
+  id: PropTypes.string.isRequired,
+  headings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  passData: PropTypes.func.isRequired,
+};
 
 export default Table;
