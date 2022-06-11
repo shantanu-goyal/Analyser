@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=200px height=200px src="./public/sprinklr.png" alt="Project logo"></a>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h3 align="center">Analyser</h3>
 
-## Available Scripts
+<div align="center">
 
-In the project directory, you can run:
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/shantanu-goyal/Analyser/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/shantanu-goyal/Analyser/pulls)
 
-### `npm start`
+</div>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<p align="center"> This is a website created using React, which is used for analysing network requests
+    <br> 
+</p>
 
-### `npm test`
+## 📝 Table of Contents
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [About](#about)
+- [Getting Started](#getting_started)
+- [Deployment](#deployment)
+- [Built Using](#built_using)
+- [Authors](#authors)
 
-### `npm run build`
+## 🧐 About <a name = "about"></a>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The main objective of the project is to analyse the main thread blocking time by third party scripts and optimise it by offloading them to a service worker. This repositiory contains te source code for the Analyser Tool which serves the purpose of analysing various network requests made by websites. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🏁 Getting Started <a name = "getting_started"></a>
+<br />
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<b>To install on MacOS/Linux:</b>
+<br />
 
-### `npm run eject`
+Step 1: Download NVM with Install Script using cURL and set environment variables:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
+    echo 'export PATH=/usr/local/bin:$PATH' >>~/.bash\_profile
+    source ~/.bashrc
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Step 2: Install the Latest Node Version Using NVM
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+    nvm install node
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+### Installing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To get the development environment running:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    npm install
+    npm start
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🚀 Deployment <a name = "deployment"></a>
 
-### Analyzing the Bundle Size
+The system can be deployed to a server using the following commands:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    npm build
 
-### Making a Progressive Web App
+## ⛏️ Built Using <a name = "built_using"></a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- [ReactJs](https://reactjs.org/) - Web Framework
+- [NodeJs](https://nodejs.org/en/) - Server Environment
 
-### Advanced Configuration
+## ✍️ Authors <a name = "authors"></a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [@shantanu-goyal](https://github.com/shantanu-goyal)
+- [@ayushgupta21](https://github.com/ayushgupta21)
