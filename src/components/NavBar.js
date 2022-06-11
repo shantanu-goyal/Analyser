@@ -1,14 +1,16 @@
 import React, { useRef } from "react";
 import { NavLink } from "react-router-dom";
+
+// Importing the CSS
 import '../styles/NavBar.css';
 
 
-
-
 export const NavBar = function () {
-
+  // Referencing the navbar element
   const navRef = useRef(null);
 
+
+  // Function to handle the click event of the navbar
   function handleNavItemClick(e) {
     e.preventDefault();
     if (navRef.current.className === "topnav") {

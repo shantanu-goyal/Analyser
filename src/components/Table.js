@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "../styles/Table.css";
 
-function Table({ id, headings, items,passData }) {
+function Table({ id, headings, items, passData }) {
   const [filteredItems, setFilteredItems] = useState([]);
-  const [graph,setGraph]=useState(false);
+  const [graph, setGraph] = useState(false);
   const [order, setOrder] = useState(headings.reduce((obj, { key }) => {
     Object.assign(obj, {
       [key]: 'asc'
@@ -35,6 +35,7 @@ function Table({ id, headings, items,passData }) {
 
   function sortItems(e) {
     let columnKey = e.target.id;
+
     setFilteredItems((prev) =>
       prev.sort((x, y) => {
         if (order === "asc") {
@@ -56,7 +57,7 @@ function Table({ id, headings, items,passData }) {
     );
   }
 
-  function handleToggle(e){
+  function handleToggle(e) {
     e.preventDefault();
     setGraph(!graph);
     passData(!graph);
@@ -107,8 +108,8 @@ function Table({ id, headings, items,passData }) {
                   <td key={key} title={typeof item[key] === 'string' ? item[key] : ''}>
                     {isNaN(item[key]) ? (
                       item[key] &&
-                      item[key].type &&
-                      item[key].type === "link" ? (
+                        item[key].type &&
+                        item[key].type === "link" ? (
                         <a href={item[key].url}>{item[key].text}</a>
                       ) : (
                         item[key]

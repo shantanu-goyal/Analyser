@@ -1,7 +1,17 @@
+/**
+ * Function to round off the data to 2 decimal places 
+ * @param {Number} value - The value of the data
+ * @returns {Number} - The value of the data rounded off to 2 decimal places
+ */
 function round(value) {
   return Math.round(value * 100) / 100;
 }
 
+
+/**
+ * Function to generate random background colors
+ * @returns {String} - A random background color in the form of (r,g,b,a)
+ */
 function generateRandomBackgroundColors() {
   var x = Math.floor(Math.random() * 256);
   var y = Math.floor(Math.random() * 256);
@@ -10,29 +20,39 @@ function generateRandomBackgroundColors() {
   return bgColor;
 }
 
-// function minify(label) {
-//   const MAX_LENGTH = 40;
-//   if (label.length > MAX_LENGTH) {
-//     return label.substring(0, 15) + "..." + label.slice(-10);
-//   }
-//   return label;
-// }
 
-
+/**
+ * Function to generate the configuration for the chart
+ * @param {object} data - The data to be used for the chart
+ * @param {string} title - The title of the chart
+ * @param {string} type - The type of chart to be generated
+ * @returns {object} - The configuration for the chart
+ */
 function processChart(data, title, type) {
   const length = data.length;
+
+  // Initialising the background color array
   const bgColor = []
+
+  // Generating the background colors and storing the backgrond colors in the bgColor array
   for (var i = 0; i < length; i++) {
     bgColor.push(generateRandomBackgroundColors());
   }
+
+  // Generating the labels for the graph
   const labels = data.map(item => item.url);
+
+  // Generating the data for the graph rounded off to 2 decimal places
   const values = data.map(item => round(item.data));
+
+
+  // Generating the dataset for the graph
   const datasets = [
     {
       label: title,
       backgroundColor: bgColor,
       data: values,
-      hoverOffset:4
+      hoverOffset: 4 // This is the offset of the hover box
     }
   ]
 
@@ -57,7 +77,6 @@ function processChart(data, title, type) {
     }
   }
   return data;
-
 }
 
 module.exports = { processChart };

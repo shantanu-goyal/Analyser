@@ -1,13 +1,25 @@
+// Importing the React Router Dom Library
 import { Routes, Route, Navigate } from 'react-router-dom'
+
+// Importing the context provider
 import DataContextProvider from '../contexts/DataContext'
+
+// Importing the components
 import BootupTime from './BootupTime'
 import MainThreadWorkBreakdown from './MainThreadWorkBreakDown'
 import NetworkRequests from './NetworkRequests'
 import NetworkRTT from './NetworkRTT'
 import NetworkServerLatency from './NetworkServerLatency'
-import ResourceSummary from './ResourcSummary'
+import ResourceSummary from './ResourceSummary'
 import Search from './Search'
 import ThirdPartySummary from './ThirdPartySummary'
+
+
+
+/**
+ * The main component of the application that renders the different components. It also handles the routing of the different components. 
+ * @returns {JSX} - The JSX to be rendered
+ */
 export default function App() {
   return (
     <>
