@@ -1,8 +1,18 @@
-import { useState } from "react";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import '../styles/ThirdPartyTable.css';
 import Table from "./Table";
-import '../styles/ThirdPartyTable.css'
 
+/**
+ * Function to create JSX of ThirdPartyTable element
+ * @param {String} id id of the audit for which the table is rendered
+ * @param {Array} headings Array of objects containing the table headers
+ * @param {Array} items Array of objects containing the table data
+ * @param {Function} passData Callback to pass data to graph renderer
+ * @returns table jsx
+ */
 function ThirdPartyTable({ id, headings, items, passData }) {
+  // State to hold current view of 
   const [view, setView] = useState("entity");
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([...headings]);
   const [thirdPartyItems, setThirdPartyItems] = useState([...items]);
@@ -46,6 +56,13 @@ function ThirdPartyTable({ id, headings, items, passData }) {
       </div>
     </div>
   );
+}
+
+ThirdPartyTable.propTypes = {
+  id: PropTypes.string.isRequired,
+  headings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  passData: PropTypes.func.isRequired,
 }
 
 export default ThirdPartyTable;

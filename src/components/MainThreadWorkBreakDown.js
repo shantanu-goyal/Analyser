@@ -1,4 +1,4 @@
-import { useContext,useState } from "react";
+import React, { useContext,useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "./NavBar";
 import Table from "./Table";

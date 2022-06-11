@@ -1,12 +1,16 @@
-import { useContext, useState } from "react";
-import Form from "./Form";
-import "../styles/Search.css";
 import axios from "axios";
-import { DataContext } from "../contexts/DataContext";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { REACT_APP_SERVER_URL } from "../../config";
+import { DataContext } from "../contexts/DataContext";
+import "../styles/Home.css";
+import Form from "../components/Form";
 
-export default function Search() {
-  const URL = process.env.REACT_APP_SERVER_URL;
+/**
+ * Function to return JSX for Home page
+ * @returns jsx for the form element Home
+ */
+export default function Home() {
   const dataContext = useContext(DataContext);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -17,7 +21,7 @@ export default function Search() {
     setFormSubmitted(true);
     setLoading(true);
     try {
-      const result = await axios.get(URL, {
+      const result = await axios.get(REACT_APP_SERVER_URL, {
         method: "GET",
         params: {
           url,
@@ -26,7 +30,6 @@ export default function Search() {
       });
       setLoading(false);
       dataContext.setData({ type: "changeData", data: result.data });
-      console.log(result.data);
       navigate("/bootup-time");
     } catch (error) {
       setError(true);

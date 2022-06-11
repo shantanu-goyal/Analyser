@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import DoughnutChart from "./Graphs/DoughnutChart";
 import { NavBar } from "./NavBar";

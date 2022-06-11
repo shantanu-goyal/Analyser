@@ -1,4 +1,4 @@
-import { useContext,useState } from "react";
+import React, { useContext,useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "./NavBar";
 import Table from "./Table";
@@ -26,7 +26,6 @@ function generateGraph(data){
   const durationTimeData=extractDurationTime(details);
   return <DoughnutChart data={durationTimeData} title={"Durartion of Network Requests"} />
 }
-
 
 
 export default function NetworkRequests() {

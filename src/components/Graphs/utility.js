@@ -10,55 +10,44 @@ function generateRandomBackgroundColors() {
   return bgColor;
 }
 
-// function minify(label) {
-//   const MAX_LENGTH = 40;
-//   if (label.length > MAX_LENGTH) {
-//     return label.substring(0, 15) + "..." + label.slice(-10);
-//   }
-//   return label;
-// }
-
-
 function processChart(data, title, type) {
   const length = data.length;
-  const bgColor = []
+  const bgColor = [];
   for (var i = 0; i < length; i++) {
     bgColor.push(generateRandomBackgroundColors());
   }
-  const labels = data.map(item => item.url);
-  const values = data.map(item => round(item.data));
+  const labels = data.map((item) => item.url);
+  const values = data.map((item) => round(item.data));
   const datasets = [
     {
       label: title,
       backgroundColor: bgColor,
       data: values,
-      hoverOffset:4
-    }
-  ]
+      hoverOffset: 4,
+    },
+  ];
 
   data = {
     type: type,
     data: {
       labels,
       datasets,
-      hoverOffset: 4
+      hoverOffset: 4,
     },
     options: {
       plugins: {
         title: {
           display: true,
           text: title,
-          position: 'top'
+          position: "top",
         },
         legend: {
           display: false,
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  };
   return data;
-
 }
 
-module.exports = { processChart };
-
+export { processChart };
