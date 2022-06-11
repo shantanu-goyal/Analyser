@@ -1,13 +1,7 @@
-<<<<<<< HEAD:src/pages/Search.js
-import { useContext, useState } from "react";
-import Form from "../components/Form";
-import "../styles/Search.css";
-=======
->>>>>>> main:src/pages/Home.js
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { REACT_APP_SERVER_URL } from "../../config";
+import { REACT_APP_SERVER_URL } from "../config";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Home.css";
 import Form from "../components/Form";

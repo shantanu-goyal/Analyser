@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-
+import PropTypes from 'prop-types'
 // Create the context
 export const DataContext = createContext();
 
@@ -19,7 +19,7 @@ const switchData = (state, action) => {
 }
 
 // Create the provider.
-const DataContextProvider = (props) => {
+const DataContextProvider = ({children}) => {
 
   // Initialize the state
   const [data, setData] = useReducer(switchData, {
@@ -28,9 +28,13 @@ const DataContextProvider = (props) => {
 
   return (
     <DataContext.Provider value={{ data, setData }} >
-      {props.children}
+      {children}
     </DataContext.Provider>
   )
+}
+
+DataContextProvider.propTypes = {
+  children: PropTypes.element
 }
 
 export default DataContextProvider;

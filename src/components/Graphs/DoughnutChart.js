@@ -1,7 +1,8 @@
 import { Chart, registerables } from 'chart.js';
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { processChart } from '../../utility/graphUtility'
 import "../../styles/DoughnutChart.css"
+import PropTypes from 'prop-types'
 
 // Register the component with the chart.js library
 Chart.register(...registerables);
@@ -64,4 +65,8 @@ function DoughnutChart({ data, title }) {
     </>)
 }
 
+DoughnutChart.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+  title: PropTypes.string
+}
 export default DoughnutChart;

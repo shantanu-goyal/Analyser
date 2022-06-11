@@ -1,5 +1,5 @@
 import { Navigate } from "react-router";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 
 // Importing the context
 import { DataContext } from "../contexts/DataContext";
