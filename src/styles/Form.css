@@ -1,4 +1,4 @@
-.url-form{
+.url-form {
   height: calc(100vh - 16px);
   display: flex;
   flex-direction: column;
@@ -7,41 +7,41 @@
   width: 80vw;
 }
 
+.url-input {
+  display: flex;
+  align-items: center;
+}
 
-.url-form input{
+.url-input input {
   box-sizing: border-box;
-  max-width: 40em;
   width: 60vw;
   height: 2em;
   border: none;
   border-bottom: 1px solid black;
   margin: 1em;
   font-size: 1.2em;
+  min-width: 20em;
 }
 
-.url-form input:focus{
+.url-form input:focus {
   outline: none;
 }
 
-.url-form button{
-  font-size: 15px;
-  background-color:#107EFF;
+.url-input button {
+  font-size: 1.2em;
+  background-color: #107eff;
   color: aliceblue;
   width: 10em;
   height: 2em;
   border: none;
   cursor: pointer;
+  border-radius: 20px;
 }
 
-.header-input{
+.header-input {
   width: 80vw;
   min-width: 40em;
   border-collapse: collapse;
-}
-
-.header-input, .header-input thead, .header-input  td {
-  border: 1px solid rgb(180, 180, 180);
-  overflow: scroll;
   text-align: center;
 }
 
@@ -50,33 +50,25 @@
   padding: 1em;
   font-size: 1em;
   width: 90%;
+  margin: 0.5em;
 }
 
-.header-input th{
+.header-input th {
   background-color: #333;
   color: white;
   font-size: large;
 }
 
-.header-input img{
+.header-input th:last-of-type {
+  background-color: white;
+}
+
+.header-input img {
   width: 30px;
   height: 30px;
   cursor: pointer;
 }
 
-.danger-button{
-  background-color: red;
-}
-
-.header-text{
+.header-text {
   margin: 1em;
-}
-
-.url-input{
-  display: flex;
-  align-items: center;
-}
-
-.url-input input{
-  min-width:20em;
 }

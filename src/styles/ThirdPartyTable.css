@@ -1,19 +1,17 @@
-.third-party-wrapper{
-    width:100%;
-    height: 100%;
+.third-party-wrapper {
+  width: 100%;
+  height: 100%;
 }
-
-.table-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-
-#select-box{
-    margin-top: 1em;
-    margin-left: 1em;
-    border: 1px solid black;
-    width: 100px;
-    height: 30px;
+#select-box {
+  margin-top: 1em;
+  margin-left: 1em;
+  border: 1px solid #000;
+  width: 100px;
+  height: 30px;
 }

@@ -147,8 +147,8 @@ function Table({ id, headings, items, passData }) {
                   >
                     {isNaN(item[key]) ? (
                       item[key] &&
-                        item[key].type &&
-                        item[key].type === "link" ? (
+                      item[key].type &&
+                      item[key].type === "link" ? (
                         <a href={item[key].url}>{item[key].text}</a>
                       ) : (
                         item[key]
