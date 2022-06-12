@@ -9,7 +9,7 @@
 
 .url-input {
   display: flex;
-  align-items: center;
+  align-items: baseline;
 }
 
 .url-input input {
@@ -48,9 +48,11 @@
 .header-input input {
   border: 1px solid rgb(180, 180, 180);
   padding: 1em;
+  box-sizing: border-box;
   font-size: 1em;
-  width: 90%;
+  width: 98%;
   margin: 0.5em;
+  height: 1em;
 }
 
 .header-input th {

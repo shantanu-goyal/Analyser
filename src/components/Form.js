@@ -14,6 +14,8 @@ function Form({ onFormSubmit }) {
   const [headers, setHeaders] = useState([]);
   // State to hold the key, value of the new header to be added to header list
   const [newHeader, setNewHeader] = useState({});
+  // State to hold the device type on which the website needs to be tested
+  const [deviceType, setDeviceType] = useState("mobile");
 
   /**
    * Handle the form submission
@@ -26,12 +28,21 @@ function Form({ onFormSubmit }) {
       obj[key] = value;
       return obj;
     }, {});
-    onFormSubmit(url, headerObject);
+    onFormSubmit(url, headerObject, deviceType);
   }
 
   return (
     <div className="url-form">
       <div className="url-input">
+        <select
+          className="select-box"
+          onChange={(e) => {
+            setDeviceType(e.target.value);
+          }}
+        >
+          <option value="mobile">Mobile</option>
+          <option value="desktop">Desktop</option>
+        </select>
         <input
           type="text"
           placeholder="Enter complete url e.g.('https://example.com')"
