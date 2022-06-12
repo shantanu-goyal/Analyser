@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import "../styles/Form.css";
 
@@ -8,14 +8,17 @@ import "../styles/Form.css";
  * @returns jsx for the url submission form
  */
 function Form({ onFormSubmit }) {
-  // State to hold url for the website
-  const [url, setUrl] = useState("");
   // State to hold list of headers for the website
   const [headers, setHeaders] = useState([]);
-  // State to hold the key, value of the new header to be added to header list
-  const [newHeader, setNewHeader] = useState({});
-  // State to hold the device type on which the website needs to be tested
-  const [deviceType, setDeviceType] = useState("mobile");
+
+  // Reference to input field for the website url
+  const urlRef = useRef(null);
+  // Reference to key field for new header
+  const keyRef = useRef(null);
+  // Reference to value field for new header
+  const valueRef = useRef(null);
+  // Reference to device type selector
+  const deviceRef = useRef(null);
 
   /**
    * Handle the form submission
@@ -28,25 +31,37 @@ function Form({ onFormSubmit }) {
       obj[key] = value;
       return obj;
     }, {});
+    const url = urlRef.current.value;
+    const deviceType = deviceRef.current.value;
     onFormSubmit(url, headerObject, deviceType);
+  }
+
+  /**
+   * Function to handle addition of new header to header list
+   */
+  function onHeaderAdd() {
+    // Create new header object
+    const newHeader = {
+      key: keyRef.current.value,
+      value: valueRef.current.value,
+    };
+    setHeaders([...headers, newHeader]);
+    // Clear the input box for next input header
+    keyRef.current.value = "";
+    valueRef.current.value = "";
   }
 
   return (
     <div className="url-form">
       <div className="url-input">
-        <select
-          className="select-box"
-          onChange={(e) => {
-            setDeviceType(e.target.value);
-          }}
-        >
+        <select className="select-box" ref={deviceRef}>
           <option value="mobile">Mobile</option>
           <option value="desktop">Desktop</option>
         </select>
         <input
           type="text"
           placeholder="Enter complete url e.g.('https://example.com')"
-          onChange={(e) => setUrl(e.target.value)}
+          ref={urlRef}
         />
         <button onClick={handleUrlSubmit}>Submit</button>
       </div>
@@ -114,13 +129,7 @@ function Form({ onFormSubmit }) {
             <td>
               <input
                 type="text"
-                value={newHeader.key}
-                onChange={(e) => {
-                  setNewHeader({
-                    key: e.target.value,
-                    value: newHeader.value,
-                  });
-                }}
+                ref={keyRef}
                 placeholder="Key"
                 spellCheck="false"
               />
@@ -128,26 +137,13 @@ function Form({ onFormSubmit }) {
             <td>
               <input
                 type="text"
-                value={newHeader.value}
-                onChange={(e) => {
-                  setNewHeader({
-                    key: newHeader.key,
-                    value: e.target.value,
-                  });
-                }}
+                ref={valueRef}
                 placeholder="Value"
                 spellCheck="false"
               />
             </td>
             <td>
-              <img
-                src="add.png"
-                alt="Add"
-                onClick={() => {
-                  setHeaders([...headers, { ...newHeader }]);
-                  setNewHeader({ key: "", value: "" });
-                }}
-              />
+              <img src="add.png" alt="Add" onClick={onHeaderAdd} />
             </td>
           </tr>
         </tbody>
