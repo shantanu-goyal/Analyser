@@ -1,18 +1,15 @@
-// Importing the React Router Dom Library
 import { Routes, Route, Navigate } from "react-router-dom";
-import React from "react";
-// Importing the context provider
+import React, { Suspense, lazy } from "react";
 import DataContextProvider from "./contexts/DataContext";
-
-// Importing the components
-import BootupTime from "./pages/BootupTime";
-import MainThreadWorkBreakdown from "./pages/MainThreadWorkBreakDown";
-import NetworkRequests from "./pages/NetworkRequests";
-import NetworkRTT from "./pages/NetworkRTT";
-import NetworkServerLatency from "./pages/NetworkServerLatency";
-import ResourceSummary from "./pages/ResourceSummary";
-import ThirdPartySummary from "./pages/ThirdPartySummary";
-import Home from "./pages/Home";
+// Code Splitting
+const BootupTime = lazy(() => import("./pages/BootupTime"));
+const MainThreadWorkBreakdown = lazy(() => import("./pages/MainThreadWorkBreakDown"));
+const NetworkRequests = lazy(() => import("./pages/NetworkRequests"));
+const NetworkRTT = lazy(() => import("./pages/NetworkRTT"));
+const NetworkServerLatency = lazy(() => import("./pages/NetworkServerLatency"));
+const ResourceSummary = lazy(() => import("./pages/ResourceSummary"));
+const ThirdPartySummary = lazy(() => import("./pages/ThirdPartySummary"));
+const Home = lazy(() => import("./pages/Home"))
 
 /**
  * The main component of the application that renders the different components. It also handles the routing of the different components.
@@ -22,26 +19,28 @@ export default function App() {
   return (
     <>
       <DataContextProvider>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/bootup-time" element={<BootupTime />}></Route>
-          <Route
-            path="/mainthread-work-breakdown"
-            element={<MainThreadWorkBreakdown />}
-          ></Route>
-          <Route path="/network-requests" element={<NetworkRequests />}></Route>
-          <Route path="/network-rtt" element={<NetworkRTT />}></Route>
-          <Route
-            path="/network-server-latency"
-            element={<NetworkServerLatency />}
-          ></Route>
-          <Route path="/resource-summary" element={<ResourceSummary />}></Route>
-          <Route
-            path="/third-party-summary"
-            element={<ThirdPartySummary />}
-          ></Route>
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/bootup-time" element={<BootupTime />}></Route>
+            <Route
+              path="/mainthread-work-breakdown"
+              element={<MainThreadWorkBreakdown />}
+            ></Route>
+            <Route path="/network-requests" element={<NetworkRequests />}></Route>
+            <Route path="/network-rtt" element={<NetworkRTT />}></Route>
+            <Route
+              path="/network-server-latency"
+              element={<NetworkServerLatency />}
+            ></Route>
+            <Route path="/resource-summary" element={<ResourceSummary />}></Route>
+            <Route
+              path="/third-party-summary"
+              element={<ThirdPartySummary />}
+            ></Route>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Suspense>
       </DataContextProvider>
     </>
   );

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import "../styles/Table.css";
 
 /**
@@ -147,8 +147,8 @@ function Table({ id, headings, items, passData }) {
                   >
                     {isNaN(item[key]) ? (
                       item[key] &&
-                      item[key].type &&
-                      item[key].type === "link" ? (
+                        item[key].type &&
+                        item[key].type === "link" ? (
                         <a href={item[key].url}>{item[key].text}</a>
                       ) : (
                         item[key]
@@ -175,4 +175,4 @@ Table.propTypes = {
   passData: PropTypes.func.isRequired,
 };
 
-export default Table;
+export default memo(Table);
