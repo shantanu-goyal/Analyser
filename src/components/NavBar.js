@@ -1,17 +1,18 @@
 import React, { useRef } from "react";
 import { NavLink } from "react-router-dom";
-
-// Importing the CSS
 import '../styles/NavBar.css';
 
-
+/**
+* Function to create JSX of navbar element
+* @returns navbar jsx
+*/
 export const NavBar = function () {
   // Referencing the navbar element
   const navRef = useRef(null);
 
-
   // Function to handle the click event of the navbar
   function handleNavItemClick(e) {
+    // The page won't reload when the button is clicked. `e.preventDefault()` prevents this. 
     e.preventDefault();
     if (navRef.current.className === "topnav") {
       navRef.current.className += " responsive";
@@ -20,7 +21,9 @@ export const NavBar = function () {
     }
   }
 
+
   const navLinkStyles = ({ isActive }) => {
+    // If the nav item has an active class, then the font is bold
     return {
       fontWeight: isActive ? 'bold' : 'normal'
     }

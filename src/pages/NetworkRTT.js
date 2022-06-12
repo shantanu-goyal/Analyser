@@ -1,65 +1,54 @@
 import { Navigate } from "react-router";
 import React, { useContext, useState } from "react";
-
-// Importing the context
 import { DataContext } from "../contexts/DataContext";
-
-// Importing the components
 import DoughnutChart from "../components/Graphs/DoughnutChart";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
-
-// Importing the CSS
 import "../styles/Graph.css"
 
 
 /**
- * Function extracts the round trip time.
- * @param {object} data 
- * @returns {object} - The data containing the rtt for each origin
- */
-function extractRTTTime(data) {
-  let RTTData = data.items.map(item => {
-    return {
-      url: item.origin,
-      data: item.rtt
-    }
-  })
-  return RTTData;
-}
-
-
-
-/**
- * Function to generate the graph for the round trip time
- * @param {object} data - The data corresponding to the network RTT
- * @returns {JSX} - The graph corresponding to data 
- */
-function generateGraph(data) {
-  const details = data.details;
-  const timeData = extractRTTTime(details);
-  return <DoughnutChart data={timeData} title={"Network RTT"}></DoughnutChart>
-}
-
-
-
-/**
- * 
+ *  Function to render the jsx of the Network RTT component
  * @returns {JSX} - It renders the Network RTT Component
  */
 export default function NetworkRTT() {
-  // Extracting the data from the context
+  // Gloval data context
   const dataContext = useContext(DataContext);
-
-  // It stores whether the graph should be displayed or not
-  const [graph, setGraph] = useState();
-
+  // State to store whether the graph should be displayed or not
+  const [displayGraph, setDisplayGraph] = useState();
+  // Extracting the data from the context
   let data = dataContext.data.data;
   data = data['network-rtt'];
 
-  // This toggles whether the graph should be displayed or not. 
+  /**
+   * Function extracts the round trip time.
+   * @param {object} data 
+   * @returns {object} - The data containing the rtt for each origin
+   */
+  function extractRTTTime(data) {
+    let RTTData = data.items.map(item => {
+      return {
+        url: item.origin,
+        data: item.rtt
+      }
+    })
+    return RTTData;
+  }
+
+  /**
+   * Function to generate the graph for the round trip time
+   * @param {object} data - The data corresponding to the network RTT
+   * @returns {JSX} - The graph corresponding to data 
+   */
+  function generateGraph(data) {
+    const details = data.details;
+    const timeData = extractRTTTime(details);
+    return <DoughnutChart data={timeData} title={"Network RTT"}></DoughnutChart>
+  }
+
+  // This function updates the state of the graph to be shown or not
   function passData(data) {
-    setGraph(data);
+    setDisplayGraph(data);
   }
 
   return (
@@ -74,7 +63,7 @@ export default function NetworkRTT() {
             <Table id={'network-rtt'} headings={data.details.headings} items={data.details.items} passData={passData} />
           </div>
           <div className="graph-container">
-            {graph && (generateGraph(data))}
+            {displayGraph && (generateGraph(data))}
           </div>
         </div>
       )}

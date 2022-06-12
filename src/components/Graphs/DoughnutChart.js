@@ -11,21 +11,22 @@ Chart.register(...registerables);
 function DoughnutChart({ data, title }) {
   // Create a reference to the legend element
   const legendRef = useRef();
-
+  // Create a reference to the canvas element
+  const canvasRef = useRef();
   useEffect(() => {
     // We get the initial configuration of the chart
     const cfg = processChart(data, title, 'doughnut');
-
-    const canvas = document.getElementById('mychart' + title);
-
-    // We store the current reference to the legend element 
+    // Storing reference to the canvas element
+    const canvas = canvasRef.current;
+    // Storing reference to the legend element 
     const legendDiv = legendRef.current;
 
-    // We update the configuration of the chart and we render the legend of the chart seperately
+    // Updates the configuration of the chart and render the legend of the chart seperately
     const config = {
-      ...cfg,
+      ...cfg, // The previous configuration
       plugins: [
         {
+          // Function to render the legend of the chart seperately
           beforeInit: function (chart) {
             const ul = document.createElement('ul');
             chart.data.labels.forEach((label, i) => {
@@ -43,7 +44,7 @@ function DoughnutChart({ data, title }) {
       ]
     }
 
-    // We render the chart
+    //Render the chart
     const chart = new Chart(canvas.getContext('2d'), config);
 
     // Cleanup function to remove the legend element and the chart
@@ -55,7 +56,7 @@ function DoughnutChart({ data, title }) {
     <>
       <div className='final-graph'>
         <div className='doughnut'>
-          <canvas id={"mychart" + title} />
+          <canvas ref={canvasRef} id={"mychart" + title} />
         </div>
         <div className='legend-box'>
           <h1 style={{ textAlign: "center" }}>Legend</h1>
@@ -66,7 +67,7 @@ function DoughnutChart({ data, title }) {
 }
 
 DoughnutChart.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  title: PropTypes.string.isRequired
 }
 export default DoughnutChart;
