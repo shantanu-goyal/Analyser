@@ -1,13 +1,18 @@
 import { Chart, registerables } from 'chart.js';
+import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from "react";
-import { processChart } from '../../utility/graphUtility'
-import "../../styles/DoughnutChart.css"
-import PropTypes from 'prop-types'
+import "../../styles/DoughnutChart.css";
+import { processChart } from '../../utility/graphUtility';
 
 // Register the component with the chart.js library
 Chart.register(...registerables);
 
-
+/**
+ * Function to generate doughnut shaped graph from data
+ * @param {Array} data Array of objects containing data for the chart
+ * @param {titles} titles Chart Title 
+ * @returns JSX for the chart
+ */
 function DoughnutChart({ data, title }) {
   // Create a reference to the legend element
   const legendRef = useRef();

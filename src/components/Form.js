@@ -40,12 +40,15 @@ function Form({ onFormSubmit }) {
    * Function to handle addition of new header to header list
    */
   function onHeaderAdd() {
-    // Create new header object
-    const newHeader = {
-      key: keyRef.current.value,
-      value: valueRef.current.value,
-    };
-    setHeaders([...headers, newHeader]);
+    const key = keyRef.current.value;
+    const value = valueRef.current.value;
+    // Dont add header if key or value not present or if key already in header list
+    if (!key || !value || headers.find((header) => header.key === key)) {
+      alert('Invalid Entry');
+      return;
+    }
+    // Add new header object to header list
+    setHeaders([...headers, { key, value }]);
     // Clear the input box for next input header
     keyRef.current.value = "";
     valueRef.current.value = "";

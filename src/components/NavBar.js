@@ -21,7 +21,11 @@ export const NavBar = function () {
     }
   }
 
-
+  /**
+   * Generate style for nav link conditionally
+   * @param {Boolean} isActive whether the navlink is active 
+   * @returns style for a nav link
+   */
   const navLinkStyles = ({ isActive }) => {
     // If the nav item has an active class, then the font is bold
     return {

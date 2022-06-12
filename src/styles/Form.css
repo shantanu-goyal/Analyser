@@ -1,5 +1,4 @@
 .url-form {
-  height: calc(100vh - 16px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -73,4 +72,11 @@
 
 .header-text {
   margin: 1em;
+}
+
+.select-box{
+  height: 2em;
+  outline: none;
+  font-size:1.2em;
+  border: none;
 }
