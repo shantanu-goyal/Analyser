@@ -12,3 +12,8 @@
     border: 1px solid black;
     margin:0 5px
 }
+
+.active{
+    background-color: #107eff;
+    color: white;
+}
