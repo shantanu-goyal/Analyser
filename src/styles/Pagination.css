@@ -8,12 +8,16 @@
 }
 
 .page-item button{
-    width: 30px;   
+    box-sizing: content-box;
+    width: 30px;
+    border-radius: 5px;
     border: 1px solid black;
-    margin:0 5px
+    margin:0 5px;
+    padding:2px;
 }
 
 .active{
     background-color: #107eff;
+    font-weight: bold;  
     color: white;
 }
