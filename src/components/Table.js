@@ -26,10 +26,10 @@ function Table({ id, headings, items, passData }) {
       return obj;
     }, {})
   );
-
+  // State to hold current page data for pagination
   const [currentPage, setCurrentPage] = useState({
     indexOfFirstPost: 0,
-    indexOfLastPost: 10
+    indexOfLastPost: 10,
   });
 
   function paginate(pageNumber) {
@@ -37,7 +37,7 @@ function Table({ id, headings, items, passData }) {
     let indexOfFirstPost = indexOfLastPost - 10;
     setCurrentPage({
       indexOfFirstPost,
-      indexOfLastPost
+      indexOfLastPost,
     });
   }
 
@@ -152,31 +152,37 @@ function Table({ id, headings, items, passData }) {
           </tr>
         </thead>
         <tbody>
-          {filteredItems.slice(currentPage.indexOfFirstPost, currentPage.indexOfLastPost + 1).map((item, index) => {
-            return (
-              <tr key={index}>
-                {headings.map(({ key }) => (
-                  <td
-                    key={key}
-                    title={typeof item[key] === "string" ? item[key] : ""}
-                  >
-                    {isNaN(item[key]) ? (
-                      item[key] &&
-                      item[key].type &&
-                      item[key].type === "link" ? (
-                        <a href={item[key].url}>{item[key].text}</a>
+          {/* Slice filtered items array to get current page items */}
+          {filteredItems
+            .slice(
+              currentPage.indexOfFirstPost,
+              currentPage.indexOfLastPost + 1
+            )
+            .map((item, index) => {
+              return (
+                <tr key={index}>
+                  {headings.map(({ key }) => (
+                    <td
+                      key={key}
+                      title={typeof item[key] === "string" ? item[key] : ""}
+                    >
+                      {isNaN(item[key]) ? (
+                        item[key] &&
+                        item[key].type &&
+                        item[key].type === "link" ? (
+                          <a href={item[key].url}>{item[key].text}</a>
+                        ) : (
+                          item[key]
+                        )
                       ) : (
-                        item[key]
-                      )
-                    ) : (
-                      // Round the number to two digits past decimal point
-                      Math.round(item[key] * 100) / 100
-                    )}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
+                        // Round the number to two digits past decimal point
+                        Math.round(item[key] * 100) / 100
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
         </tbody>
       </table>
       <Pagination

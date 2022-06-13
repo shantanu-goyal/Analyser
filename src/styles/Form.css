@@ -13,13 +13,13 @@
 
 .url-input input {
   box-sizing: border-box;
-  width: 60vw;
+  width: 65vw;
   height: 2em;
   border: none;
   border-bottom: 1px solid black;
   margin: 1em;
-  font-size: 1.2em;
-  min-width: 20em;
+  font-size: 1em;
+  min-width: 10em;
 }
 
 .url-form input:focus {
@@ -27,14 +27,13 @@
 }
 
 .url-input button {
-  font-size: 1.2em;
+  font-size: 1em;
   background-color: #107eff;
   color: aliceblue;
-  width: 10em;
+  width: 8em;
   height: 2em;
   border: none;
   cursor: pointer;
-  border-radius: 20px;
 }
 
 .header-input {
@@ -76,7 +75,8 @@
 
 .select-box{
   height: 2em;
+  width:100px;
   outline: none;
-  font-size:1.2em;
+  font-size:1em;
   border: none;
 }
