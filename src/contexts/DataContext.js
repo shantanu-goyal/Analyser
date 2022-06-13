@@ -1,7 +1,7 @@
-import React, { createContext, useReducer } from 'react';
-import PropTypes from 'prop-types'
+import React, { createContext, useReducer } from "react";
+import PropTypes from "prop-types";
 // Create the context
-export const DataContext = createContext();
+export const DataContext = createContext({});
 
 /**
  * Function to update the current state of the data
@@ -16,25 +16,24 @@ const switchData = (state, action) => {
     default:
       return state;
   }
-}
+};
 
 // Create the provider.
-const DataContextProvider = ({children}) => {
-
+const DataContextProvider = ({ children }) => {
   // Initialize the state
   const [data, setData] = useReducer(switchData, {
-    data: {}
-  })
+    data: {},
+  });
 
   return (
-    <DataContext.Provider value={{ data, setData }} >
+    <DataContext.Provider value={{ data, setData }}>
       {children}
     </DataContext.Provider>
-  )
-}
+  );
+};
 
 DataContextProvider.propTypes = {
-  children: PropTypes.element
-}
+  children: PropTypes.element,
+};
 
 export default DataContextProvider;

@@ -1,0 +1,13 @@
+.pagination{
+    margin-top: 10px;
+    list-style: none;
+}
+
+.page-item{
+    display: inline;
+}
+
+.page-item button{
+    width: 30px;   
+    margin: 5px;
+}

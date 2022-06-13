@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState, memo } from "react";
 import "../styles/Table.css";
+import Pagination from "./Pagination";
 
 /**
  * Function to create JSX of table element
@@ -25,6 +26,20 @@ function Table({ id, headings, items, passData }) {
       return obj;
     }, {})
   );
+
+  const [currentPage, setCurrentPage] = useState({
+    indexOfFirstPost: 0,
+    indexOfLastPost: 10
+  });
+
+  function paginate(pageNumber) {
+    let indexOfLastPost = pageNumber * 10;
+    let indexOfFirstPost = indexOfLastPost - 10;
+    setCurrentPage({
+      indexOfFirstPost,
+      indexOfLastPost
+    });
+  }
 
   useEffect(() => {
     // When items change, consider all items as filtered
@@ -137,7 +152,7 @@ function Table({ id, headings, items, passData }) {
           </tr>
         </thead>
         <tbody>
-          {filteredItems.map((item, index) => {
+          {filteredItems.slice(currentPage.indexOfFirstPost, currentPage.indexOfLastPost + 1).map((item, index) => {
             return (
               <tr key={index}>
                 {headings.map(({ key }) => (
@@ -147,8 +162,8 @@ function Table({ id, headings, items, passData }) {
                   >
                     {isNaN(item[key]) ? (
                       item[key] &&
-                        item[key].type &&
-                        item[key].type === "link" ? (
+                      item[key].type &&
+                      item[key].type === "link" ? (
                         <a href={item[key].url}>{item[key].text}</a>
                       ) : (
                         item[key]
@@ -164,6 +179,11 @@ function Table({ id, headings, items, passData }) {
           })}
         </tbody>
       </table>
+      <Pagination
+        dataPerPage={10}
+        dataLength={items.length}
+        paginate={paginate}
+      ></Pagination>
     </>
   );
 }
