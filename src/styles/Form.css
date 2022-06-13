@@ -82,6 +82,7 @@
 }
 
 .select-box{
+  text-align: center;
   height: 2em;
   width:100px;
   outline: none;
