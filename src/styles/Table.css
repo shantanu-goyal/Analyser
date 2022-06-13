@@ -1,27 +1,33 @@
 .styled-table {
+  border: 1px solid #126ed8;
   box-sizing: border-box;
   border-collapse: collapse;
-  font-size: smaller;
+  font-size: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  width: calc(100% - 2em);
+  width: 80em;
 }
 .styled-table thead tr {
   background-color: #107eff;
   color: #fff;
   text-align: left;
   cursor: pointer;
-  font-size: small;
+  font-size: 12px;
 }
+
+.styled-table thead tr:hover{
+  background-color: #126ed8;
+}
+
 .styled-table td,
 .styled-table th {
-  padding: 1em;
+  padding: 0.5em;
 }
 .styled-table tbody tr {
   border-bottom: 1px solid #ddd;
 }
 .styled-table tbody tr td,
 .styled-table thead tr td {
-  max-width: 48em;
+  max-width: 20em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -62,15 +68,23 @@
   align-items: center;
 }
 .toolbar button {
+  box-sizing: content-box;
   background-color: #107eff;
   color: #f0f8ff;
   height: 2em;
   margin-right: 1em;
+  padding: 5px;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
   width: 8em;
-  font-size: 1em;
+  font-size: 0.8em;
 }
+
+.toolbar button:hover{
+  background-color: #126ed8;
+}
+
 .right-row {
   display: flex;
   flex-direction: row;
