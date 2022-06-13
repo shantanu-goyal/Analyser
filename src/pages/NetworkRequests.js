@@ -76,7 +76,22 @@ export default function NetworkRequests() {
           </div>
         </div>
       )}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        @media (max-width: 883px){
+          tr th:nth-child(2),tr td:nth-child(2),
+          tr th:nth-child(5),tr td:nth-child(5),
+          tr th:nth-child(6),tr td:nth-child(6),
+          tr th:nth-child(7),tr td:nth-child(7),
+          tr th:nth-child(8),tr td:nth-child(8),
+          tr th:nth-child(9),tr td:nth-child(9){
+            display:none;
+          }
+        }
+         `
+        }}
+      />
     </>
-
   )
 }
