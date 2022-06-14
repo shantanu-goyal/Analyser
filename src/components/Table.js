@@ -138,7 +138,7 @@ function Table({ id, headings, items, passData }) {
           onChange={onSearch}
         />
         <div className="right-row">
-          <button onClick={handleGraphToggle}>Toggle Graph</button>
+          {passData && <button onClick={handleGraphToggle}>Toggle Graph</button>}
           <button onClick={downloadJSON}>Download JSON</button>
         </div>
       </div>
@@ -203,7 +203,7 @@ Table.propTypes = {
   id: PropTypes.string.isRequired,
   headings: PropTypes.arrayOf(PropTypes.object).isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  passData: PropTypes.func.isRequired,
+  passData: PropTypes.func,
 };
 
 export default memo(Table);

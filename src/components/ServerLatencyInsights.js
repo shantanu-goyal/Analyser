@@ -1,0 +1,44 @@
+import React from "react";
+import Table from "./Table";
+
+function ServerLatencyInsights({ data }) {
+  function getLongLatencyOrigins() {
+    return data.details.items.filter(
+      ({ serverResponseTime }) => serverResponseTime > 50
+    );
+  }
+
+  return (
+    <div style={{ marginBottom: "10em" }}>
+      {data && data.details && (
+        <>
+          <h1 style={{ textAlign: "center" }}>Network Server Latency</h1>
+          <h4 style={{ textAlign: "center" }}> {data.title} </h4>
+          <h6 style={{ textAlign: "center" }}>
+            {" "}
+            Server latencies can impact web performance. If the server latency
+            of an origin is high, its an indication the server is overloaded or
+            has poor backend performance.{" "}
+          </h6>
+          <div className="table-container">
+            <Table
+              id={"bootup-time"}
+              headings={data.details.headings}
+              items={getLongLatencyOrigins()}
+            />
+          </div>
+          <p style={{ textAlign: "center" }}>
+            Out of the <strong>{data.details.items.length}</strong> servers,
+            backend latency for above shown{" "}
+            <strong>{getLongLatencyOrigins().length}</strong> servers are more
+            than 50ms.
+            <br /> The latency of these servers can be reduced by scaling up the
+            servers and managing server resources more efficiently.
+          </p>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default ServerLatencyInsights;
