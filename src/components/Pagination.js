@@ -14,7 +14,7 @@ const Pagination = ({ dataPerPage, dataLength, paginate }) => {
   const [active, setActive] = useState(1);
 
   /**
-   * 
+   *
    * @returns Array of page numbers
    */
   function getPageNumbers() {
@@ -24,15 +24,6 @@ const Pagination = ({ dataPerPage, dataLength, paginate }) => {
     );
   }
 
-  function setClass(prev, curr) {
-    if (prev == curr) {
-      return;
-    }
-    const oldButton = document.getElementById(prev);
-    oldButton.classList.remove("active");
-    const newButton = document.getElementById(curr);
-    newButton.classList.add("active");
-  }
   return (
     <nav>
       <ul className="pagination">
@@ -42,7 +33,6 @@ const Pagination = ({ dataPerPage, dataLength, paginate }) => {
               id={number}
               onClick={(e) => {
                 e.preventDefault();
-                setClass(active, number);
                 setActive(number);
                 paginate(number);
               }}
