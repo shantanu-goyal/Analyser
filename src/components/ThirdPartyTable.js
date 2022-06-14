@@ -66,7 +66,7 @@ function ThirdPartyTable({ id, items, passData }) {
         }
         if (item.subItems && item.subItems.items) {
           object.mainThreadTime = item.subItems.items.reduce((val, {mainThreadTime}) => {
-            return val + mainThreadTime
+            return mainThreadTime ? val + mainThreadTime : val
           }, 0)
         }
         return object;
