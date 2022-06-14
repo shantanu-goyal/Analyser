@@ -16,8 +16,10 @@
 }
 
 select {
-    border: 1px solid black;
-    width: 150px;
+    border: none;
+    text-align: center;
+    background-color: transparent;
+    width: 175px;
     height: 30px;
     margin-bottom: 2em;
 }
