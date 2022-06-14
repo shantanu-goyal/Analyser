@@ -43,7 +43,13 @@ export const NavBar = function () {
       <NavLink style={navLinkStyles} to='/network-server-latency'>Network Server Latency</NavLink>
       <NavLink style={navLinkStyles} to='/resource-summary'>Resource Summary</NavLink>
       <NavLink style={navLinkStyles} to='/third-party-summary'>Third Party Summary</NavLink>
-      <NavLink style={navLinkStyles} to='#' className="icon" onClick={handleNavItemClick}><i className="fa fa-bars"></i></NavLink>
+      <NavLink style={navLinkStyles} to='#' className="icon" onClick={handleNavItemClick}>
+        <div className="bar-container">
+          <div className="bars"></div>
+          <div className="bars"></div>
+          <div className="bars"></div>
+        </div>
+      </NavLink>
     </div>
   )
 }
