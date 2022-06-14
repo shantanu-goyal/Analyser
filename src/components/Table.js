@@ -187,7 +187,7 @@ function Table({ id, headings, items, passData }) {
       </table>
       <Pagination
         dataPerPage={10}
-        dataLength={items.length}
+        dataLength={filteredItems.length}
         paginate={paginate}
       ></Pagination>
     </>
