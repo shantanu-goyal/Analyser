@@ -116,8 +116,8 @@ export default function BootupTime() {
           <NavBar />
 
           <h1 style={{ textAlign: "center" }}>Bootup Time</h1>
-          <h5 style={{ textAlign: "center" }}> Scripts With Execution Time Greater Than or Equal to 50ms  </h5>
-
+          <h4 style={{ textAlign: "center" }}> {data.title}  </h4>
+          <h6 style={{ textAlign: "center" }}> Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. </h6>
           <div className="table-container">
 
             <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items} passData={passData} />

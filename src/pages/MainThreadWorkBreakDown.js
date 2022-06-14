@@ -60,7 +60,8 @@ export default function MainThreadWorkBreakdown() {
       {data && (<div>
         <NavBar />
         <h1 style={{ textAlign: "center" }}>Main Thread Work Breakdown</h1>
-        <h5 style={{ textAlign: "center" }}>Time Devoted by Main-Thread on Various Categories of Works</h5>
+        <h4 style={{ textAlign: "center" }}> {data.title}  </h4>
+          <h6 style={{ textAlign: "center" }}> Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this.  </h6>
         <div className="table-container">
           <Table id={'mainthread-work-breakdown'} headings={data.details.headings} items={data.details.items} passData={passData} />
         </div>
