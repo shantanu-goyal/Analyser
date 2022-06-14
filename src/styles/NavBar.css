@@ -1,10 +1,11 @@
 .topnav {
-  background-color: #333;
+  background-color: #000;
   overflow: hidden;
   margin-bottom: 2em
 }
 .topnav a {
-  font-family: Arial,Helvetica,sans-serif;
+  text-transform: uppercase;
+  font-family: Arial, Helvetica, sans-serif;
   float: left;
   display: block;
   color: #fff;
@@ -12,14 +13,16 @@
   padding: 14px 16px;
   text-decoration: none;
   font-size: 12px;
+  transition: 0.3s;
 }
 .topnav a:hover {
   background-color: #fff;
-  color: #000
+  color: #000;
 }
 .topnav a.active {
-  background-color: #107eff;
-  color: #fff
+  background-color: #fff;
+  color: #000;
+
 }
 .topnav .icon {
   display: none

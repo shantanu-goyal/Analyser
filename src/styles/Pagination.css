@@ -8,16 +8,21 @@
 }
 
 .page-item button{
-    box-sizing: content-box;
-    width: 30px;
-    border-radius: 5px;
+    width:  30px;
+    height: 30px;
     border: 1px solid black;
-    margin:0 5px;
-    padding:2px;
+    margin: 0 5px;
+    transition: 0.3s;
+}
+
+.page-item button:hover{
+    background-color: #126ed8;
+    color: white;
+    font-weight: bold;
 }
 
 .active{
-    background-color: #107eff;
+    background-color: #126ed8;
     font-weight: bold;  
     color: white;
 }
