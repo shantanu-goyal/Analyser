@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import React, { Suspense, lazy } from "react";
 import DataContextProvider from "./contexts/DataContext";
 // Code Splitting
@@ -10,7 +10,7 @@ const NetworkServerLatency = lazy(() => import("./pages/NetworkServerLatency"));
 const ResourceSummary = lazy(() => import("./pages/ResourceSummary"));
 const ThirdPartySummary = lazy(() => import("./pages/ThirdPartySummary"));
 const Home = lazy(() => import("./pages/Home"))
-
+const Insights =lazy(()=>import("./pages/Insights"));
 /**
  * The main component of the application that renders the different components. It also handles the routing of the different components.
  * @returns {JSX} - The JSX to be rendered
@@ -38,7 +38,7 @@ export default function App() {
               path="/third-party-summary"
               element={<ThirdPartySummary />}
             ></Route>
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/insights" element={<Insights />} />
           </Routes>
         </Suspense>
       </DataContextProvider>

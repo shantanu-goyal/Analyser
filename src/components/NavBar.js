@@ -43,6 +43,7 @@ export const NavBar = function () {
       <NavLink style={navLinkStyles} to='/network-server-latency'>Network Server Latency</NavLink>
       <NavLink style={navLinkStyles} to='/resource-summary'>Resource Summary</NavLink>
       <NavLink style={navLinkStyles} to='/third-party-summary'>Third Party Summary</NavLink>
+      <NavLink style={navLinkStyles} to='/insights'>Insights</NavLink>
       <NavLink style={navLinkStyles} to='#' className="icon" onClick={handleNavItemClick}>
         <div className="bar-container">
           <div className="bars"></div>
