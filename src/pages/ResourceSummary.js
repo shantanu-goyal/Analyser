@@ -57,7 +57,7 @@ export default function ResourceSummary() {
       {data && (<div>
         <NavBar />
         <h1 style={{ textAlign: "center" }}>Resource Summary</h1>
-        <h5 style={{ textAlign: "center" }}>Request Counts And Transfer Size of Various Types of Resources</h5>
+        <h4 style={{ textAlign: "center" }}> {data.title}  </h4>
         <div className="table-container">
           <Table id={'resource-summary'} headings={data.details.headings} items={data.details.items} passData={passData} />
         </div>

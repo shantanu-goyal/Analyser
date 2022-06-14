@@ -32,6 +32,10 @@ function Table({ id, headings, items, passData }) {
     indexOfLastPost: 10,
   });
 
+  /**
+   * Handle page data management on page change
+   * @param {Number} pageNumber
+   */
   function paginate(pageNumber) {
     let indexOfLastPost = pageNumber * 10;
     let indexOfFirstPost = indexOfLastPost - 10;
@@ -43,6 +47,7 @@ function Table({ id, headings, items, passData }) {
 
   useEffect(() => {
     // When items change, consider all items as filtered
+
     setFilteredItems([...items]);
   }, [items]);
 
@@ -144,9 +149,7 @@ function Table({ id, headings, items, passData }) {
             {headings.map(({ key, text, itemType }) => (
               <th key={key} id={key} onClick={sortItems}>
                 {text} {/* Unit of data */}
-                {itemType === "ms" || itemType === "bytes"
-                  ? `(${itemType})`
-                  : ""}
+                {itemType === "ms" ? "(ms)" : itemType === "bytes" ? "(KB)" : ""}
               </th>
             ))}
           </tr>
@@ -161,7 +164,7 @@ function Table({ id, headings, items, passData }) {
             .map((item, index) => {
               return (
                 <tr key={index}>
-                  {headings.map(({ key }) => (
+                  {headings.map(({ key, itemType }) => (
                     <td
                       key={key}
                       title={typeof item[key] === "string" ? item[key] : ""}
@@ -174,8 +177,10 @@ function Table({ id, headings, items, passData }) {
                         ) : (
                           item[key]
                         )
+                      ) : // Round the number to two digits past decimal point
+                      itemType === "bytes" ? (
+                        Math.round((item[key] / 1024) * 100) / 100
                       ) : (
-                        // Round the number to two digits past decimal point
                         Math.round(item[key] * 100) / 100
                       )}
                     </td>
