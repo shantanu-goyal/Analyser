@@ -8,9 +8,16 @@ import { Navigate } from 'react-router-dom';
 
 export default function ThirdPartySummary() {
 
+  const getHostname = (url) => {
+    const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+    return matches && matches[1];
+  } 
+  
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
+  console.log(data);
   data = data["third-party-summary"];
+  const byEntity = new Map();
   // Reference to key field for new URL
   const keyRef = useRef(null);
   // Reference to value field for new Entity
@@ -20,23 +27,20 @@ export default function ThirdPartySummary() {
   // State to store the type of the graph to be generated. Defaults to the main thread time graph.
   const [value, setValue] = useState("mainthread");
 
-  function getScripts(items) {
-    return items.filter((item) => item.url.includes(".js") && !item.url.includes(".json"));
-  }
-
   function transformData(data) {
     let items = data.details;
-    items = items.map(item => {
+    const scripts = items.map(item => {
       return {
         url: item[0],
         data: item[1]
       }
     })
-    const scripts = getScripts(items);
-    const byEntity = new Map();
     const thirdPartyScripts = [];
     scripts.forEach(script => {
-      let scriptURL = new URL(script.url).hostname;
+      let scriptURL = getHostname(script.url);
+      if(!scriptURL){
+        return {};
+      }
       let entity = thirdPartyWeb.getEntity(scriptURL);
       let scriptData = script.data;
       const defaultConfig = {
@@ -141,16 +145,16 @@ export default function ThirdPartySummary() {
     setUserInput(newUserInput);
 
     const scripts = scriptsArray;
-    console.log(scripts);
-    const byEntity = new Map();
     const thirdPartyScripts = [];
     scripts.forEach(script => {
-      let scriptURL = new URL(script.url).hostname;
+      let scriptURL = getHostname(script.url);
+      if(!scriptURL){
+        return {};
+      }
       let entity = thirdPartyWeb.getEntity(scriptURL);
       if (!entity) {
-        entity = newUserInput.find(entity => new URL(entity.key).hostname === scriptURL);
+        entity = newUserInput.find(entity => getHostname(entity.key) === scriptURL);
         if (entity) {
-          console.log(entity);
           entity = { name: entity.value };
         }
       }

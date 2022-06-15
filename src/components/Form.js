@@ -59,15 +59,15 @@ function Form({ onFormSubmit }) {
   return (
     <div className="url-form">
       <div className="url-input">
+      <select className="select-box" ref={deviceRef}>
+          <option value="mobile">Mobile</option>
+          <option value="desktop">Desktop</option>
+        </select>
       <input
           type="number"
           placeholder="Analysis Duration in ms"
           ref={waitTimeRef}
         />
-        <select className="select-box" ref={deviceRef}>
-          <option value="mobile">Mobile</option>
-          <option value="desktop">Desktop</option>
-        </select>
         <input
           type="text"
           placeholder="Enter complete url e.g.('https://example.com')"
