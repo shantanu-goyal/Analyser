@@ -15,9 +15,7 @@ export default function ThirdPartySummary() {
   
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
-  console.log(data);
   data = data["third-party-summary"];
-  const byEntity = new Map();
   // Reference to key field for new URL
   const keyRef = useRef(null);
   // Reference to value field for new Entity
@@ -36,6 +34,7 @@ export default function ThirdPartySummary() {
       }
     })
     const thirdPartyScripts = [];
+    const byEntity = new Map();
     scripts.forEach(script => {
       let scriptURL = getHostname(script.url);
       if(!scriptURL){
@@ -50,11 +49,11 @@ export default function ThirdPartySummary() {
       }
       if (entity) {
         thirdPartyScripts.push(script);
-        const currentEntity = byEntity.get(entity) || { ...defaultConfig };
+        const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
         currentEntity.mainThreadTime += scriptData.mainThreadTime;
         currentEntity.blockingTime += scriptData.blockingTime;
         currentEntity.transferSize += scriptData.transferSize;
-        byEntity.set(entity, currentEntity);
+        byEntity.set(entity.name, currentEntity);
       }
     })
     const entities = Array.from(byEntity.entries());
@@ -135,6 +134,7 @@ export default function ThirdPartySummary() {
   const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
 
   function onAdd() {
+    const byEntity = new Map();
     const key = keyRef.current.value;
     const value = valueRef.current.value;
     if (!key || !value || userInput.find((ip) => ip.key === key)) {
@@ -166,12 +166,13 @@ export default function ThirdPartySummary() {
       }
       if (entity) {
         thirdPartyScripts.push(script);
-        const currentEntity = byEntity.get(entity) || { ...defaultConfig };
+        const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
+        // console.log(entity,currentEntity);
 
         currentEntity.mainThreadTime += scriptData.mainThreadTime;
         currentEntity.blockingTime += scriptData.blockingTime;
         currentEntity.transferSize += scriptData.transferSize;
-        byEntity.set(entity, currentEntity);
+        byEntity.set(entity.name, currentEntity);
       }
     })
     const entities = Array.from(byEntity.entries());
@@ -179,6 +180,7 @@ export default function ThirdPartySummary() {
     setThirdPartyScriptsArray(thirdPartyScripts);
     keyRef.current.value = "";
     valueRef.current.value = "";
+    console.log(byEntity);
   }
 
 
