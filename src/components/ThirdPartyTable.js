@@ -20,7 +20,7 @@ function ThirdPartyTable({ id, scripts, entities, passData }) {
 
   useEffect(() => {
     changeView('entity')
-  }, [])
+  }, [scripts, entities])
 
   /**
    * Toogle view of third party table from script view to entity view and vice-versa
