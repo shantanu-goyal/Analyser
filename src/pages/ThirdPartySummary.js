@@ -133,17 +133,8 @@ export default function ThirdPartySummary() {
   const [scriptsArray, setScriptsArray] = useState(scripts);
   const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
 
-  function onAdd() {
+  function renderTable(newUserInput){
     const byEntity = new Map();
-    const key = keyRef.current.value;
-    const value = valueRef.current.value;
-    if (!key || !value || userInput.find((ip) => ip.key === key)) {
-      alert('Invalid Entry');
-      return;
-    }
-    const newUserInput=[...userInput, { key, value }];
-    setUserInput(newUserInput);
-
     const scripts = scriptsArray;
     const thirdPartyScripts = [];
     scripts.forEach(script => {
@@ -167,8 +158,6 @@ export default function ThirdPartySummary() {
       if (entity) {
         thirdPartyScripts.push(script);
         const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
-        // console.log(entity,currentEntity);
-
         currentEntity.mainThreadTime += scriptData.mainThreadTime;
         currentEntity.blockingTime += scriptData.blockingTime;
         currentEntity.transferSize += scriptData.transferSize;
@@ -178,9 +167,21 @@ export default function ThirdPartySummary() {
     const entities = Array.from(byEntity.entries());
     setEntityArray(entities);
     setThirdPartyScriptsArray(thirdPartyScripts);
+  }
+
+
+  function onAdd() {
+    const key = keyRef.current.value;
+    const value = valueRef.current.value;
+    if (!key || !value || userInput.find((ip) => ip.key === key)) {
+      alert('Invalid Entry');
+      return;
+    }
+    const newUserInput=[...userInput, { key, value }];
+    setUserInput(newUserInput);
+    renderTable(newUserInput);
     keyRef.current.value = "";
     valueRef.current.value = "";
-    console.log(byEntity);
   }
 
 
@@ -254,11 +255,14 @@ export default function ThirdPartySummary() {
                             <img
                               src="remove.png"
                               alt="Remove"
-                              onClick={() =>
-                                setUserInput([
+                              onClick={() =>{
+                                const newUserInput=[
                                   ...userInput.slice(0, index),
-                                  ...userInput.slice(index + 1),
-                                ])
+                                  ...userInput.slice(index + 1)
+                                ];
+                                setUserInput(newUserInput);
+                                renderTable(newUserInput);
+                               }
                               }
                             />
                           </td>
