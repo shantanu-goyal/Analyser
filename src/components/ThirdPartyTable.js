@@ -13,6 +13,8 @@ import Table from "./Table";
  */
 function ThirdPartyTable({ id, scripts, entities, passData }) {
   // State to hold current third party headings according to the view
+
+  console.log(entities);
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([]);
   // State to hold current third party items according to the view
   const [thirdPartyItems, setThirdPartyItems] = useState([]);

@@ -1,5 +1,5 @@
 import { thirdPartyWeb } from '../utility/third-party-web/entity-finder-api'
-import React, { useContext, useState } from "react";
+import React, { useContext, useState ,useRef} from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import ThirdPartyTable from '../components/ThirdPartyTable'
@@ -11,6 +11,10 @@ export default function ThirdPartySummary() {
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data["third-party-summary"];
+  // Reference to key field for new URL
+  const keyRef = useRef(null);
+  // Reference to value field for new Entity
+  const valueRef = useRef(null);
   // State to store whether the graph should be shown or not.
   const [displayGraph, setDisplayGraph] = useState();
   // State to store the type of the graph to be generated. Defaults to the main thread time graph.
@@ -50,7 +54,7 @@ export default function ThirdPartySummary() {
       }
     })
     const entities = Array.from(byEntity.entries());
-    return { entities, thirdPartyScripts };
+    return { entities, scripts, thirdPartyScripts };
   }
 
   function getMainThreadTime(scripts) {
@@ -119,7 +123,60 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
-  const { entities, thirdPartyScripts } = transformData(data);
+  const { entities, thirdPartyScripts, scripts } = transformData(data);
+
+  const [userInput, setUserInput] = useState([]);
+  const [entityArray, setEntityArray] = useState(entities);
+  const [scriptsArray, setScriptsArray] = useState(scripts);
+  const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
+
+  function onAdd() {
+    const key = keyRef.current.value;
+    const value = valueRef.current.value;
+    if (!key || !value || userInput.find((ip) => ip.key === key)) {
+      alert('Invalid Entry');
+      return;
+    }
+    const newUserInput=[...userInput, { key, value }];
+    setUserInput(newUserInput);
+
+    const scripts = scriptsArray;
+    console.log(scripts);
+    const byEntity = new Map();
+    const thirdPartyScripts = [];
+    scripts.forEach(script => {
+      let scriptURL = (script.url);
+      let entity = thirdPartyWeb.getEntity(scriptURL);
+      if (!entity) {
+        entity = newUserInput.find(entity => entity.key === scriptURL);
+        if (entity) {
+          console.log(entity);
+          entity = { name: entity.value };
+        }
+      }
+      let scriptData = script.data;
+      const defaultConfig = {
+        mainThreadTime: 0,
+        blockingTime: 0,
+        transferSize: 0
+      }
+      if (entity) {
+        thirdPartyScripts.push(script);
+        const currentEntity = byEntity.get(entity) || { ...defaultConfig };
+
+        currentEntity.mainThreadTime += scriptData.mainThreadTime;
+        currentEntity.blockingTime += scriptData.blockingTime;
+        currentEntity.transferSize += scriptData.transferSize;
+        byEntity.set(entity, currentEntity);
+      }
+    })
+    const entities = Array.from(byEntity.entries());
+    setEntityArray(entities);
+    setThirdPartyScriptsArray(thirdPartyScripts);
+    keyRef.current.value = "";
+    valueRef.current.value = "";
+  }
+
 
   return (
     <>
@@ -141,10 +198,90 @@ export default function ThirdPartySummary() {
               <div className="table-container">
                 <ThirdPartyTable
                   id={"third-party-summary"}
-                  scripts={thirdPartyScripts}
-                  entities={entities}
+                  scripts={thirdPartyScriptsArray}
+                  entities={entityArray}
                   passData={passData}
                 />
+                <table className="header-input">
+                  <thead>
+                    <tr>
+                      <th>URL</th>
+                      <th>ENTITY NAME</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {userInput.map(({ key, value }, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>
+                            <input
+                              type="text"
+                              value={key}
+                              onChange={(e) => {
+                                setUserInput([
+                                  ...userInput.slice(0, index),
+                                  { key: e.target.value, value },
+                                  ...userInput.slice(index + 1),
+                                ]);
+                              }}
+                              spellCheck="false"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="text"
+                              value={value}
+                              onChange={(e) => {
+                                setUserInput([
+                                  ...userInput.slice(0, index),
+                                  { key, value: e.target.value },
+                                  ...userInput.slice(index + 1),
+                                ]);
+                              }}
+                              spellCheck="false"
+                            />
+                          </td>
+                          <td>
+                            <img
+                              src="remove.png"
+                              alt="Remove"
+                              onClick={() =>
+                                setUserInput([
+                                  ...userInput.slice(0, index),
+                                  ...userInput.slice(index + 1),
+                                ])
+                              }
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+
+                    <tr>
+                      <td>
+                        <input
+                          type="text"
+                          ref={keyRef}
+                          placeholder="Key"
+                          spellCheck="false"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          ref={valueRef}
+                          placeholder="Value"
+                          spellCheck="false"
+                        />
+                      </td>
+                      <td>
+                        <img src="add.png" alt="Add" onClick={onAdd} />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <div className="graph-container">
                 {displayGraph && (
@@ -157,7 +294,7 @@ export default function ThirdPartySummary() {
                       <option value="mainthread">Main Thread Time</option>
                       <option value="blocking">Render Blocking Time</option>
                     </select>
-                    {generateGraph(thirdPartyScripts, value)}
+                    {generateGraph(thirdPartyScriptsArray, value)}
                   </>
                 )}
               </div>
