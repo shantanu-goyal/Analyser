@@ -1,100 +1,77 @@
+import { thirdPartyWeb } from '../utility/third-party-web/entity-finder-api'
 import React, { useContext, useState } from "react";
-import { Navigate } from "react-router";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
-import ThirdPartyTable from "../components/ThirdPartyTable";
-import DoughnutChart from "../components/Graphs/DoughnutChart";
-import "../styles/Graph.css";
+import ThirdPartyTable from '../components/ThirdPartyTable'
+import DoughnutChart from '../components/Graphs/DoughnutChart';
+import { Navigate } from 'react-router-dom';
 
 export default function ThirdPartySummary() {
+
+  const dataContext = useContext(DataContext);
+  let data = dataContext.data.data;
+  data = data["third-party-summary"];
   // State to store whether the graph should be shown or not.
   const [displayGraph, setDisplayGraph] = useState();
   // State to store the type of the graph to be generated. Defaults to the main thread time graph.
   const [value, setValue] = useState("mainthread");
-  // Global data context
-  const dataContext = useContext(DataContext);
-  // Extracting the data from the context
-  let data = dataContext.data.data;
-  data = data["third-party-summary"];
 
-  /**
-   * Function to extract the main thread running time corresponding to each url from the data
-   *
-   * @param {object} data
-   * @returns {object} - The data containing all urls and main thread running time corresponding to each url
-   */
-  function extractMainThreadTime(data) {
-    let mainThreadTimeData = data.items
-      .map((item) => {
-        const subItemData = item.subItems.items.map((subitem) => {
-          return {
-            url: subitem.url,
-            data:
-              subitem.mainThreadTime === undefined ? 0 : subitem.mainThreadTime,
-          };
-        });
-        return subItemData;
-      })
-      .filter((element) => {
-        // We filter out the empty arrays
-        if (Object.keys(element).length !== 0) {
-          return true;
-        }
-        return false;
-      });
-
-    // We flatten the array and combine data from multiple arrays into a single array of objects
-    mainThreadTimeData = [...mainThreadTimeData];
-    let finalAns = [];
-    for (let i = 0; i < mainThreadTimeData.length; i++) {
-      finalAns.push(...mainThreadTimeData[i]);
-    }
-    // We filter out the elements with 0 time
-    return finalAns.filter((element) => {
-      if (element.data > 0) {
-        return true;
-      }
-      return false;
-    });
+  function getScripts(items) {
+    return items.filter((item) => item.url.includes(".js") && !item.url.includes(".json"));
   }
 
-  /**
-   * Function to extract the main thread blocking time
-   *
-   * @param {object} data
-   * @returns {object} - The data containing all urls and main thread blocking time corresponding to each url
-   */
-  function extractBlockingTime(data) {
-    let blockingTimeData = data.items
-      .map((item) => {
-        const subItemData = item.subItems.items.map((subitem) => {
-          return {
-            url: subitem.url,
-            data: subitem.blockingTime === undefined ? 0 : subitem.blockingTime,
-          };
-        });
-        return subItemData;
-      })
-      .filter((element) => {
-        // We filter out the empty arrays
-        if (Object.keys(element).length !== 0) {
-          return true;
-        }
-        return false;
-      });
-    // We flatten the array and combine data from multiple arrays into a single array of objects
-    blockingTimeData = [...blockingTimeData];
-    let finalAns = [];
-    for (let i = 0; i < blockingTimeData.length; i++) {
-      finalAns.push(...blockingTimeData[i]);
-    }
-    return finalAns.filter((element) => {
-      // We filter out the elements with 0 time
-      if (element.data > 0) {
-        return true;
+  function transformData(data) {
+    let items = data.details;
+    items = items.map(item => {
+      return {
+        url: item[0],
+        data: item[1]
       }
-      return false;
-    });
+    })
+    const scripts = getScripts(items);
+    const byEntity = new Map();
+    const thirdPartyScripts = [];
+    scripts.forEach(script => {
+      let scriptURL = (script.url);
+      let entity = thirdPartyWeb.getEntity(scriptURL);
+      let scriptData = script.data;
+      const defaultConfig = {
+        mainThreadTime: 0,
+        blockingTime: 0,
+        transferSize: 0
+      }
+      if (entity) {
+        thirdPartyScripts.push(script);
+        const currentEntity = byEntity.get(entity) || { ...defaultConfig };
+        currentEntity.mainThreadTime += scriptData.mainThreadTime;
+        currentEntity.blockingTime += scriptData.blockingTime;
+        currentEntity.transferSize += scriptData.transferSize;
+        byEntity.set(entity, currentEntity);
+      }
+    })
+    const entities = Array.from(byEntity.entries());
+    return { entities, thirdPartyScripts };
+  }
+
+  function getMainThreadTime(scripts) {
+    const result = scripts.map(script => {
+      return {
+        url: script.url,
+        data: script.data.mainThreadTime
+      }
+    }).filter(script => script.data > 0);
+    return result;
+  }
+
+
+  function getRenderBlockingTime(scripts) {
+    const result = scripts.map(script => {
+      return {
+        url: script.url,
+        data: script.data.blockingTime
+      }
+    }).filter(script => script.data > 0);
+    return result;
   }
 
   /**
@@ -104,16 +81,16 @@ export default function ThirdPartySummary() {
    * @param {string} value - The type of the graph to be generated
    * @returns {JSX} - The graph corresponding to the type of the graph requested by the user
    */
-  function generateGraph(data, value) {
-    const details = data.details;
-    const mainThreadTimeData = extractMainThreadTime(details);
-    const blockingTimeData = extractBlockingTime(details);
+  function generateGraph(scripts, value) {
+    console.log(scripts);
+    const mainThreadTimeData = getMainThreadTime(scripts);
+    const blockingTimeData = getRenderBlockingTime(scripts);
     // If user requests blocking time graph
     if (value === "blocking") {
       if (blockingTimeData.length > 0) {
         return (
           <DoughnutChart
-            title={"Blocking Time"}
+            title={"Render Blocking Time"}
             data={blockingTimeData}
           ></DoughnutChart>
         );
@@ -143,6 +120,8 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
+  const { entities, thirdPartyScripts } = transformData(data);
+
   return (
     <>
       {!data && <Navigate to="/" />}
@@ -163,8 +142,8 @@ export default function ThirdPartySummary() {
               <div className="table-container">
                 <ThirdPartyTable
                   id={"third-party-summary"}
-                  headings={data.details.headings}
-                  items={data.details.items}
+                  scripts={thirdPartyScripts}
+                  entities={entities}
                   passData={passData}
                 />
               </div>
@@ -177,9 +156,9 @@ export default function ThirdPartySummary() {
                       style={{ marginTop: "2em" }}
                     >
                       <option value="mainthread">Main Thread Time</option>
-                      <option value="blocking">Blocking Time</option>
+                      <option value="blocking">Render Blocking Time</option>
                     </select>
-                    {generateGraph(data, value)}
+                    {generateGraph(thirdPartyScripts, value)}
                   </>
                 )}
               </div>

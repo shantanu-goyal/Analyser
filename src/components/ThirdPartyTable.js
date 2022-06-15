@@ -11,16 +11,15 @@ import Table from "./Table";
  * @param {Function} passData Callback to pass data to graph renderer
  * @returns table jsx
  */
-function ThirdPartyTable({ id, items, passData }) {
+function ThirdPartyTable({ id, scripts, entities, passData }) {
   // State to hold current third party headings according to the view
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([]);
   // State to hold current third party items according to the view
   const [thirdPartyItems, setThirdPartyItems] = useState([]);
-
-
+  console.log(entities);
   useEffect(() => {
     changeView('entity')
-  },[])
+  }, [])
 
   /**
    * Toogle view of third party table from script view to entity view and vice-versa
@@ -33,44 +32,39 @@ function ThirdPartyTable({ id, items, passData }) {
       setThirdPartyHeadings([
         { key: "url", text: "URL", itemType: "text" },
         { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
-        { key: "blockingTime", text: "Blocking Time", itemType: "ms" },
+        { key: "blockingTime", text: "Render Blocking Time", itemType: "ms" },
         { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
       ]);
       // Update thirdPartyItems to hold scripts instead of entities
       setThirdPartyItems(
-        items.reduce((arr, item) => {
-          if (item.subItems && item.subItems.items) {
-            return arr.concat(
-              // Filter out scripts
-              item.subItems.items.filter(
-                (item) => item.url !== "Other resources"
-              )
-            );
-          }
-          return arr;
-        }, [])
+        scripts.map((script) => {
+          return {
+            url: script.url,
+            mainThreadTime: script.data.mainThreadTime,
+            blockingTime: script.data.blockingTime,
+            transferSize: script.data.transferSize,
+          };
+        })
       );
     } else {
       // Default headings and items passed to the ThirdPartyTable are in entity view
       setThirdPartyHeadings([
         { key: "entity", text: "Third-Party", itemType: "link" },
         { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
-        { key: "blockingTime", text: "Blocking Time", itemType: "ms" },
+        { key: "blockingTime", text: "Render Blocking Time", itemType: "ms" },
         { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
       ]);
 
-      setThirdPartyItems(items.map((item) => {
-        let object = {
-          ...item,
-          'mainThreadTime': 0
-        }
-        if (item.subItems && item.subItems.items) {
-          object.mainThreadTime = item.subItems.items.reduce((val, {mainThreadTime}) => {
-            return mainThreadTime ? val + mainThreadTime : val
-          }, 0)
-        }
-        return object;
-      }));
+      setThirdPartyItems(
+        entities.map((entity) => {
+          return {
+            entity: entity[0].name,
+            mainThreadTime: entity[1].mainThreadTime,
+            blockingTime: entity[1].blockingTime,
+            transferSize: entity[1].transferSize,
+          };
+        })
+      );
     }
   }
 
@@ -94,8 +88,9 @@ function ThirdPartyTable({ id, items, passData }) {
 
 ThirdPartyTable.propTypes = {
   id: PropTypes.string.isRequired,
-  headings: PropTypes.arrayOf(PropTypes.object).isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  headings: PropTypes.arrayOf(PropTypes.object),
+  scripts: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  entities: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
   passData: PropTypes.func.isRequired,
 };
 
