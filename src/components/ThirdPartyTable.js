@@ -91,7 +91,7 @@ ThirdPartyTable.propTypes = {
   id: PropTypes.string.isRequired,
   headings: PropTypes.arrayOf(PropTypes.object),
   scripts: PropTypes.arrayOf(PropTypes.object).isRequired,
-  entities: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  entities: PropTypes.arrayOf(PropTypes.array).isRequired,
   passData: PropTypes.func.isRequired,
 };
 
