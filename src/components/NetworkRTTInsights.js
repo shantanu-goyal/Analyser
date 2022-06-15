@@ -3,10 +3,6 @@ import Table from "./Table";
 
 function NetworkRTTInsights({ data }) {
   function getLongRTTOrigins() {
-    console.log(
-      "asjhdjshadgja",
-      data.details.items.filter(({ rtt }) => rtt > 50)
-    );
     return data.details.items.filter(({ rtt }) => rtt > 50);
   }
 

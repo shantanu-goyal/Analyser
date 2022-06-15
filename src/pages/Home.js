@@ -28,7 +28,7 @@ export default function Home() {
    * @param {Object} headers Headers that need to be sent in request along with url
    * @param {String} formFactor Type of device
    */
-  async function onFormSubmit(url, headers, formFactor) {
+  async function onFormSubmit(url, headers, formFactor, waitTime) {
     setFormSubmitted(true);
     setLoading(true);
     try {
@@ -38,8 +38,10 @@ export default function Home() {
           url,
           headers,
           formFactor,
+          waitTime
         },
       });
+      console.log(result.data)
       setLoading(false);
       dataContext.setData({ type: "changeData", data: result.data });
       navigate("/bootup-time");

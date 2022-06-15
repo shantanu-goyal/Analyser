@@ -19,6 +19,7 @@ function Form({ onFormSubmit }) {
   const valueRef = useRef(null);
   // Reference to device type selector
   const deviceRef = useRef(null);
+  const waitTimeRef = useRef(null);
 
   /**
    * Handle the form submission
@@ -33,7 +34,8 @@ function Form({ onFormSubmit }) {
     }, {});
     const url = urlRef.current.value;
     const deviceType = deviceRef.current.value;
-    onFormSubmit(url, headerObject, deviceType);
+    const waitTime = waitTimeRef.current.value;
+    onFormSubmit(url, headerObject, deviceType, waitTime);
   }
 
   /**
@@ -57,6 +59,11 @@ function Form({ onFormSubmit }) {
   return (
     <div className="url-form">
       <div className="url-input">
+      <input
+          type="number"
+          placeholder="Analysis Duration in ms"
+          ref={waitTimeRef}
+        />
         <select className="select-box" ref={deviceRef}>
           <option value="mobile">Mobile</option>
           <option value="desktop">Desktop</option>

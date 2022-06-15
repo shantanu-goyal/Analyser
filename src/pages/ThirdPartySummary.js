@@ -82,7 +82,6 @@ export default function ThirdPartySummary() {
    * @returns {JSX} - The graph corresponding to the type of the graph requested by the user
    */
   function generateGraph(scripts, value) {
-    console.log(scripts);
     const mainThreadTimeData = getMainThreadTime(scripts);
     const blockingTimeData = getRenderBlockingTime(scripts);
     // If user requests blocking time graph
