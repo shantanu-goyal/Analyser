@@ -36,7 +36,7 @@ export default function ThirdPartySummary() {
     const byEntity = new Map();
     const thirdPartyScripts = [];
     scripts.forEach(script => {
-      let scriptURL = (script.url);
+      let scriptURL = new URL(script.url).hostname;
       let entity = thirdPartyWeb.getEntity(scriptURL);
       let scriptData = script.data;
       const defaultConfig = {
@@ -145,10 +145,10 @@ export default function ThirdPartySummary() {
     const byEntity = new Map();
     const thirdPartyScripts = [];
     scripts.forEach(script => {
-      let scriptURL = (script.url);
+      let scriptURL = new URL(script.url).hostname;
       let entity = thirdPartyWeb.getEntity(scriptURL);
       if (!entity) {
-        entity = newUserInput.find(entity => entity.key === scriptURL);
+        entity = newUserInput.find(entity => new URL(entity.key).hostname === scriptURL);
         if (entity) {
           console.log(entity);
           entity = { name: entity.value };
