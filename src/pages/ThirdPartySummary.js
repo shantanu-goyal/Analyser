@@ -202,7 +202,8 @@ export default function ThirdPartySummary() {
                   entities={entityArray}
                   passData={passData}
                 />
-                <table className="header-input">
+                <h1>Add your own entities below:-</h1>
+                <table className="entity-input">
                   <thead>
                     <tr>
                       <th>URL</th>
@@ -286,6 +287,7 @@ export default function ThirdPartySummary() {
               <div className="graph-container">
                 {displayGraph && (
                   <>
+                  <h1>Graph:-</h1>
                     <select
                       value={value}
                       onChange={changeHandler}
