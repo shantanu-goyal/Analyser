@@ -13,9 +13,12 @@ const switchData = (state, action) => {
   switch (action.type) {
     case "changeData":
       return { ...state, data: action.data };
+    case "updateThirdPartyData":
+      return {...state, thirdParty:action.data}
     default:
       return state;
   }
+
 };
 
 // Create the provider.
@@ -23,6 +26,7 @@ const DataContextProvider = ({ children }) => {
   // Initialize the state
   const [data, setData] = useReducer(switchData, {
     data: {},
+    thirdParty:{}
   });
 
   return (

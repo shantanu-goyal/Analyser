@@ -12,7 +12,6 @@ export default function ThirdPartySummary() {
     const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
     return matches && matches[1];
   } 
-  
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data["third-party-summary"];
@@ -127,6 +126,8 @@ export default function ThirdPartySummary() {
   }
 
   const { entities, thirdPartyScripts, scripts } = transformData(data);
+  
+  
 
   const [userInput, setUserInput] = useState([]);
   const [entityArray, setEntityArray] = useState(entities);
@@ -167,6 +168,12 @@ export default function ThirdPartySummary() {
     const entities = Array.from(byEntity.entries());
     setEntityArray(entities);
     setThirdPartyScriptsArray(thirdPartyScripts);
+    dataContext.setData({ type: "updateThirdPartyData", data:{
+      scripts,
+      entities,
+      thirdPartyScripts,
+      userInput:newUserInput
+    }});
   }
 
 

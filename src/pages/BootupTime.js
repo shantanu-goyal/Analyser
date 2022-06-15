@@ -20,6 +20,7 @@ export default function BootupTime() {
   const dataContext = useContext(DataContext);
   // Extracting the data from the context
   let data = dataContext.data.data;
+  console.log(dataContext.data);
   data = data['bootup-time'];
 
   /**
