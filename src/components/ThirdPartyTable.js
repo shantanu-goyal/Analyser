@@ -16,7 +16,7 @@ function ThirdPartyTable({ id, scripts, entities, passData }) {
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([]);
   // State to hold current third party items according to the view
   const [thirdPartyItems, setThirdPartyItems] = useState([]);
-  console.log(entities);
+
   useEffect(() => {
     changeView('entity')
   }, [])
@@ -89,7 +89,7 @@ function ThirdPartyTable({ id, scripts, entities, passData }) {
 ThirdPartyTable.propTypes = {
   id: PropTypes.string.isRequired,
   headings: PropTypes.arrayOf(PropTypes.object),
-  scripts: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  scripts: PropTypes.arrayOf(PropTypes.object).isRequired,
   entities: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
   passData: PropTypes.func.isRequired,
 };
