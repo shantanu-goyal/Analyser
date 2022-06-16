@@ -1,19 +1,18 @@
-import React, { useContext, useState ,useRef} from "react";
+import React, { useContext, useState, useRef } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import ThirdPartyTable from '../components/ThirdPartyTable'
 import { thirdPartyWeb } from '../utility/third-party-web/entity-finder-api'
-import { getHostname, transformData,generateGraph } from '../utility/thirdPartyUtility';
+import { getHostname, transformData, generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
 export default function ThirdPartySummary() {
-  
-  
-  //Global data contecg
+
+  //Global data context
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data["third-party-summary"];
-  let userData=dataContext.data.thirdParty.userInput || [];
+  // Checking if user had previously modified the page or not
   // Reference to key field for new URL
   const keyRef = useRef(null);
   // Reference to value field for new Entity
@@ -33,40 +32,25 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
-  let entities=[], thirdPartyScripts=[], mapping=[],domainWiseScripts=[], scripts=[];
-
-  if(userData.length>0){
-
-    entities=dataContext.data.thirdParty.entities;
-    thirdPartyScripts=dataContext.data.thirdParty.thirdPartyScripts;
-    mapping=dataContext.data.thirdParty.mapping;
-    scripts=dataContext.data.thirdParty.scripts;
-    domainWiseScripts=dataContext.data.thirdParty.domainWiseScripts;
-  }
-  else{
-    const td=transformData(data);
-    entities=td.entities;
-    thirdPartyScripts=td.thirdPartyScripts;
-    mapping=td.mapping;
-    scripts=td.scripts;
-    domainWiseScripts=td.domainWiseScripts;
-  }
+  const {entities, scripts, thirdPartyScripts,mapping, domainWiseScripts}=dataContext.data.thirdParty;
   
+  const userData = dataContext.data.thirdParty.userInput;
+
   const [userInput, setUserInput] = useState(userData);
   const [entityArray, setEntityArray] = useState(entities);
   const [scriptsArray, setScriptsArray] = useState(scripts);
   const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
-  const [mappingArray, setMappingArray]=useState(mapping);
-  const [dropdownScripts,setDropdownScripts]=useState(domainWiseScripts);
+  const [mappingArray, setMappingArray] = useState(mapping);
+  const [dropdownScripts, setDropdownScripts] = useState(domainWiseScripts);
 
-  function renderTable(newUserInput){
+  function renderTable(newUserInput) {
     const byEntity = new Map();
-    const entityWiseScripts=new Map();
+    const entityWiseScripts = new Map();
     const scripts = scriptsArray;
     const thirdPartyScripts = [];
     scripts.forEach(script => {
       let scriptURL = getHostname(script.url);
-      if(!scriptURL){
+      if (!scriptURL) {
         return {};
       }
       let entity = thirdPartyWeb.getEntity(scriptURL);
@@ -85,7 +69,7 @@ export default function ThirdPartySummary() {
       if (entity) {
         thirdPartyScripts.push(script);
         const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
-        const scriptForEntity=entityWiseScripts.get(entity.name)||[];
+        const scriptForEntity = entityWiseScripts.get(entity.name) || [];
         scriptForEntity.push(script.url);
         entityWiseScripts.set(entity.name, scriptForEntity);
         currentEntity.mainThreadTime += scriptData.mainThreadTime;
@@ -95,7 +79,7 @@ export default function ThirdPartySummary() {
       }
     })
     const entities = Array.from(byEntity.entries());
-    const mapping=Array.from(entityWiseScripts.entries());
+    const mapping = Array.from(entityWiseScripts.entries());
     setMappingArray(mapping);
     setEntityArray(entities);
     setThirdPartyScriptsArray(thirdPartyScripts);
@@ -109,24 +93,24 @@ export default function ThirdPartySummary() {
       alert('Invalid Entry');
       return;
     }
-    const newUserInput=[...userInput, { key, value }];
+    const newUserInput = [...userInput, { key, value }];
     setUserInput(newUserInput);
     renderTable(newUserInput);
-    const hostname=getHostname(key);
-    setDropdownScripts(dropdownScripts.filter(script=>{
-      return script!=hostname;
+    const hostname = getHostname(key);
+    setDropdownScripts(dropdownScripts.filter(script => {
+      return script != hostname;
     }))
     keyRef.current.value = "";
     valueRef.current.value = "";
   }
 
 
-  function onRemove(index){
-    const newUserInput=[...userInput.slice(0,index),...userInput.slice(index+1)];
+  function onRemove(index) {
+    const newUserInput = [...userInput.slice(0, index), ...userInput.slice(index + 1)];
     renderTable(newUserInput);
-    const hostname=getHostname(userInput[index].key);
+    const hostname = getHostname(userInput[index].key);
     setUserInput(newUserInput);
-    if(!hostname){
+    if (!hostname) {
       return;
     }
     setDropdownScripts([...dropdownScripts, hostname]);
@@ -208,7 +192,7 @@ export default function ThirdPartySummary() {
                               src="remove.png"
                               alt="Remove"
                               onClick={
-                                (e)=>{
+                                (e) => {
                                   onRemove(index);
                                 }
                               }
@@ -224,8 +208,8 @@ export default function ThirdPartySummary() {
                           ref={keyRef}
                           placeholder="Key"
                         >
-                          {dropdownScripts.map((script,idx)=>{
-                            return <option key={idx} value={"https://"+script}>{script}</option>
+                          {dropdownScripts.map((script, idx) => {
+                            return <option key={idx} value={"https://" + script}>{script}</option>
                           })}
                         </select>
                       </td>
@@ -247,7 +231,7 @@ export default function ThirdPartySummary() {
               <div className="graph-container">
                 {displayGraph && (
                   <>
-                  <h1>Graph:-</h1>
+                    <h1>Graph:-</h1>
                     <select
                       value={value}
                       onChange={changeHandler}
