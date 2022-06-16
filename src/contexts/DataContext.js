@@ -12,7 +12,7 @@ export const DataContext = createContext({});
 const switchData = (state, action) => {
   switch (action.type) {
     case "changeData":
-      return { ...state, data: action.data };
+      return { ...state, ...action.data};
     case "updateThirdPartyData":
       return {...state, thirdParty:action.data}
     default:

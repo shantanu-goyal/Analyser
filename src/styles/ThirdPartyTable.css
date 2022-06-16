@@ -13,7 +13,7 @@
   flex-direction: column;
 }
 .select-box {
-  margin-top: 2em;
+  margin-top: 2em !important;
   border: none;
   width: 150px !important;
   font-size: 0.8em;

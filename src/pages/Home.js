@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
+import {thirdPartyWeb} from '../utility/third-party-web/entity-finder-api'
 import { useNavigate } from "react-router-dom";
 import Form from "../components/Form";
 import { REACT_APP_SERVER_URL } from "../config";
@@ -21,6 +22,50 @@ export default function Home() {
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
+  
+  const getHostname = (url) => {
+    const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+    return matches && matches[1];
+  } 
+
+  function getThirdPartyData(data){
+    let items = data.details;
+    const scripts = items.map(item => {
+      return {
+        url: item[0],
+        data: item[1]
+      }
+    })
+    const thirdPartyScripts = [];
+    const byEntity = new Map();
+    const domains=new Map();
+    scripts.forEach(script => {
+      let scriptURL = getHostname(script.url);
+      if(!scriptURL){
+        return {};
+      }
+      domains.set(scriptURL,1);
+      let entity = thirdPartyWeb.getEntity(scriptURL);
+      let scriptData = script.data;
+      const defaultConfig = {
+        mainThreadTime: 0,
+        blockingTime: 0,
+        transferSize: 0
+      }
+      if (entity) {
+        thirdPartyScripts.push(script);
+        const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
+        currentEntity.mainThreadTime += scriptData.mainThreadTime;
+        currentEntity.blockingTime += scriptData.blockingTime;
+        currentEntity.transferSize += scriptData.transferSize;
+        byEntity.set(entity.name, currentEntity);
+      }
+    })
+    const entities = Array.from(byEntity.entries());
+    const domainWiseScripts=Array.from(domains.keys());
+    return {entities, scripts, thirdPartyScripts, userInput:[]};
+  }
+
 
   /**
    * Function to manage states on form submission and fetch data
@@ -43,7 +88,13 @@ export default function Home() {
       });
       console.log(result.data)
       setLoading(false);
-      dataContext.setData({ type: "changeData", data: result.data });
+      const thirdParty=getThirdPartyData(result.data['third-party-summary']);
+      dataContext.setData({ type: "changeData", 
+      data:{
+          data:result.data,
+          thirdParty:thirdParty
+        }
+      });
       navigate("/bootup-time");
     } catch (error) {
       setError(true);

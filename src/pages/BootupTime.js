@@ -18,9 +18,9 @@ export default function BootupTime() {
   const [value, setValue] = useState("total");
   // The Global data context
   const dataContext = useContext(DataContext);
+  console.log(dataContext);
   // Extracting the data from the context
   let data = dataContext.data.data;
-  console.log(dataContext.data);
   data = data['bootup-time'];
 
   /**

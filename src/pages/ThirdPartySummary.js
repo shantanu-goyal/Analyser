@@ -12,6 +12,8 @@ export default function ThirdPartySummary() {
     const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
     return matches && matches[1];
   } 
+  
+  
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data["third-party-summary"];
