@@ -1,13 +1,15 @@
-import { thirdPartyWeb } from '../utility/third-party-web/entity-finder-api'
 import React, { useContext, useState ,useRef} from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import ThirdPartyTable from '../components/ThirdPartyTable'
-import DoughnutChart from '../components/Graphs/DoughnutChart';
-import { getHostname, transformData } from '../utility/thirdPartyUtility';
+import { thirdPartyWeb } from '../utility/third-party-web/entity-finder-api'
+import { getHostname, transformData,generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
 export default function ThirdPartySummary() {
+  
+  
+  //Global data contecg
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data["third-party-summary"];
@@ -20,63 +22,6 @@ export default function ThirdPartySummary() {
   const [displayGraph, setDisplayGraph] = useState();
   // State to store the type of the graph to be generated. Defaults to the main thread time graph.
   const [value, setValue] = useState("mainthread");
-
-
-  function getMainThreadTime(scripts) {
-    const result = scripts.map(script => {
-      return {
-        url: script.url,
-        data: script.data.mainThreadTime
-      }
-    }).filter(script => script.data > 0);
-    return result;
-  }
-
-
-  function getRenderBlockingTime(scripts) {
-    const result = scripts.map(script => {
-      return {
-        url: script.url,
-        data: script.data.blockingTime
-      }
-    }).filter(script => script.data > 0);
-    return result;
-  }
-
-  /**
-   * Function to generate the graph
-   *
-   * @param {object} data - The data corresponding to the graph
-   * @param {string} value - The type of the graph to be generated
-   * @returns {JSX} - The graph corresponding to the type of the graph requested by the user
-   */
-  function generateGraph(scripts, value) {
-    const mainThreadTimeData = getMainThreadTime(scripts);
-    const blockingTimeData = getRenderBlockingTime(scripts);
-    // If user requests blocking time graph
-    if (value === "blocking") {
-      if (blockingTimeData.length > 0) {
-        return (
-          <DoughnutChart
-            title={"Render Blocking Time"}
-            data={blockingTimeData}
-          ></DoughnutChart>
-        );
-      } else {
-        return <></>;
-      }
-    }
-    // If user requests main thread time graph
-    else {
-      if (mainThreadTimeData.length > 0) {
-        return (
-          <DoughnutChart title={"Main Thread Time"} data={mainThreadTimeData} />
-        );
-      } else {
-        return <></>;
-      }
-    }
-  }
 
   // This function updates the state of the graph to be shown or not
   function passData(data) {
@@ -96,8 +41,7 @@ export default function ThirdPartySummary() {
     thirdPartyScripts=dataContext.data.thirdParty.thirdPartyScripts;
     mapping=dataContext.data.thirdParty.mapping;
     scripts=dataContext.data.thirdParty.scripts;
-    const td=transformData(data);
-    domainWiseScripts=td.domainWiseScripts;
+    domainWiseScripts=dataContext.data.thirdParty.domainWiseScripts;
   }
   else{
     const td=transformData(data);
@@ -113,6 +57,7 @@ export default function ThirdPartySummary() {
   const [scriptsArray, setScriptsArray] = useState(scripts);
   const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
   const [mappingArray, setMappingArray]=useState(mapping);
+  const [dropdownScripts,setDropdownScripts]=useState(domainWiseScripts);
 
   function renderTable(newUserInput){
     const byEntity = new Map();
@@ -167,8 +112,24 @@ export default function ThirdPartySummary() {
     const newUserInput=[...userInput, { key, value }];
     setUserInput(newUserInput);
     renderTable(newUserInput);
+    const hostname=getHostname(key);
+    setDropdownScripts(dropdownScripts.filter(script=>{
+      return script!=hostname;
+    }))
     keyRef.current.value = "";
     valueRef.current.value = "";
+  }
+
+
+  function onRemove(index){
+    const newUserInput=[...userInput.slice(0,index),...userInput.slice(index+1)];
+    renderTable(newUserInput);
+    const hostname=getHostname(userInput[index].key);
+    setUserInput(newUserInput);
+    if(!hostname){
+      return;
+    }
+    setDropdownScripts([...dropdownScripts, hostname]);
   }
 
 
@@ -197,6 +158,7 @@ export default function ThirdPartySummary() {
                   userInput={userInput}
                   entities={entityArray}
                   mapping={mappingArray}
+                  domainWiseScripts={dropdownScripts}
                   passData={passData}
                 />
                 <h1>Add your own entities below:-</h1>
@@ -245,14 +207,10 @@ export default function ThirdPartySummary() {
                             <img
                               src="remove.png"
                               alt="Remove"
-                              onClick={() =>{
-                                const newUserInput=[
-                                  ...userInput.slice(0, index),
-                                  ...userInput.slice(index + 1)
-                                ];
-                                setUserInput(newUserInput);
-                                renderTable(newUserInput);
-                               }
+                              onClick={
+                                (e)=>{
+                                  onRemove(index);
+                                }
                               }
                             />
                           </td>
@@ -266,7 +224,7 @@ export default function ThirdPartySummary() {
                           ref={keyRef}
                           placeholder="Key"
                         >
-                          {domainWiseScripts.map((script,idx)=>{
+                          {dropdownScripts.map((script,idx)=>{
                             return <option key={idx} value={"https://"+script}>{script}</option>
                           })}
                         </select>

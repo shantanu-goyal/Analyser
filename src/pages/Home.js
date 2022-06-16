@@ -25,8 +25,8 @@ export default function Home() {
    
 
   function getThirdPartyData(data){
-    const {mapping, entities, scripts, thirdPartyScripts}=transformData(data);
-    return {entities, scripts, thirdPartyScripts, userInput:[],mapping};
+    const {mapping, entities, scripts, thirdPartyScripts, domainWiseScripts}=transformData(data);
+    return {entities, scripts, thirdPartyScripts, userInput:[],mapping, domainWiseScripts};
   }
 
 
