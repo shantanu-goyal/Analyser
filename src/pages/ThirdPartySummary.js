@@ -6,20 +6,29 @@ import { thirdPartyWeb } from '../utility/third-party-web/entity-finder-api'
 import { getHostname, transformData, generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
+
+
+/**
+ * 
+ * @returns JSX for Third Party Summary Component
+ */
 export default function ThirdPartySummary() {
 
   //Global data context
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data["third-party-summary"];
-  // Checking if user had previously modified the page or not
+  
   // Reference to key field for new URL
   const keyRef = useRef(null);
+  
   // Reference to value field for new Entity
   const valueRef = useRef(null);
+  
   // State to store whether the graph should be shown or not.
   const [displayGraph, setDisplayGraph] = useState();
-  // State to store the type of the graph to be generated. Defaults to the main thread time graph.
+  
+  /* State to store the type of the graph to be generated. Defaults to the main thread time graph.*/
   const [value, setValue] = useState("mainthread");
 
   // This function updates the state of the graph to be shown or not
@@ -32,10 +41,11 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
+  // Getting data from the context
   const {entities, scripts, thirdPartyScripts,mapping, domainWiseScripts}=dataContext.data.thirdParty;
-  
   const userData = dataContext.data.thirdParty.userInput;
 
+  // Setting the data from the context in the state
   const [userInput, setUserInput] = useState(userData);
   const [entityArray, setEntityArray] = useState(entities);
   const [scriptsArray, setScriptsArray] = useState(scripts);
@@ -43,23 +53,50 @@ export default function ThirdPartySummary() {
   const [mappingArray, setMappingArray] = useState(mapping);
   const [dropdownScripts, setDropdownScripts] = useState(domainWiseScripts);
 
+
+
+  /**
+   * Function to render the table.
+   * 
+   * @param {Array} newUserInput - The updated user selection array
+   * 
+   */  
   function renderTable(newUserInput) {
+    /* Map that stores the entity name along with its corresponding main thread time, blocking time and transfer size. */
     const byEntity = new Map();
+
+    /* Map to store scripts for each entity name*/
     const entityWiseScripts = new Map();
+    
+    /* Array containing all the scripts */
     const scripts = scriptsArray;
+    
+    /* Array containing only third party scripts */
     const thirdPartyScripts = [];
+    
+    
     scripts.forEach(script => {
+      // Extracting the hostname for the url of the script
       let scriptURL = getHostname(script.url);
+      
+      // If URL is invalid, return
       if (!scriptURL) {
-        return {};
+        return;
       }
+
+      // Check if the hostname is in the third party web database
       let entity = thirdPartyWeb.getEntity(scriptURL);
+
+      /* If entity is not present in the database check if it is provided by the user */
       if (!entity) {
+
         entity = newUserInput.find(entity => getHostname(entity.key) === scriptURL);
+        // If entity is found, update the entity
         if (entity) {
           entity = { name: entity.value };
         }
       }
+    
       let scriptData = script.data;
       const defaultConfig = {
         mainThreadTime: 0,
@@ -67,49 +104,91 @@ export default function ThirdPartySummary() {
         transferSize: 0
       }
       if (entity) {
+        // Push the current script in the third party script array
         thirdPartyScripts.push(script);
+        
+        /* Check if the entity was previously present in our map*/
         const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
+
+        /* Get the scripts array for the particular entity */
         const scriptForEntity = entityWiseScripts.get(entity.name) || [];
+        
+        // Push the current URL in the script array for that particular entity
         scriptForEntity.push(script.url);
+        
+        // Update the scripts array in the map
         entityWiseScripts.set(entity.name, scriptForEntity);
+
+        // Update the metrics of the entity
         currentEntity.mainThreadTime += scriptData.mainThreadTime;
         currentEntity.blockingTime += scriptData.blockingTime;
         currentEntity.transferSize += scriptData.transferSize;
+
+        // Set the newly updated metrics in the entity map
         byEntity.set(entity.name, currentEntity);
       }
     })
     const entities = Array.from(byEntity.entries());
     const mapping = Array.from(entityWiseScripts.entries());
+    // Set the updated mappings array in the state
     setMappingArray(mapping);
+    // Set the updated entity array in the state
     setEntityArray(entities);
+    // Set the updated third party array in the state
     setThirdPartyScriptsArray(thirdPartyScripts);
   }
 
 
+  /**
+   * Event Handler for the add button
+   */
   function onAdd() {
+    // Extract the key, value pair
     const key = keyRef.current.value;
     const value = valueRef.current.value;
+    
+    // Error Handling
     if (!key || !value || userInput.find((ip) => ip.key === key)) {
       alert('Invalid Entry');
       return;
     }
+    
+    // Update the user input array. Add the new key-value pair
     const newUserInput = [...userInput, { key, value }];
+
+    // Set the new user input array in the current state
     setUserInput(newUserInput);
+    
+    // Render the table
     renderTable(newUserInput);
+    
+    // Update the dropdown menu
     const hostname = getHostname(key);
     setDropdownScripts(dropdownScripts.filter(script => {
       return script != hostname;
     }))
+    
     keyRef.current.value = "";
     valueRef.current.value = "";
   }
 
-
+  /**
+   * Function for the remove button 
+   * 
+   * @param {Number} index - Index of the current data in the user input array
+   * @returns 
+   */
   function onRemove(index) {
+    
+    // Update the user input array
     const newUserInput = [...userInput.slice(0, index), ...userInput.slice(index + 1)];
-    renderTable(newUserInput);
-    const hostname = getHostname(userInput[index].key);
     setUserInput(newUserInput);
+    
+    // Render the table 
+    renderTable(newUserInput);
+    
+    // Update the dropdown
+    const hostname = getHostname(userInput[index].key);
     if (!hostname) {
       return;
     }
