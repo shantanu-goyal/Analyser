@@ -130,8 +130,6 @@ export default function ThirdPartySummary() {
 
   const {domainWiseScripts, entities, thirdPartyScripts, scripts } = transformData(data);
   
-  console.log(domainWiseScripts); 
-  
   const [userInput, setUserInput] = useState([]);
   const [entityArray, setEntityArray] = useState(entities);
   const [scriptsArray, setScriptsArray] = useState(scripts);
@@ -171,12 +169,6 @@ export default function ThirdPartySummary() {
     const entities = Array.from(byEntity.entries());
     setEntityArray(entities);
     setThirdPartyScriptsArray(thirdPartyScripts);
-    dataContext.setData({ type: "updateThirdPartyData", data:{
-      scripts,
-      entities,
-      thirdPartyScripts,
-      userInput:newUserInput
-    }});
   }
 
 
@@ -215,7 +207,9 @@ export default function ThirdPartySummary() {
               <div className="table-container">
                 <ThirdPartyTable
                   id={"third-party-summary"}
+                  all={scriptsArray}
                   scripts={thirdPartyScriptsArray}
+                  userInput={userInput}
                   entities={entityArray}
                   passData={passData}
                 />

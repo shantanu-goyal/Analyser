@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState,useRef, useContext } from "react";
 import "../styles/ThirdPartyTable.css";
+import { DataContext } from "../contexts/DataContext";
 import Table from "./Table";
 
 /**
@@ -11,8 +12,10 @@ import Table from "./Table";
  * @param {Function} passData Callback to pass data to graph renderer
  * @returns table jsx
  */
-function ThirdPartyTable({ id, scripts, entities, passData }) {
+function ThirdPartyTable({ id, all, userInput, scripts, entities, passData }) {
   // State to hold current third party headings according to the view
+  const dataContext=useContext(DataContext);
+
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([]);
   // State to hold current third party items according to the view
   const [thirdPartyItems, setThirdPartyItems] = useState([]);
@@ -27,6 +30,12 @@ function ThirdPartyTable({ id, scripts, entities, passData }) {
    */
   function changeView(view) {
     // If the current view is script view
+    dataContext.setData({ type: "updateThirdPartyData", data:{
+      scripts:all,
+      entities,
+      thirdPartyScripts:scripts,
+      userInput
+    }});
     if (view === "script") {
       // Update Table headings
       selectRef.current.value="script";
