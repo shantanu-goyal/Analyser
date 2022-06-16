@@ -18,9 +18,9 @@ export default function BootupTime() {
   const [value, setValue] = useState("total");
   // The Global data context
   const dataContext = useContext(DataContext);
+  console.log(dataContext);
   // Extracting the data from the context
   let data = dataContext.data.data;
-  console.log(dataContext.data);
   data = data['bootup-time'];
 
   /**
@@ -121,7 +121,7 @@ export default function BootupTime() {
           <h6 style={{ textAlign: "center" }}> Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. </h6>
           <div className="table-container">
 
-            <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items} passData={passData} />
+            <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items.filter(({url}) => url !== 'Unattributable')} passData={passData} />
 
           </div>
           <div className="graph-container">

@@ -5,6 +5,7 @@ import Form from "../components/Form";
 import { REACT_APP_SERVER_URL } from "../config";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Home.css";
+import { transformData } from "../utility/thirdPartyUtility";
 
 /**
  * Function to return JSX for Home page
@@ -22,6 +23,12 @@ export default function Home() {
 
   const navigate = useNavigate();
 
+  function getThirdPartyData(data) {
+    const { mapping, entities, scripts, thirdPartyScripts } =
+      transformData(data);
+    return { entities, scripts, thirdPartyScripts, userInput: [], mapping };
+  }
+
   /**
    * Function to manage states on form submission and fetch data
    * @param {String} url Url of website
@@ -32,24 +39,33 @@ export default function Home() {
     setFormSubmitted(true);
     setLoading(true);
     try {
-      
       const result = await axios.get(REACT_APP_SERVER_URL, {
         method: "GET",
         params: {
           url,
           headers,
           formFactor,
-          waitTime
+          waitTime,
         },
       });
-      console.log(result.data)
+      console.log(result.data);
       setLoading(false);
-      dataContext.setData({ type: "analysisSetup", data: {
-        deviceType: formFactor,
-        url,
-        waitTime
-      } });
-      dataContext.setData({ type: "changeData", data: result.data });
+      dataContext.setData({
+        type: "analysisSetup",
+        data: {
+          deviceType: formFactor,
+          url,
+          waitTime,
+        },
+      });
+      const thirdParty = getThirdPartyData(result.data["third-party-summary"]);
+      dataContext.setData({
+        type: "changeData",
+        data: {
+          data: result.data,
+          thirdParty: thirdParty,
+        },
+      });
       navigate("/bootup-time");
     } catch (error) {
       setError(true);
