@@ -1,6 +1,11 @@
 import {thirdPartyWeb} from '../utility/third-party-web/entity-finder-api'
 import DoughnutChart from '../components/Graphs/DoughnutChart'
 
+/**
+ * Function to extract the main thread time from scripts
+ * @param {Array} scripts 
+ * @returns {Array} - Array of objects containing the url of the script along with its main thread time. 
+ */
 function getMainThreadTime(scripts) {
   const result = scripts.map(script => {
     return {
@@ -11,7 +16,11 @@ function getMainThreadTime(scripts) {
   return result;
 }
 
-
+/**
+ * Function to extract the render blocking time from scripts
+ * @param {Array} scripts 
+ * @returns {Array} - Array of objects containing the url of the script along with its render blocking time. 
+ */
 function getRenderBlockingTime(scripts) {
   const result = scripts.map(script => {
     return {
@@ -25,8 +34,8 @@ function getRenderBlockingTime(scripts) {
 /**
  * Function to generate the graph
  *
- * @param {object} data - The data corresponding to the graph
- * @param {string} value - The type of the graph to be generated
+ * @param {Array} scripts - The data corresponding to the third party scripts
+ * @param {String} value - The type of the graph to be generated
  * @returns {JSX} - The graph corresponding to the type of the graph requested by the user
  */
 function generateGraph(scripts, value) {
@@ -58,7 +67,11 @@ function generateGraph(scripts, value) {
 }
 
 
-
+/**
+ * Function that returns the hostname of the url if its a valid url. Else it returns null
+ * @param {String} url 
+ * @returns hostname or null
+ */
 function getHostname(url){
     const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
     return matches && matches[1];
@@ -109,5 +122,7 @@ function transformData(data) {
     const mapping=Array.from(entityWiseScripts.entries());
     return { domainWiseScripts, entities, scripts, thirdPartyScripts,mapping};
   }
+
+
 
 export{getHostname, transformData, generateGraph};
