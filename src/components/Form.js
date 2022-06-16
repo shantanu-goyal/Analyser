@@ -46,7 +46,7 @@ function Form({ onFormSubmit }) {
     const value = valueRef.current.value;
     // Dont add header if key or value not present or if key already in header list
     if (!key || !value || headers.find((header) => header.key === key)) {
-      alert('Invalid Entry');
+      alert("Invalid Entry");
       return;
     }
     // Add new header object to header list
@@ -59,17 +59,22 @@ function Form({ onFormSubmit }) {
   return (
     <div className="url-form">
       <div className="url-input">
-      <select className="select-box" ref={deviceRef}>
+      <label for="device-input">Device Type</label>
+        <select className="select-box" ref={deviceRef} id="device-input">
           <option value="mobile">Mobile</option>
           <option value="desktop">Desktop</option>
         </select>
-      <input
+        <label for="wait-input">Wait Time</label>
+        <input
           type="number"
+          id="wait-input"
           placeholder="Analysis Duration in ms"
           ref={waitTimeRef}
         />
+        <label for="url-input">URL</label>
         <input
           type="text"
+          id="url-input"
           placeholder="Enter complete url e.g.('https://example.com')"
           ref={urlRef}
         />

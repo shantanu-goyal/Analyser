@@ -2,9 +2,7 @@ import React from "react";
 import Table from "./Table";
 
 function NetworkRTTInsights({ data }) {
-  function getLongRTTOrigins() {
-    return data.details.items.filter(({ rtt }) => rtt > 50);
-  }
+  const longRTTOrigins = data.details.items.filter(({ rtt }) => rtt > 50);
 
   return (
     <div style={{ marginBottom: "10em" }}>
@@ -18,21 +16,32 @@ function NetworkRTTInsights({ data }) {
             If the RTT to an origin is high, its an indication that servers
             closer to the user could improve performance.{" "}
           </h6>
-          <div className="table-container">
-            <Table
-              id={"bootup-time"}
-              headings={data.details.headings}
-              items={getLongRTTOrigins()}
-            />
-          </div>
-          <p style={{ textAlign: "center" }}>
-            Requests were made to a total{" "}
-            <strong>{data.details.items.length}</strong> servers. RTT for above
-            shown <strong>{getLongRTTOrigins().length}</strong> servers are more
-            than 50ms.
-            <br /> RTT can be reduced by bringing the servers closer to the
-            users.
-          </p>
+          {longRTTOrigins.length ? (
+            <>
+              {" "}
+              <div className="table-container">
+                <Table
+                  id={"bootup-time"}
+                  headings={data.details.headings}
+                  items={longRTTOrigins}
+                />
+              </div>
+              <p style={{ textAlign: "center" }}>
+                Requests were made to a total{" "}
+                <strong>{data.details.items.length}</strong> servers. RTT for
+                above shown <strong>{longRTTOrigins.length}</strong> servers are
+                more than 50ms.
+                <br /> RTT can be reduced by bringing the servers closer to the
+                users.
+              </p>
+            </>
+          ) : (
+            <p style={{ textAlign: "center" }}>
+              Requests were made to a total{" "}
+              <strong>{data.details.items.length}</strong> servers. All the
+              servers have RTT less than 50ms. 
+            </p>
+          )}
         </>
       )}
     </div>

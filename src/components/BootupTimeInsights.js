@@ -2,6 +2,7 @@ import React from "react";
 import Table from "./Table";
 
 function BootupTimeInsights({ data }) {
+
   function getLongestTime() {
     let val = data.details.items.reduce((val, { total }) => {
       return Math.max(val, total);
