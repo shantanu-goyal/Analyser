@@ -23,10 +23,9 @@ export default function Home() {
 
   const navigate = useNavigate();
 
-  function getThirdPartyData(data) {
-    const { mapping, entities, scripts, thirdPartyScripts } =
-      transformData(data);
-    return { entities, scripts, thirdPartyScripts, userInput: [], mapping };
+  function getThirdPartyData(data){
+    const {mapping, entities, scripts, thirdPartyScripts, domainWiseScripts}=transformData(data);
+    return {entities, scripts, thirdPartyScripts, userInput:[],mapping, domainWiseScripts};
   }
 
   /**

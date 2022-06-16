@@ -6,12 +6,17 @@ import Table from "./Table";
 /**
  * Function to create JSX of ThirdPartyTable element
  * @param {String} id id of the audit for which the table is rendered
- * @param {Array} headings Array of objects containing the table headers
- * @param {Array} items Array of objects containing the table data
+ * @param {Array} mapping Array of objects containing the entities and the scripts associated with then
+ * @param {Array} all Array of all scripts
+ * @param {Array} userInput Array of the user selections
+ * @param {Array} scripts Array of all third party scripts
+ * @param {Array} entities Array of all entities with their metrics
+ * @param {Array} domainWiseScripts Array of all scripts appearing in the dropdown
  * @param {Function} passData Callback to pass data to graph renderer
  * @returns table jsx
  */
-function ThirdPartyTable({ mapping, id, all, userInput, scripts, entities, passData }) {
+
+function ThirdPartyTable({ mapping, id, all, userInput, scripts, entities, passData, domainWiseScripts }) {
   // State to hold current third party headings according to the view
   const dataContext=useContext(DataContext);
 
@@ -28,15 +33,19 @@ function ThirdPartyTable({ mapping, id, all, userInput, scripts, entities, passD
    * @param {Object} event Object to hold data for event which triggered view change
    */
   function changeView(view) {
-    // If the current view is script view
+  
+    // Update the global data context with the props recieved 
     dataContext.setData({ type: "updateThirdPartyData", data:{
       scripts:all,
       entities,
       thirdPartyScripts:scripts,
       userInput,
-      mapping
+      mapping,
+      domainWiseScripts
     }});
 
+
+    // If the current view is script view
     if (view === "script") {
       // Update Table headings
       selectRef.current.value="script";
