@@ -8,17 +8,17 @@
 }
 
 .page-item button{
-    width:  30px;
-    height: 30px;
-    border: 1px solid black;
-    margin: 5px;
-    transition: 0.3s;
+    width:  30px !important;
+    height: 30px !important;
+    border: 1px solid black !important;
+    margin: 5px !important;
+    transition: 0.3s !important;
 }
 
 .page-item button:hover{
-    background-color: #126ed8;
-    color: white;
-    font-weight: bold;
+    background-color: #126ed8 !important;
+    color: white !important;
+    font-weight: bold !important;
 }
 
 .active{
