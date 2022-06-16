@@ -30,9 +30,9 @@ export default function Insights() {
   async function downloadReport() {
     const opt = {
       margin: [0, 0],
-      image: { type: "jpeg", quality: 0.98 },
+      image: { type: "jpeg", quality: 1 },
       html2canvas: { dpi: 192, letterRendering: true },
-      jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
+      jsPDF: { unit: "in", format: "letter", orientation: "l" },
     };
     const doc = new jsPDF(opt.jsPDF);
     const pageSize = jsPDF.getPageSize(opt.jsPDF);
@@ -58,7 +58,7 @@ export default function Insights() {
         pageSize.width,
         pageSize.height
       );
-      if(i!==0)doc.addPage();
+      doc.addPage();
     }
     doc.save("report.pdf");
   }
