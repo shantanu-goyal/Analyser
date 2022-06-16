@@ -19,6 +19,7 @@ function Form({ onFormSubmit }) {
   const valueRef = useRef(null);
   // Reference to device type selector
   const deviceRef = useRef(null);
+  // Referencr to the waitime selector
   const waitTimeRef = useRef(null);
 
   /**
