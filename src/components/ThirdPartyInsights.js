@@ -43,7 +43,7 @@ console.log("🚀 ~ file: ThirdPartyInsights.js ~ line 5 ~ ServerLatencyInsights
   console.log("🚀 ~ file: ThirdPartyInsights.js ~ line 43 ~ tableContent ~ tableContent", tableContent)
 
   return (
-    <div style={{ marginBottom: "10em" }}>
+    <div style={{ marginBottom: "10em" }} id="thirdPartyInsights">
       {data && data.entities && (
         <>
           <h1 style={{ textAlign: "center" }}>Third Party Summary</h1>

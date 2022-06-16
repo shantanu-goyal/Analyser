@@ -5,7 +5,7 @@ function NetworkRTTInsights({ data }) {
   const longRTTOrigins = data.details.items.filter(({ rtt }) => rtt > 50);
 
   return (
-    <div style={{ marginBottom: "10em" }}>
+    <div style={{ marginBottom: "10em" }} id="networkRTTInsights">
       {data && data.details && (
         <>
           <h1 style={{ textAlign: "center" }}>Network RTT</h1>
