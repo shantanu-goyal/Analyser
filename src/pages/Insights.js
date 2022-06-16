@@ -8,6 +8,7 @@ import NetworkRequestInsights from "../components/NetworkRequestInsights";
 import NetworkRTTInsights from "../components/NetworkRTTInsights";
 import ServerLatencyInsights from "../components/ServerLatencyInsights";
 import ResourceSummaryInsights from "../components/ResourceSummaryInsights";
+import ThirdPartyInsights from "../components/ThirdPartyInsights";
 
 export default function Insights() {
   const dataContext = useContext(DataContext);
@@ -18,6 +19,8 @@ export default function Insights() {
   const networkRTTData = data["network-rtt"];
   const serverLatencyData = data["network-server-latency"];
   const resourceData = data["resource-summary"];
+  const thirdPartyData = dataContext.data.thirdParty
+  console.log("🚀 ~ file: Insights.js ~ line 23 ~ Insights ~ thirdPartyData", thirdPartyData)
 
   return (
     <>
@@ -31,6 +34,7 @@ export default function Insights() {
           <NetworkRTTInsights data={networkRTTData} />
           <ServerLatencyInsights data={serverLatencyData} />
           <ResourceSummaryInsights data={resourceData} />
+          <ThirdPartyInsights data={thirdPartyData} />
         </div>
       )}
     </>

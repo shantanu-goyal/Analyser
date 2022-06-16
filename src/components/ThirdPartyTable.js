@@ -81,7 +81,7 @@ function ThirdPartyTable({ id, all, userInput, scripts, entities, passData }) {
 
   return (
     <div className="third-party-wrapper" style={{ marginLeft: "1em" }}>
-      <select ref={selectRef} className="select-box" onChange={(e) => changeView(e.target.value)}>
+      <select className="select-box" onChange={(e) => changeView(e.target.value)} style={{width: "fit-content"}}>
         <option value="entity">Entity View</option>
         <option value="script">Script View</option>
       </select>
@@ -99,10 +99,9 @@ function ThirdPartyTable({ id, all, userInput, scripts, entities, passData }) {
 
 ThirdPartyTable.propTypes = {
   id: PropTypes.string.isRequired,
-  headings: PropTypes.arrayOf(PropTypes.object),
   scripts: PropTypes.arrayOf(PropTypes.object).isRequired,
   entities: PropTypes.arrayOf(PropTypes.array).isRequired,
-  passData: PropTypes.func.isRequired,
+  passData: PropTypes.func,
 };
 
 export default ThirdPartyTable;
