@@ -21,7 +21,7 @@ function NetworkRTTInsights({ data }) {
               {" "}
               <div className="table-container">
                 <Table
-                  id={"bootup-time"}
+                  id={"network-rtt"}
                   headings={data.details.headings}
                   items={longRTTOrigins}
                 />
@@ -39,7 +39,7 @@ function NetworkRTTInsights({ data }) {
             <p style={{ textAlign: "center" }}>
               Requests were made to a total{" "}
               <strong>{data.details.items.length}</strong> servers. All the
-              servers have RTT less than 50ms. 
+              servers have RTT less than 50ms. Well Done!
             </p>
           )}
         </>

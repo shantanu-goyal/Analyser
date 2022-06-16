@@ -19,7 +19,7 @@ function ServerLatencyInsights({ data }) {
           <h4 style={{ textAlign: "center" }}> {data.title} </h4>
           <div className="table-container">
             <Table
-              id={"bootup-time"}
+              id={"resource-summary"}
               headings={data.details.headings}
               items={data.details.items}
             />

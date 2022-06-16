@@ -9,6 +9,10 @@ function BootupTimeInsights({ data }) {
     return Math.round(val * 100) / 100;
   }
 
+  const attributableItems = data.details.items.filter(
+    ({ url }) => url !== "Unattributable"
+  );
+
   return (
     <div style={{ marginBottom: "10em" }} id="bootupTimeInsights">
       {data && data.details && (
@@ -20,26 +24,32 @@ function BootupTimeInsights({ data }) {
             Consider reducing the time spent parsing, compiling, and executing
             JS. You may find delivering smaller JS payloads helps with this.{" "}
           </h6>
-          <div className="table-container">
-            <Table
-              id={"bootup-time"}
-              headings={data.details.headings}
-              items={data.details.items.filter(
-                ({ url }) => url !== "Unattributable"
-              )}
-            />
-          </div>
-          <p style={{ textAlign: "center" }}>
-            From bootup time we can see that we have{" "}
-            <strong>{data.details.items.length}</strong> scripts with Total CPU
-            Time of more than 50ms.
-            <br />
-            The longest time taken by any script is{" "}
-            <strong>{getLongestTime()} ms</strong>.
-            <br />
-            To improve the website's performance we can try reducing the script
-            size.
-          </p>
+          {attributableItems.length > 0 ? (
+            <>
+              <div className="table-container">
+                <Table
+                  id={"bootup-time"}
+                  headings={data.details.headings}
+                  items={attributableItems}
+                />
+              </div>
+              <p style={{ textAlign: "center" }}>
+                From bootup time we can see that we have{" "}
+                <strong>{data.details.items.length}</strong> scripts with Total
+                CPU Time of more than 50ms.
+                <br />
+                The longest time taken by any script is{" "}
+                <strong>{getLongestTime()} ms</strong>.
+                <br />
+                To improve the website's performance we can try reducing the
+                script size.
+              </p>
+            </>
+          ) : (
+            <p style={{ textAlign: "center" }}>
+              Congrats none of the scripts took more than 50ms.
+            </p>
+          )}
         </>
       )}
     </div>

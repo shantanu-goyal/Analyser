@@ -3,7 +3,7 @@ import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import ThirdPartyTable from '../components/ThirdPartyTable'
 import { thirdPartyWeb } from '../utility/third-party-web/entity-finder-api'
-import { getHostname, transformData, generateGraph } from '../utility/thirdPartyUtility';
+import { getHostname, generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
 
@@ -165,7 +165,7 @@ export default function ThirdPartySummary() {
     // Update the dropdown menu
     const hostname = getHostname(key);
     setDropdownScripts(dropdownScripts.filter(script => {
-      return script != hostname;
+      return script !== hostname;
     }))
     
     keyRef.current.value = "";

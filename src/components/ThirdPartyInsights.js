@@ -2,8 +2,6 @@ import React from "react";
 import Table from "./Table";
 
 function ServerLatencyInsights({ data }) {
-console.log("🚀 ~ file: ThirdPartyInsights.js ~ line 5 ~ ServerLatencyInsights ~ data", data)
-  
   const maxSizeEntity = data.entities.filter(
     (entity) => entity[1].transferSize > 100 * 1024
   );
@@ -16,7 +14,7 @@ console.log("🚀 ~ file: ThirdPartyInsights.js ~ line 5 ~ ServerLatencyInsights
     (entity) => entity[1].blockingTime > 0
   );
 
-  const tableContent = () => {
+  const tableContent = (() => {
     const tableEntitySet = new Set([
       ...maxSizeEntity,
       ...maxTimeEntity,
@@ -30,17 +28,20 @@ console.log("🚀 ~ file: ThirdPartyInsights.js ~ line 5 ~ ServerLatencyInsights
       });
     });
     const headings = [
-        { key: "entity", text: "Third-Party", itemType: "link" },
-        { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
-        { key: "blockingTime", text: "Render Blocking Time", itemType: "ms" },
-        { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
-    ]
+      { key: "entity", text: "Third-Party", itemType: "link" },
+      { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
+      { key: "blockingTime", text: "Render Blocking Time", itemType: "ms" },
+      { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
+    ];
     return {
-        headings,
-        items: tableEntities
-    }
-  };
-  console.log("🚀 ~ file: ThirdPartyInsights.js ~ line 43 ~ tableContent ~ tableContent", tableContent)
+      headings,
+      items: tableEntities,
+    };
+  })();
+  console.log(
+    "🚀 ~ file: ThirdPartyInsights.js ~ line 43 ~ tableContent ~ tableContent",
+    tableContent
+  );
 
   return (
     <div style={{ marginBottom: "10em" }} id="thirdPartyInsights">
@@ -54,26 +55,35 @@ console.log("🚀 ~ file: ThirdPartyInsights.js ~ line 5 ~ ServerLatencyInsights
             the number of redundant third-party providers and try to load
             third-party code after your page has primarily finished loading.{" "}
           </h6>
-          <div className="table-container">
-          <Table
-              id={"bootup-time"}
-              headings={tableContent().headings}
-              items={tableContent().items}
-            />
-          </div>
-          <p style={{ textAlign: "center" }}>
-            Total <strong>{data.thirdPartyScripts.length}</strong> third-party
-            scripts are being used from <strong>{data.entities.length}</strong>{" "}
-            third party entities.
-            <br /> Among all the third party entities,{" "}
-            <strong>{maxSizeEntity.length}</strong>{" "}
-            entities have a combined transfer size more than 100 KB.
-            <br /> Among all the third party entities,{" "}
-            <strong>{maxTimeEntity.length}</strong>{" "}
-            entities have a combined load time of more than 100ms. <br />
-            There were <strong>{renderBlockingEntities.length}</strong>{" "} render
-            blocking third party entities.
-          </p>
+          {tableContent.items.length > 0 ? (
+            <>
+              <div className="table-container">
+                <Table
+                  id={"bootup-time"}
+                  headings={tableContent.headings}
+                  items={tableContent.items}
+                />
+              </div>
+              <p style={{ textAlign: "center" }}>
+                Total <strong>{data.thirdPartyScripts.length}</strong>{" "}
+                third-party scripts are being used from{" "}
+                <strong>{data.entities.length}</strong> third party entities.
+                <br /> Among all the third party entities,{" "}
+                <strong>{maxSizeEntity.length}</strong> entities have a combined
+                transfer size more than 100 KB.
+                <br /> Among all the third party entities,{" "}
+                <strong>{maxTimeEntity.length}</strong> entities have a combined
+                load time of more than 100ms. <br />
+                There were <strong>{renderBlockingEntities.length}</strong>{" "}
+                render blocking third party entities.
+              </p>
+            </>
+          ) : (
+            <p style={{ textAlign: "center" }}>
+              Congrats! none of the third party entities are compromising with
+              the website's performance.
+            </p>
+          )}
         </>
       )}
     </div>

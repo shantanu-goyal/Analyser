@@ -27,7 +27,7 @@ function MainThreadWorkInsights({ data }) {
           </h6>
           <div className="table-container">
             <Table
-              id={"bootup-time"}
+              id={"mainthread-work-breakdown"}
               headings={data.details.headings}
               items={data.details.items}
             />

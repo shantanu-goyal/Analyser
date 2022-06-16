@@ -18,7 +18,7 @@ function BootupTimeInsights({ data }) {
             <>
               <div className="table-container">
                 <Table
-                  id={"bootup-time"}
+                  id={"network-requests"}
                   headings={data.details.headings}
                   items={poorlyCompressedResources}
                 />
