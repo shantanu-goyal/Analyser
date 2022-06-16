@@ -61,7 +61,7 @@ function Form({ onFormSubmit }) {
     <div className="url-form">
       <div className="url-input">
       <label htmlFor="device-input">Device Type</label>
-        <select className="select-box" ref={deviceRef} id="device-input">
+        <select className="select-box" ref={deviceRef} id="device-input" style={{marginTop: '0'}}>
           <option value="mobile">Mobile</option>
           <option value="desktop">Desktop</option>
         </select>

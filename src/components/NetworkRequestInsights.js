@@ -8,7 +8,7 @@ function BootupTimeInsights({ data }) {
   );
 
   return (
-    <div style={{ marginBottom: "10em" }}>
+    <div style={{ marginBottom: "10em" }} id="networkReuestInsights">
       {data && data.details && (
         <>
           <h1 style={{ textAlign: "center" }}>Network Requests</h1>

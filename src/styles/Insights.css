@@ -7,3 +7,19 @@
     display: flex;
     justify-content: space-between;
 }
+
+.insights-wrapper{
+    padding: 1em;
+}
+
+.insights-wrapper button {
+    font-size: 1em;
+    background-color: #107eff;
+    color: aliceblue;
+    width: 8em;
+    height: 2em;
+    margin-bottom: 2em;
+    border: none;
+    cursor: pointer;
+    border-radius: .25rem;
+  }

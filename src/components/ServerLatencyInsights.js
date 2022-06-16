@@ -9,7 +9,7 @@ function ServerLatencyInsights({ data }) {
   }
 
   return (
-    <div style={{ marginBottom: "10em" }}>
+    <div style={{ marginBottom: "10em" }} id="serverLatencyInsights">
       {data && data.details && (
         <>
           <h1 style={{ textAlign: "center" }}>Network Server Latency</h1>

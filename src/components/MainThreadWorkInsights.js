@@ -15,7 +15,7 @@ function MainThreadWorkInsights({ data }) {
   }
 
   return (
-    <div style={{ marginBottom: "10em" }}>
+    <div style={{ marginBottom: "10em" }} id="mainThreadWorkInsights">
       {data && data.details && (
         <>
           <h1 style={{ textAlign: "center" }}>Main Thread Work Breakdown</h1>
