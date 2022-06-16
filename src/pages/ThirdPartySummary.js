@@ -34,11 +34,13 @@ export default function ThirdPartySummary() {
     })
     const thirdPartyScripts = [];
     const byEntity = new Map();
+    const domains=new Map();
     scripts.forEach(script => {
       let scriptURL = getHostname(script.url);
       if(!scriptURL){
         return {};
       }
+      domains.set(scriptURL,1);
       let entity = thirdPartyWeb.getEntity(scriptURL);
       let scriptData = script.data;
       const defaultConfig = {
@@ -56,7 +58,8 @@ export default function ThirdPartySummary() {
       }
     })
     const entities = Array.from(byEntity.entries());
-    return { entities, scripts, thirdPartyScripts };
+    const domainWiseScripts=Array.from(domains.keys());
+    return { domainWiseScripts, entities, scripts, thirdPartyScripts };
   }
 
   function getMainThreadTime(scripts) {
@@ -125,10 +128,10 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
-  const { entities, thirdPartyScripts, scripts } = transformData(data);
+  const {domainWiseScripts, entities, thirdPartyScripts, scripts } = transformData(data);
   
+  console.log(domainWiseScripts); 
   
-
   const [userInput, setUserInput] = useState([]);
   const [entityArray, setEntityArray] = useState(entities);
   const [scriptsArray, setScriptsArray] = useState(scripts);
@@ -279,12 +282,14 @@ export default function ThirdPartySummary() {
 
                     <tr>
                       <td>
-                        <input
-                          type="text"
+                        <select className='entity-select'
                           ref={keyRef}
                           placeholder="Key"
-                          spellCheck="false"
-                        />
+                        >
+                          {domainWiseScripts.map((script,idx)=>{
+                            return <option key={idx} value={"https://"+script}>{script}</option>
+                          })}
+                        </select>
                       </td>
                       <td>
                         <input

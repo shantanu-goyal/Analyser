@@ -23,7 +23,7 @@
 
 .entity-input {
   margin-top: 2em;
-  width: 70%;
+  width: 90%;
   margin-left: 5%;
   border-collapse: collapse;
   text-align: center;
@@ -34,9 +34,27 @@
   padding: 1em;
   box-sizing: border-box;
   font-size: 1em;
-  width: 90%;
+  width:90%;
+  text-overflow: ellipsis;
   margin: 0.5em;
   height: 1em;
+}
+
+
+.entity-select{
+  width: 90%;
+  text-overflow:ellipsis;
+  margin: 0.5em;
+  height: 2em;
+  border: 1px solid rgb(180, 180, 180);
+  box-sizing: border-box;
+  font-size: 1em;
+  padding-left:1em;
+  text-align: left;
+}
+
+.entity-select option{
+  text-overflow: ellipsis;
 }
 
 .entity-input th {
