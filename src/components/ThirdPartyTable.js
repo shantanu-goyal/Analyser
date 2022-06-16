@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import "../styles/ThirdPartyTable.css";
 import Table from "./Table";
 
@@ -16,7 +16,7 @@ function ThirdPartyTable({ id, scripts, entities, passData }) {
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([]);
   // State to hold current third party items according to the view
   const [thirdPartyItems, setThirdPartyItems] = useState([]);
-
+  const selectRef=useRef();
   useEffect(() => {
     changeView('entity')
   }, [scripts, entities])
@@ -29,6 +29,7 @@ function ThirdPartyTable({ id, scripts, entities, passData }) {
     // If the current view is script view
     if (view === "script") {
       // Update Table headings
+      selectRef.current.value="script";
       setThirdPartyHeadings([
         { key: "url", text: "URL", itemType: "text" },
         { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
@@ -48,6 +49,7 @@ function ThirdPartyTable({ id, scripts, entities, passData }) {
       );
     } else {
       // Default headings and items passed to the ThirdPartyTable are in entity view
+      selectRef.current.value="entity"
       setThirdPartyHeadings([
         { key: "entity", text: "Third-Party", itemType: "link" },
         { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
