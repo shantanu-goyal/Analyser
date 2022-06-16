@@ -8,12 +8,10 @@ import { getHostname, transformData } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
 export default function ThirdPartySummary() {
-
-  
-  
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data["third-party-summary"];
+  let userData=dataContext.data.thirdParty.userInput || [];
   // Reference to key field for new URL
   const keyRef = useRef(null);
   // Reference to value field for new Entity
@@ -90,9 +88,27 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
-  const {domainWiseScripts, entities, thirdPartyScripts, scripts,mapping } = transformData(data);
+  let entities=[], thirdPartyScripts=[], mapping=[],domainWiseScripts=[], scripts=[];
+
+  if(userData.length>0){
+
+    entities=dataContext.data.thirdParty.entities;
+    thirdPartyScripts=dataContext.data.thirdParty.thirdPartyScripts;
+    mapping=dataContext.data.thirdParty.mapping;
+    const td=transformData(data);
+    scripts=td.scripts;
+    domainWiseScripts=td.domainWiseScripts;
+  }
+  else{
+    const td=transformData(data);
+    entities=td.entities;
+    thirdPartyScripts=td.thirdPartyScripts;
+    mapping=td.mapping;
+    scripts=td.scripts;
+    domainWiseScripts=td.domainWiseScripts;
+  }
   
-  const [userInput, setUserInput] = useState([]);
+  const [userInput, setUserInput] = useState(userData);
   const [entityArray, setEntityArray] = useState(entities);
   const [scriptsArray, setScriptsArray] = useState(scripts);
   const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
