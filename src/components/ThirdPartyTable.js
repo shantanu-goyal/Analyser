@@ -11,7 +11,7 @@ import Table from "./Table";
  * @param {Function} passData Callback to pass data to graph renderer
  * @returns table jsx
  */
-function ThirdPartyTable({ id, all, userInput, scripts, entities, passData }) {
+function ThirdPartyTable({ mapping, id, all, userInput, scripts, entities, passData }) {
   // State to hold current third party headings according to the view
   const dataContext=useContext(DataContext);
 
@@ -33,7 +33,8 @@ function ThirdPartyTable({ id, all, userInput, scripts, entities, passData }) {
       scripts:all,
       entities,
       thirdPartyScripts:scripts,
-      userInput
+      userInput,
+      mapping
     }});
 
     if (view === "script") {

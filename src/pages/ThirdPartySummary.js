@@ -4,14 +4,11 @@ import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import ThirdPartyTable from '../components/ThirdPartyTable'
 import DoughnutChart from '../components/Graphs/DoughnutChart';
+import { getHostname, transformData } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
 export default function ThirdPartySummary() {
 
-  const getHostname = (url) => {
-    const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
-    return matches && matches[1];
-  } 
   
   
   const dataContext = useContext(DataContext);
@@ -26,43 +23,6 @@ export default function ThirdPartySummary() {
   // State to store the type of the graph to be generated. Defaults to the main thread time graph.
   const [value, setValue] = useState("mainthread");
 
-  function transformData(data) {
-    let items = data.details;
-    const scripts = items.map(item => {
-      return {
-        url: item[0],
-        data: item[1]
-      }
-    })
-    const thirdPartyScripts = [];
-    const byEntity = new Map();
-    const domains=new Map();
-    scripts.forEach(script => {
-      let scriptURL = getHostname(script.url);
-      if(!scriptURL){
-        return {};
-      }
-      domains.set(scriptURL,1);
-      let entity = thirdPartyWeb.getEntity(scriptURL);
-      let scriptData = script.data;
-      const defaultConfig = {
-        mainThreadTime: 0,
-        blockingTime: 0,
-        transferSize: 0
-      }
-      if (entity) {
-        thirdPartyScripts.push(script);
-        const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
-        currentEntity.mainThreadTime += scriptData.mainThreadTime;
-        currentEntity.blockingTime += scriptData.blockingTime;
-        currentEntity.transferSize += scriptData.transferSize;
-        byEntity.set(entity.name, currentEntity);
-      }
-    })
-    const entities = Array.from(byEntity.entries());
-    const domainWiseScripts=Array.from(domains.keys());
-    return { domainWiseScripts, entities, scripts, thirdPartyScripts };
-  }
 
   function getMainThreadTime(scripts) {
     const result = scripts.map(script => {
@@ -130,15 +90,17 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
-  const {domainWiseScripts, entities, thirdPartyScripts, scripts } = transformData(data);
+  const {domainWiseScripts, entities, thirdPartyScripts, scripts,mapping } = transformData(data);
   
   const [userInput, setUserInput] = useState([]);
   const [entityArray, setEntityArray] = useState(entities);
   const [scriptsArray, setScriptsArray] = useState(scripts);
   const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
+  const [mappingArray, setMappingArray]=useState(mapping);
 
   function renderTable(newUserInput){
     const byEntity = new Map();
+    const entityWiseScripts=new Map();
     const scripts = scriptsArray;
     const thirdPartyScripts = [];
     scripts.forEach(script => {
@@ -162,6 +124,9 @@ export default function ThirdPartySummary() {
       if (entity) {
         thirdPartyScripts.push(script);
         const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
+        const scriptForEntity=entityWiseScripts.get(entity.name)||[];
+        scriptForEntity.push(script.url);
+        entityWiseScripts.set(entity.name, scriptForEntity);
         currentEntity.mainThreadTime += scriptData.mainThreadTime;
         currentEntity.blockingTime += scriptData.blockingTime;
         currentEntity.transferSize += scriptData.transferSize;
@@ -169,6 +134,8 @@ export default function ThirdPartySummary() {
       }
     })
     const entities = Array.from(byEntity.entries());
+    const mapping=Array.from(entityWiseScripts.entries());
+    setMappingArray(mapping);
     setEntityArray(entities);
     setThirdPartyScriptsArray(thirdPartyScripts);
   }
@@ -213,6 +180,7 @@ export default function ThirdPartySummary() {
                   scripts={thirdPartyScriptsArray}
                   userInput={userInput}
                   entities={entityArray}
+                  mapping={mappingArray}
                   passData={passData}
                 />
                 <h1>Add your own entities below:-</h1>

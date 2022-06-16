@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
-import {thirdPartyWeb} from '../utility/third-party-web/entity-finder-api'
 import { useNavigate } from "react-router-dom";
 import Form from "../components/Form";
 import { REACT_APP_SERVER_URL } from "../config";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Home.css";
+import { transformData } from "../utility/thirdPartyUtility";
 
 /**
  * Function to return JSX for Home page
@@ -22,48 +22,11 @@ export default function Home() {
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
-  
-  const getHostname = (url) => {
-    const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
-    return matches && matches[1];
-  } 
+   
 
   function getThirdPartyData(data){
-    let items = data.details;
-    const scripts = items.map(item => {
-      return {
-        url: item[0],
-        data: item[1]
-      }
-    })
-    const thirdPartyScripts = [];
-    const byEntity = new Map();
-    const domains=new Map();
-    scripts.forEach(script => {
-      let scriptURL = getHostname(script.url);
-      if(!scriptURL){
-        return {};
-      }
-      domains.set(scriptURL,1);
-      let entity = thirdPartyWeb.getEntity(scriptURL);
-      let scriptData = script.data;
-      const defaultConfig = {
-        mainThreadTime: 0,
-        blockingTime: 0,
-        transferSize: 0
-      }
-      if (entity) {
-        thirdPartyScripts.push(script);
-        const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
-        currentEntity.mainThreadTime += scriptData.mainThreadTime;
-        currentEntity.blockingTime += scriptData.blockingTime;
-        currentEntity.transferSize += scriptData.transferSize;
-        byEntity.set(entity.name, currentEntity);
-      }
-    })
-    const entities = Array.from(byEntity.entries());
-    const domainWiseScripts=Array.from(domains.keys());
-    return {entities, scripts, thirdPartyScripts, userInput:[]};
+    const {mapping, entities, scripts, thirdPartyScripts}=transformData(data);
+    return {entities, scripts, thirdPartyScripts, userInput:[],mapping};
   }
 
 
