@@ -95,8 +95,8 @@ export default function ThirdPartySummary() {
     entities=dataContext.data.thirdParty.entities;
     thirdPartyScripts=dataContext.data.thirdParty.thirdPartyScripts;
     mapping=dataContext.data.thirdParty.mapping;
+    scripts=dataContext.data.thirdParty.scripts;
     const td=transformData(data);
-    scripts=td.scripts;
     domainWiseScripts=td.domainWiseScripts;
   }
   else{
