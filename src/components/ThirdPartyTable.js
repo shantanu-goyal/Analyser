@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React, { useEffect, useState,useRef, useContext } from "react";
 import "../styles/ThirdPartyTable.css";
 import { DataContext } from "../contexts/DataContext";
@@ -36,6 +35,7 @@ function ThirdPartyTable({ id, all, userInput, scripts, entities, passData }) {
       thirdPartyScripts:scripts,
       userInput
     }});
+
     if (view === "script") {
       // Update Table headings
       selectRef.current.value="script";
@@ -81,7 +81,7 @@ function ThirdPartyTable({ id, all, userInput, scripts, entities, passData }) {
 
   return (
     <div className="third-party-wrapper" style={{ marginLeft: "1em" }}>
-      <select className="select-box" onChange={(e) => changeView(e.target.value)} style={{width: "fit-content"}}>
+      <select ref={selectRef} className="select-box" onChange={(e) => changeView(e.target.value)} style={{width: "fit-content"}}>
         <option value="entity">Entity View</option>
         <option value="script">Script View</option>
       </select>
@@ -97,11 +97,5 @@ function ThirdPartyTable({ id, all, userInput, scripts, entities, passData }) {
   );
 }
 
-ThirdPartyTable.propTypes = {
-  id: PropTypes.string.isRequired,
-  scripts: PropTypes.arrayOf(PropTypes.object).isRequired,
-  entities: PropTypes.arrayOf(PropTypes.array).isRequired,
-  passData: PropTypes.func,
-};
 
 export default ThirdPartyTable;

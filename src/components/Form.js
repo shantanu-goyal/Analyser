@@ -59,19 +59,19 @@ function Form({ onFormSubmit }) {
   return (
     <div className="url-form">
       <div className="url-input">
-      <label for="device-input">Device Type</label>
+      <label htmlFor="device-input">Device Type</label>
         <select className="select-box" ref={deviceRef} id="device-input">
           <option value="mobile">Mobile</option>
           <option value="desktop">Desktop</option>
         </select>
-        <label for="wait-input">Wait Time</label>
+        <label htmlFor="wait-input">Wait Time</label>
         <input
           type="number"
           id="wait-input"
           placeholder="Analysis Duration in ms"
           ref={waitTimeRef}
         />
-        <label for="url-input">URL</label>
+        <label htmlFor="url-input">URL</label>
         <input
           type="text"
           id="url-input"
