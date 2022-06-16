@@ -32,6 +32,7 @@ export default function Home() {
     setFormSubmitted(true);
     setLoading(true);
     try {
+      
       const result = await axios.get(REACT_APP_SERVER_URL, {
         method: "GET",
         params: {
@@ -43,6 +44,11 @@ export default function Home() {
       });
       console.log(result.data)
       setLoading(false);
+      dataContext.setData({ type: "analysisSetup", data: {
+        deviceType: formFactor,
+        url,
+        waitTime
+      } });
       dataContext.setData({ type: "changeData", data: result.data });
       navigate("/bootup-time");
     } catch (error) {

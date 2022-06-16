@@ -15,6 +15,8 @@ const switchData = (state, action) => {
       return { ...state, data: action.data };
     case "updateThirdPartyData":
       return {...state, thirdParty:action.data}
+    case "analysisSetup": 
+      return {...state, config: action.data}
     default:
       return state;
   }
@@ -26,7 +28,12 @@ const DataContextProvider = ({ children }) => {
   // Initialize the state
   const [data, setData] = useReducer(switchData, {
     data: {},
-    thirdParty:{}
+    thirdParty:{},
+    config: {
+      deviceType: 'mobile',
+      url: '',
+      waitTime: 60000
+    }
   });
 
   return (

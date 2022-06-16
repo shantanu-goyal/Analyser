@@ -2,3 +2,8 @@
     text-align: center;
     width: 100%;
 }
+
+.insights-title{
+    display: flex;
+    justify-content: space-between;
+}
