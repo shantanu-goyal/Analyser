@@ -2,7 +2,6 @@ import React from "react";
 import Table from "./Table";
 
 function BootupTimeInsights({ data }) {
-
   function getLongestTime() {
     let val = data.details.items.reduce((val, { total }) => {
       return Math.max(val, total);
@@ -25,7 +24,9 @@ function BootupTimeInsights({ data }) {
             <Table
               id={"bootup-time"}
               headings={data.details.headings}
-              items={data.details.items}
+              items={data.details.items.filter(
+                ({ url }) => url !== "Unattributable"
+              )}
             />
           </div>
           <p style={{ textAlign: "center" }}>

@@ -4,7 +4,7 @@ import Table from "./Table";
 function BootupTimeInsights({ data }) {
   const poorlyCompressedResources = data.details.items.filter(
     ({ resourceSize, transferSize }) =>
-      transferSize > 0 && resourceSize / transferSize <= 10
+      transferSize > 0 && resourceSize / transferSize < 5
   );
 
   return (
@@ -28,7 +28,7 @@ function BootupTimeInsights({ data }) {
                 network requests during the analysis out of which above given{" "}
                 <strong>{poorlyCompressedResources.length}</strong> resources
                 are poorly compressed as their Tansfer size is greater than one
-                tenth of Resource Size.
+                fifth of Resource Size.
                 <br /> The number of requests can be reduced by bundling the
                 scripts.
               </p>

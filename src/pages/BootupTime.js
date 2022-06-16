@@ -121,7 +121,7 @@ export default function BootupTime() {
           <h6 style={{ textAlign: "center" }}> Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. </h6>
           <div className="table-container">
 
-            <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items} passData={passData} />
+            <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items.filter(({url}) => url !== 'Unattributable')} passData={passData} />
 
           </div>
           <div className="graph-container">

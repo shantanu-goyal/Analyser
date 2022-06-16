@@ -22,13 +22,11 @@ export default function Home() {
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
-   
 
   function getThirdPartyData(data){
     const {mapping, entities, scripts, thirdPartyScripts, domainWiseScripts}=transformData(data);
     return {entities, scripts, thirdPartyScripts, userInput:[],mapping, domainWiseScripts};
   }
-
 
   /**
    * Function to manage states on form submission and fetch data
@@ -46,17 +44,26 @@ export default function Home() {
           url,
           headers,
           formFactor,
-          waitTime
+          waitTime,
         },
       });
-      console.log(result.data)
+      console.log(result.data);
       setLoading(false);
-      const thirdParty=getThirdPartyData(result.data['third-party-summary']);
-      dataContext.setData({ type: "changeData", 
-      data:{
-          data:result.data,
-          thirdParty:thirdParty
-        }
+      dataContext.setData({
+        type: "analysisSetup",
+        data: {
+          deviceType: formFactor,
+          url,
+          waitTime,
+        },
+      });
+      const thirdParty = getThirdPartyData(result.data["third-party-summary"]);
+      dataContext.setData({
+        type: "changeData",
+        data: {
+          data: result.data,
+          thirdParty: thirdParty,
+        },
       });
       navigate("/bootup-time");
     } catch (error) {
