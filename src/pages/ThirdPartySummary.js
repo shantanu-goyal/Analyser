@@ -5,7 +5,7 @@ import { NavBar } from "../components/NavBar";
 import ThirdPartyTable from '../components/ThirdPartyTable'
 import DoughnutChart from '../components/Graphs/DoughnutChart';
 import { Navigate } from 'react-router-dom';
-
+import "../styles/ThirdPartySummary.css"
 export default function ThirdPartySummary() {
 
   const getHostname = (url) => {

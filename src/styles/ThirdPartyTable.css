@@ -15,66 +15,8 @@
 .select-box {
   margin-top: 2em;
   border: none;
-  width: 150px;
+  width: 150px !important;
   font-size: 0.8em;
   height: 30px;
   text-align: center;
-}
-
-.entity-input {
-  margin-top: 2em;
-  width: 90%;
-  margin-left: 5%;
-  border-collapse: collapse;
-  text-align: center;
-}
-
-.entity-input input {
-  border: 1px solid rgb(180, 180, 180);
-  padding: 1em;
-  box-sizing: border-box;
-  font-size: 1em;
-  width:90%;
-  text-overflow: ellipsis;
-  margin: 0.5em;
-  height: 1em;
-}
-
-
-.entity-select{
-  width: 90%;
-  text-overflow:ellipsis;
-  margin: 0.5em;
-  height: 2em;
-  border: 1px solid rgb(180, 180, 180);
-  box-sizing: border-box;
-  font-size: 1em;
-  padding-left:1em;
-  text-align: left;
-}
-
-.entity-select option{
-  text-overflow: ellipsis;
-}
-
-.entity-input th {
-  background-color: #107eff;
-  color: white;
-  font-size: large;
-  max-width: 80%;
-}
-
-.entity-input th:hover{
-  background-color: #126ed8;
-}
-
-.entity-input th:last-of-type {
-  background-color: white;
-}
-
-.entity-input img {
-  margin-top: 10px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
 }
