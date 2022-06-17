@@ -37,10 +37,7 @@ export default function Home() {
       return item;
       
     });
-    dataContext.setData({
-      type:"updateThirdPartyData",
-      data:newItems
-    });
+    return data;
   }
 
   /**
