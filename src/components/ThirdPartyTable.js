@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef, useContext } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import "../styles/ThirdPartyTable.css";
 import { DataContext } from "../contexts/DataContext";
 import Table from "./Table";
@@ -16,39 +16,49 @@ import Table from "./Table";
  * @returns table jsx
  */
 
-function ThirdPartyTable({ mapping, id, all, userInput, scripts, entities, passData, domainWiseScripts }) {
+function ThirdPartyTable({
+  mapping,
+  id,
+  all,
+  userInput,
+  scripts,
+  entities,
+  passData,
+  domainWiseScripts,
+}) {
   // State to hold current third party headings according to the view
-  const dataContext=useContext(DataContext);
+  const dataContext = useContext(DataContext);
 
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([]);
   // State to hold current third party items according to the view
   const [thirdPartyItems, setThirdPartyItems] = useState([]);
-  const selectRef=useRef();
+  const selectRef = useRef();
   useEffect(() => {
-    changeView('entity')
-  }, [scripts, entities])
+    changeView("entity");
+  }, [scripts, entities]);
 
   /**
    * Toogle view of third party table from script view to entity view and vice-versa
    * @param {Object} event Object to hold data for event which triggered view change
    */
   function changeView(view) {
-  
-    // Update the global data context with the props recieved 
-    dataContext.setData({ type: "updateThirdPartyData", data:{
-      scripts:all,
-      entities,
-      thirdPartyScripts:scripts,
-      userInput,
-      mapping,
-      domainWiseScripts
-    }});
-
+    // Update the global data context with the props recieved
+    dataContext.setData({
+      type: "updateThirdPartyData",
+      data: {
+        scripts: all,
+        entities,
+        thirdPartyScripts: scripts,
+        userInput,
+        mapping,
+        domainWiseScripts,
+      },
+    });
 
     // If the current view is script view
     if (view === "script") {
       // Update Table headings
-      selectRef.current.value="script";
+      selectRef.current.value = "script";
       setThirdPartyHeadings([
         { key: "url", text: "URL", itemType: "text" },
         { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
@@ -68,7 +78,7 @@ function ThirdPartyTable({ mapping, id, all, userInput, scripts, entities, passD
       );
     } else {
       // Default headings and items passed to the ThirdPartyTable are in entity view
-      selectRef.current.value="entity"
+      selectRef.current.value = "entity";
       setThirdPartyHeadings([
         { key: "entity", text: "Third-Party", itemType: "link" },
         { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
@@ -91,7 +101,12 @@ function ThirdPartyTable({ mapping, id, all, userInput, scripts, entities, passD
 
   return (
     <div className="third-party-wrapper" style={{ marginLeft: "1em" }}>
-      <select ref={selectRef} className="select-box" onChange={(e) => changeView(e.target.value)} style={{width: "fit-content"}}>
+      <select
+        ref={selectRef}
+        className="select-box"
+        onChange={(e) => changeView(e.target.value)}
+        style={{ width: "fit-content" }}
+      >
         <option value="entity">Entity View</option>
         <option value="script">Script View</option>
       </select>
@@ -101,11 +116,11 @@ function ThirdPartyTable({ mapping, id, all, userInput, scripts, entities, passD
           headings={thirdPartyHeadings}
           items={thirdPartyItems}
           passData={passData}
+          showPagination={thirdPartyHeadings[0].key !== "entity"}
         />
       </div>
     </div>
   );
 }
-
 
 export default ThirdPartyTable;

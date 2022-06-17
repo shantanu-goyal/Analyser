@@ -11,7 +11,7 @@ import Pagination from "./Pagination";
  * @param {Function} passData Callback to pass data to graph renderer
  * @returns table jsx
  */
-function Table({ id, headings, items, passData }) {
+function Table({ id, headings, items, passData, showPagination }) {
   // State to hold table data items filtered on the search text
   const [filteredItems, setFilteredItems] = useState([]);
   // State to indicate whether the graph is visible
@@ -138,7 +138,9 @@ function Table({ id, headings, items, passData }) {
           onChange={onSearch}
         />
         <div className="right-row">
-          {passData && <button onClick={handleGraphToggle}>Toggle Graph</button>}
+          {passData && (
+            <button onClick={handleGraphToggle}>Toggle Graph</button>
+          )}
           <button onClick={downloadJSON}>Download JSON</button>
         </div>
       </div>
@@ -149,52 +151,86 @@ function Table({ id, headings, items, passData }) {
             {headings.map(({ key, text, itemType }) => (
               <th key={key} id={key} onClick={sortItems}>
                 {text} {/* Unit of data */}
-                {itemType === "ms" ? "(ms)" : itemType === "bytes" ? "(KB)" : ""}
+                {itemType === "ms"
+                  ? "(ms)"
+                  : itemType === "bytes"
+                  ? "(KB)"
+                  : ""}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {/* Slice filtered items array to get current page items */}
-          {filteredItems
-            .slice(
-              currentPage.indexOfFirstPost,
-              currentPage.indexOfLastPost + 1
-            )
-            .map((item, index) => {
-              return (
-                <tr key={index}>
-                  {headings.map(({ key, itemType }) => (
-                    <td
-                      key={key}
-                      title={typeof item[key] === "string" ? item[key] : ""}
-                    >
-                      {isNaN(item[key]) ? (
-                        item[key] &&
-                        item[key].type &&
-                        item[key].type === "link" ? (
-                          <a href={item[key].url}>{item[key].text}</a>
+          {showPagination === false
+            ? filteredItems.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    {headings.map(({ key, itemType }) => (
+                      <td
+                        key={key}
+                        title={typeof item[key] === "string" ? item[key] : ""}
+                      >
+                        {isNaN(item[key]) ? (
+                          item[key] &&
+                          item[key].type &&
+                          item[key].type === "link" ? (
+                            <a href={item[key].url}>{item[key].text}</a>
+                          ) : (
+                            item[key]
+                          )
+                        ) : // Round the number to two digits past decimal point
+                        itemType === "bytes" ? (
+                          Math.round((item[key] / 1024) * 100) / 100
                         ) : (
-                          item[key]
-                        )
-                      ) : // Round the number to two digits past decimal point
-                      itemType === "bytes" ? (
-                        Math.round((item[key] / 1024) * 100) / 100
-                      ) : (
-                        Math.round(item[key] * 100) / 100
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
+                          Math.round(item[key] * 100) / 100
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })
+            : filteredItems
+                .slice(
+                  currentPage.indexOfFirstPost,
+                  currentPage.indexOfLastPost + 1
+                )
+                .map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      {headings.map(({ key, itemType }) => (
+                        <td
+                          key={key}
+                          title={typeof item[key] === "string" ? item[key] : ""}
+                        >
+                          {isNaN(item[key]) ? (
+                            item[key] &&
+                            item[key].type &&
+                            item[key].type === "link" ? (
+                              <a href={item[key].url}>{item[key].text}</a>
+                            ) : (
+                              item[key]
+                            )
+                          ) : // Round the number to two digits past decimal point
+                          itemType === "bytes" ? (
+                            Math.round((item[key] / 1024) * 100) / 100
+                          ) : (
+                            Math.round(item[key] * 100) / 100
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
         </tbody>
       </table>
-      <Pagination
-        dataPerPage={10}
-        dataLength={filteredItems.length}
-        paginate={paginate}
-      ></Pagination>
+      {showPagination !== false && (
+        <Pagination
+          dataPerPage={10}
+          dataLength={filteredItems.length}
+          paginate={paginate}
+        ></Pagination>
+      )}
     </>
   );
 }
