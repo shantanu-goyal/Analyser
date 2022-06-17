@@ -5,7 +5,7 @@ import Form from "../components/Form";
 import { REACT_APP_SERVER_URL } from "../config";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Home.css";
-import { transformData } from "../utility/thirdPartyUtility";
+import { thirdPartyWeb } from "../utility/third-party-web/entity-finder-api";
 
 /**
  * Function to return JSX for Home page
@@ -24,8 +24,23 @@ export default function Home() {
   const navigate = useNavigate();
 
   function getThirdPartyData(data){
-    const {mapping, entities, scripts, thirdPartyScripts, domainWiseScripts}=transformData(data);
-    return {entities, scripts, thirdPartyScripts, userInput:[],mapping, domainWiseScripts};
+    const items=data.details.items;
+    const newItems=items.map(item=>{
+      const URL=item.entity.url;
+      const entity=thirdPartyWeb.getEntity(URL);
+      if(entity){
+        return {
+          ...item,
+          entityName:entity
+        }
+      }
+      return item;
+      
+    });
+    dataContext.setData({
+      type:"updateThirdPartyData",
+      data:newItems
+    });
   }
 
   /**
@@ -47,6 +62,7 @@ export default function Home() {
           waitTime,
         },
       });
+
       console.log(result.data);
       setLoading(false);
       dataContext.setData({
@@ -65,7 +81,7 @@ export default function Home() {
           thirdParty: thirdParty,
         },
       });
-      navigate("/bootup-time");
+      console.log(result.data);
     } catch (error) {
       setError(true);
       console.log(error);
