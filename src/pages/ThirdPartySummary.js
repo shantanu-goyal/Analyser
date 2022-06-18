@@ -16,19 +16,32 @@ export default function ThirdPartySummary() {
   //Global data context
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
-  let allData=dataContext.data.thirdParty;
-  let thirdPartyData=dataContext.data.thirdPartySummary;
+  let allData = dataContext.data.thirdParty;
+  let thirdPartyData = dataContext.data.thirdPartySummary;
+
+  // Getting data from the context
+  const userData = thirdPartyData.userInput;
+  const domainWiseScripts = thirdPartyData.domainScripts;
+  const thirdPartyScripts = thirdPartyData.thirdPartyScripts;
+
+  // Setting the data from the context in the state
+  const [userInput, setUserInput] = useState(userData);
+  const [dropdownScripts, setDropdownScripts] = useState(domainWiseScripts);
+  const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
+
+  console.log(dropdownScripts);
+
   data = data["third-party-summary"];
-  
+
   // Reference to key field for new URL
   const keyRef = useRef(null);
-  
+
   // Reference to value field for new Entity
   const valueRef = useRef(null);
-  
+
   // State to store whether the graph should be shown or not.
   const [displayGraph, setDisplayGraph] = useState();
-  
+
   /* State to store the type of the graph to be generated. Defaults to the main thread time graph.*/
   const [value, setValue] = useState("mainthread");
 
@@ -42,51 +55,42 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
-  // Getting data from the context
-  const userData = thirdPartyData.userInput;
-  const domainWiseScripts=thirdPartyData.domainScripts;
-  const thirdPartyScripts=thirdPartyData.thirdPartyScripts;
-  
-  // Setting the data from the context in the state
-  const [userInput, setUserInput]=useState(userData);
-  const [dropdownScripts,setDropdownScripts]=useState(domainWiseScripts);
-  const [thirdPartyScriptsArray, setThirdPartyScriptsArray]=useState(thirdPartyScripts);
 
 
-  
+
   /**
    * Function to render the table.
    * 
    * @param {Array} newUserInput - The updated user selection array
    * 
-   */  
+   */
   function renderTable(newUserInput) {
     // Get all the thirdParty data
-    let data=allData;
+    let data = allData;
     // Initialise Third Party Scripts
-    let thirdPartyScripts=[];
+    let thirdPartyScripts = [];
     // Initialise Domain Specific Scripts
-    data.map(item=>{
+    data.map(item => {
       // If third party
-      if(item.entityName){
-        thirdPartyScripts=[...thirdPartyScripts,...item.subItems.items]
+      if (item.entityName) {
+        thirdPartyScripts = [...thirdPartyScripts, ...item.subItems.items]
       }
-      else{
-        const entity=newUserInput.filter(data=>{
-          if(getHostname(data.key)===item.entity.url){
+      else {
+        const entity = newUserInput.filter(data => {
+          if (getHostname(data.key) === item.entity.url) {
             return true;
           }
           return false;
         })
-        if(entity.length>0){
-          thirdPartyScripts=[...thirdPartyScripts,...item.subItems.items];
+        if (entity.length > 0) {
+          thirdPartyScripts = [...thirdPartyScripts, ...item.subItems.items];
         }
       }
       return {};
     });
-    
-    thirdPartyScripts=thirdPartyScripts.filter(script=>{
-      return typeof(script.url)==="string";
+
+    thirdPartyScripts = thirdPartyScripts.filter(script => {
+      return typeof (script.url) === "string";
     });
 
     // Set the new user input to the current state
@@ -102,25 +106,25 @@ export default function ThirdPartySummary() {
     // Extract the key, value pair
     const key = keyRef.current.value;
     const value = valueRef.current.value;
-    
+
     // Error Handling
     if (!key || !value || userInput.find((ip) => ip.key === key)) {
       alert('Invalid Entry');
       return;
     }
-    
+
     // Update the user input array. Add the new key-value pair
     const newUserInput = [...userInput, { key, value }];
-    
+
     // Render the table
     renderTable(newUserInput);
-    
+
     // Update the dropdown menu
     const hostname = getHostname(key);
     setDropdownScripts(dropdownScripts.filter(script => {
       return script !== hostname;
     }))
-    
+
     keyRef.current.value = "";
     valueRef.current.value = "";
   }
@@ -136,10 +140,10 @@ export default function ThirdPartySummary() {
   function onRemove(index) {
     // Update the user input array
     const newUserInput = [...userInput.slice(0, index), ...userInput.slice(index + 1)];
-    
+
     // Render the table 
     renderTable(newUserInput);
-    
+
     // Update the dropdown
     const hostname = getHostname(userInput[index].key);
     if (!hostname) {
@@ -230,16 +234,15 @@ export default function ThirdPartySummary() {
                         </tr>
                       );
                     })}
-
                     <tr>
                       <td>
                         <select className='entity-select'
                           ref={keyRef}
                           placeholder="Key"
                         >
-                          {dropdownScripts.map((script, idx) => {
-                            return <option key={idx} value={"https://" + script}>{script}</option>
-                          })}
+                        {dropdownScripts.map(script=>{
+                          return <option key={script} value={"https://" + script}>{script}</option>
+                        })}
                         </select>
                       </td>
                       <td>

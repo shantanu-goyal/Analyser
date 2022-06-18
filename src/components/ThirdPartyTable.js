@@ -27,11 +27,11 @@ function ThirdPartyTable({
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([]);
   // State to hold current third party items according to the view
   const [thirdPartyItems, setThirdPartyItems] = useState([]);
-  const selectRef = useRef();
+  const selectRef = useRef("entity");
   
   useEffect(() => {
     changeView("entity");
-  }, [userInput]);
+  }, [userInput, scripts, domainWiseScripts]);
 
 
   function getEntites(){
@@ -70,9 +70,7 @@ function ThirdPartyTable({
       }
       return {};
     })
-    return Array.from(byEntity.entries()).sort(function(a,b){
-      return a[1].mainThreadTime>b[1].mainThreadTime
-    });
+    return Array.from(byEntity.entries());
   }
 
   /**
@@ -86,7 +84,7 @@ function ThirdPartyTable({
       data: {
         thirdPartyScripts: scripts,
         userInput,
-        domainWiseScripts
+        domainScripts:domainWiseScripts
       }
     });
 
