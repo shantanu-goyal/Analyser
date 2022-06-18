@@ -2,7 +2,6 @@ import React, { useContext, useState, useRef } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import ThirdPartyTable from '../components/ThirdPartyTable'
-import { thirdPartyWeb } from '../utility/third-party-web/entity-finder-api'
 import { getHostname, generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
@@ -17,6 +16,8 @@ export default function ThirdPartySummary() {
   //Global data context
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
+  let allData=dataContext.data.thirdParty;
+  let thirdPartyData=dataContext.data.thirdPartySummary;
   data = data["third-party-summary"];
   
   // Reference to key field for new URL
@@ -42,19 +43,17 @@ export default function ThirdPartySummary() {
   }
 
   // Getting data from the context
-  const {entities, scripts, thirdPartyScripts,mapping, domainWiseScripts}=dataContext.data.thirdParty;
-  const userData = dataContext.data.thirdParty.userInput;
-
+  const userData = thirdPartyData.userInput;
+  const domainWiseScripts=thirdPartyData.domainScripts;
+  const thirdPartyScripts=thirdPartyData.thirdPartyScripts;
+  
   // Setting the data from the context in the state
-  const [userInput, setUserInput] = useState(userData);
-  const [entityArray, setEntityArray] = useState(entities);
-  const [scriptsArray, setScriptsArray] = useState(scripts);
-  const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
-  const [mappingArray, setMappingArray] = useState(mapping);
-  const [dropdownScripts, setDropdownScripts] = useState(domainWiseScripts);
+  const [userInput, setUserInput]=useState(userData);
+  const [dropdownScripts,setDropdownScripts]=useState(domainWiseScripts);
+  const [thirdPartyScriptsArray, setThirdPartyScriptsArray]=useState(thirdPartyScripts);
 
 
-
+  
   /**
    * Function to render the table.
    * 
@@ -62,79 +61,36 @@ export default function ThirdPartySummary() {
    * 
    */  
   function renderTable(newUserInput) {
-    /* Map that stores the entity name along with its corresponding main thread time, blocking time and transfer size. */
-    const byEntity = new Map();
-
-    /* Map to store scripts for each entity name*/
-    const entityWiseScripts = new Map();
-    
-    /* Array containing all the scripts */
-    const scripts = scriptsArray;
-    
-    /* Array containing only third party scripts */
-    const thirdPartyScripts = [];
-    
-    
-    scripts.forEach(script => {
-      // Extracting the hostname for the url of the script
-      let scriptURL = getHostname(script.url);
-      
-      // If URL is invalid, return
-      if (!scriptURL) {
-        return;
+    // Get all the thirdParty data
+    let data=allData;
+    // Initialise Third Party Scripts
+    let thirdPartyScripts=[];
+    // Initialise Domain Specific Scripts
+    data.map(item=>{
+      // If third party
+      if(item.entityName){
+        thirdPartyScripts=[...thirdPartyScripts,...item.subItems.items]
       }
-
-      // Check if the hostname is in the third party web database
-      let entity = thirdPartyWeb.getEntity(scriptURL);
-
-      /* If entity is not present in the database check if it is provided by the user */
-      if (!entity) {
-
-        entity = newUserInput.find(entity => getHostname(entity.key) === scriptURL);
-        // If entity is found, update the entity
-        if (entity) {
-          entity = { name: entity.value };
+      else{
+        const entity=newUserInput.filter(data=>{
+          if(getHostname(data.key)===item.entity.url){
+            return true;
+          }
+          return false;
+        })
+        if(entity.length>0){
+          thirdPartyScripts=[...thirdPartyScripts,...item.subItems.items];
         }
       }
+      return {};
+    });
     
-      let scriptData = script.data;
-      const defaultConfig = {
-        mainThreadTime: 0,
-        blockingTime: 0,
-        transferSize: 0
-      }
-      if (entity) {
-        // Push the current script in the third party script array
-        thirdPartyScripts.push(script);
-        
-        /* Check if the entity was previously present in our map*/
-        const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
+    thirdPartyScripts=thirdPartyScripts.filter(script=>{
+      return typeof(script.url)==="string";
+    });
 
-        /* Get the scripts array for the particular entity */
-        const scriptForEntity = entityWiseScripts.get(entity.name) || [];
-        
-        // Push the current URL in the script array for that particular entity
-        scriptForEntity.push(script.url);
-        
-        // Update the scripts array in the map
-        entityWiseScripts.set(entity.name, scriptForEntity);
-
-        // Update the metrics of the entity
-        currentEntity.mainThreadTime += scriptData.mainThreadTime;
-        currentEntity.blockingTime += scriptData.blockingTime;
-        currentEntity.transferSize += scriptData.transferSize;
-
-        // Set the newly updated metrics in the entity map
-        byEntity.set(entity.name, currentEntity);
-      }
-    })
-    const entities = Array.from(byEntity.entries());
-    const mapping = Array.from(entityWiseScripts.entries());
-    // Set the updated mappings array in the state
-    setMappingArray(mapping);
-    // Set the updated entity array in the state
-    setEntityArray(entities);
-    // Set the updated third party array in the state
+    // Set the new user input to the current state
+    setUserInput(newUserInput);
     setThirdPartyScriptsArray(thirdPartyScripts);
   }
 
@@ -155,9 +111,6 @@ export default function ThirdPartySummary() {
     
     // Update the user input array. Add the new key-value pair
     const newUserInput = [...userInput, { key, value }];
-
-    // Set the new user input array in the current state
-    setUserInput(newUserInput);
     
     // Render the table
     renderTable(newUserInput);
@@ -172,6 +125,8 @@ export default function ThirdPartySummary() {
     valueRef.current.value = "";
   }
 
+
+
   /**
    * Function for the remove button 
    * 
@@ -179,10 +134,8 @@ export default function ThirdPartySummary() {
    * @returns 
    */
   function onRemove(index) {
-    
     // Update the user input array
     const newUserInput = [...userInput.slice(0, index), ...userInput.slice(index + 1)];
-    setUserInput(newUserInput);
     
     // Render the table 
     renderTable(newUserInput);
@@ -216,11 +169,8 @@ export default function ThirdPartySummary() {
               <div className="table-container">
                 <ThirdPartyTable
                   id={"third-party-summary"}
-                  all={scriptsArray}
                   scripts={thirdPartyScriptsArray}
                   userInput={userInput}
-                  entities={entityArray}
-                  mapping={mappingArray}
                   domainWiseScripts={dropdownScripts}
                   passData={passData}
                 />
