@@ -5,7 +5,7 @@ import ThirdPartyTable from '../components/ThirdPartyTable'
 import { getHostname, generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
-import DataTable from "../components/DataTable";
+import Table from "../components/Table";
 
 
 /**
@@ -226,7 +226,8 @@ export default function ThirdPartySummary() {
                   domainWiseScripts={dropdownScripts}
                   passData={passData}
                 />
-                <DataTable id={"summary"} headings={
+                <div className="data-table">
+                <Table id={"summary"} headings={
                   [
                     { key: "type", text: "Type of Script", itemType: "text" },
                     { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
@@ -234,7 +235,10 @@ export default function ThirdPartySummary() {
                     { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
                     { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
                   ]
-                } items={itemState} showPagination={false} />
+                } items={itemState} showPagination={false}
+                notShowInput={true}
+                 />
+                </div>
                 <h1>Add your own entities below:-</h1>
                 <table className="entity-input">
                   <thead>
