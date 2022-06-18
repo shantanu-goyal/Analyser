@@ -5,6 +5,7 @@ import ThirdPartyTable from '../components/ThirdPartyTable'
 import { getHostname, generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
+import DataTable from "../components/DataTable";
 
 
 /**
@@ -16,6 +17,7 @@ export default function ThirdPartySummary() {
   //Global data context
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
+  data = data["third-party-summary"];
   let allData = dataContext.data.thirdParty;
   let thirdPartyData = dataContext.data.thirdPartySummary;
 
@@ -28,10 +30,8 @@ export default function ThirdPartySummary() {
   const [userInput, setUserInput] = useState(userData);
   const [dropdownScripts, setDropdownScripts] = useState(domainWiseScripts);
   const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
+  const [itemState, setItemState] = useState(getItemState(thirdPartyScripts));
 
-  console.log(dropdownScripts);
-
-  data = data["third-party-summary"];
 
   // Reference to key field for new URL
   const keyRef = useRef(null);
@@ -55,7 +55,54 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
+  function getItemState(thirdParty) {
+    let thirdPartyScripts = {
+      type: "Third Party",
+      mainThreadTime: 0,
+      blockingTime: 0,
+      resourceSize: 0,
+      transferSize: 0
+    }
 
+    let allScripts = {
+      type:"All",
+      mainThreadTime: 0,
+      blockingTime: 0,
+      resourceSize: 0,
+      transferSize: 0
+    }
+
+    let domainSpecificScripts = {
+      type: "Domain Specific",
+      mainThreadTime: 0,
+      blockingTime: 0,
+      resourceSize: 0,
+      transferSize: 0
+    }
+
+    data.details.items.map(item => {
+      allScripts.mainThreadTime += item.mainThreadTime;
+      allScripts.blockingTime += item.blockingTime;
+      allScripts.transferSize += item.transferSize;
+      allScripts.resourceSize += item.resourceSize;
+      return {};
+    })
+
+    thirdParty.map(script => {
+      thirdPartyScripts.blockingTime += script.blockingTime;
+      thirdPartyScripts.mainThreadTime += script.mainThreadTime;
+      thirdPartyScripts.resourceSize += script.resourceSize;
+      thirdPartyScripts.transferSize += script.transferSize;
+      return {};
+    })
+
+    domainSpecificScripts.mainThreadTime = allScripts.mainThreadTime - thirdPartyScripts.mainThreadTime;
+    domainSpecificScripts.blockingTime = allScripts.blockingTime - thirdPartyScripts.blockingTime;
+    domainSpecificScripts.transferSize = allScripts.transferSize - thirdPartyScripts.transferSize;
+    domainSpecificScripts.resourceSize = allScripts.resourceSize - thirdPartyScripts.resourceSize;
+
+    return [allScripts, thirdPartyScripts, domainSpecificScripts];
+  }
 
 
   /**
@@ -94,6 +141,7 @@ export default function ThirdPartySummary() {
     });
 
     // Set the new user input to the current state
+    setItemState(getItemState(thirdPartyScripts));
     setUserInput(newUserInput);
     setThirdPartyScriptsArray(thirdPartyScripts);
   }
@@ -178,6 +226,15 @@ export default function ThirdPartySummary() {
                   domainWiseScripts={dropdownScripts}
                   passData={passData}
                 />
+                <DataTable id={"summary"} headings={
+                  [
+                    { key: "type", text: "Type of Script", itemType: "text" },
+                    { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
+                    { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
+                    { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
+                    { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
+                  ]
+                } items={itemState} showPagination={false} />
                 <h1>Add your own entities below:-</h1>
                 <table className="entity-input">
                   <thead>
@@ -240,9 +297,9 @@ export default function ThirdPartySummary() {
                           ref={keyRef}
                           placeholder="Key"
                         >
-                        {dropdownScripts.map(script=>{
-                          return <option key={script} value={"https://" + script}>{script}</option>
-                        })}
+                          {dropdownScripts.map(script => {
+                            return <option key={script} value={"https://" + script}>{script}</option>
+                          })}
                         </select>
                       </td>
                       <td>
@@ -260,20 +317,24 @@ export default function ThirdPartySummary() {
                   </tbody>
                 </table>
               </div>
+
               <div className="graph-container">
                 {displayGraph && (
                   <>
-                    <h1>Graph:-</h1>
-                    <select
-                      value={value}
-                      onChange={changeHandler}
-                      style={{ marginTop: "2em" }}
-                    >
-                      <option value="mainthread">Main Thread Time</option>
-                      <option value="blocking">Main Thread Blocking Time</option>
-                      <option value="transfer">Transfer Size</option>
-                      <option value="resource">Resource Size</option>
-                    </select>
+                    <div className="graph-inner-container">
+                      <h1 style={{ textAlign: 'center' }}>Graph:-</h1>
+                      <select
+                        value={value}
+                        onChange={changeHandler}
+                        style={{ marginTop: "2em" }}
+                      >
+                        <option value="mainthread">Main Thread Time</option>
+                        <option value="blocking">Main Thread Blocking Time</option>
+                        <option value="transfer">Transfer Size</option>
+                        <option value="resource">Resource Size</option>
+                      </select>
+                    </div>
+
                     {generateGraph(thirdPartyScriptsArray, value)}
                   </>
                 )}

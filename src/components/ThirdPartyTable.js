@@ -117,9 +117,10 @@ function ThirdPartyTable({
       setThirdPartyHeadings([
         { key: "entity", text: "Third-Party", itemType: "link" },
         { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
-        { key: "blockingTime", text: "Render Blocking Time", itemType: "ms" },
-        { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
+        { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
         { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
+        { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
+  
       ]);
 
 

@@ -98,3 +98,10 @@
   flex-direction: row;
   justify-content: right;
 }
+
+
+.data-table{
+  margin-top: 2em;
+  margin-left: 1em;
+  margin-bottom: 2em;
+}
