@@ -85,7 +85,7 @@ export default function Home() {
           thirdParty: thirdParty,
         },
       });
-      navigate('/bootup-time')
+      navigate('/third-party-summary')
       console.log(result.data);
     } catch (error) {
       setError(true);
