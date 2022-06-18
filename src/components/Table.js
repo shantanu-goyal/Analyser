@@ -150,7 +150,7 @@ function Table({ id, headings, items, passData, showPagination, notShowInput }) 
           <div className="showcase"></div>
         </>
       )}
-      
+
       <table id={id} className="styled-table">
         <thead>
           <tr>
@@ -231,11 +231,13 @@ function Table({ id, headings, items, passData, showPagination, notShowInput }) 
         </tbody>
       </table>
       {showPagination !== false && (
-        <Pagination
-          dataPerPage={10}
-          dataLength={filteredItems.length}
-          paginate={paginate}
-        ></Pagination>
+        <div className="paginate">
+          <Pagination
+            dataPerPage={10}
+            dataLength={filteredItems.length}
+            paginate={paginate}
+          />
+        </div>
       )}
     </>
   );
