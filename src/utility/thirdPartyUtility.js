@@ -6,10 +6,11 @@ import DoughnutChart from '../components/Graphs/DoughnutChart'
  * @returns {Array} - Array of objects containing the url of the script along with its main thread time. 
  */
 function getMainThreadTime(scripts) {
+  console.log(scripts);
   const result = scripts.map(script => {
     return {
       url: script.url,
-      data: script.data.mainThreadTime
+      data: script.mainThreadTime
     }
   }).filter(script => script.data > 0);
   return result;
@@ -24,11 +25,33 @@ function getRenderBlockingTime(scripts) {
   const result = scripts.map(script => {
     return {
       url: script.url,
-      data: script.data.blockingTime
+      data: script.blockingTime
     }
   }).filter(script => script.data > 0);
   return result;
 }
+
+function getTransferSize(scripts){
+  const result = scripts.map(script => {
+    return {
+      url: script.url,
+      data: script.transferSize
+    }
+  }).filter(script => script.data > 0);
+  return result; 
+}
+
+function getResourceSize(scripts){
+  const result = scripts.map(script => {
+    return {
+      url: script.url,
+      data: script.resourceSize
+    }
+  }).filter(script => script.data > 0);
+  return result;
+}
+
+
 
 /**
  * Function to generate the graph
@@ -40,12 +63,14 @@ function getRenderBlockingTime(scripts) {
 function generateGraph(scripts, value) {
   const mainThreadTimeData = getMainThreadTime(scripts);
   const blockingTimeData = getRenderBlockingTime(scripts);
+  const resourceSizeData=getResourceSize(scripts);
+  const transferSizeData=getTransferSize(scripts)
   // If user requests blocking time graph
   if (value === "blocking") {
     if (blockingTimeData.length > 0) {
       return (
         <DoughnutChart
-          title={"Render Blocking Time"}
+          title={"Main Thread Blocking Time"}
           data={blockingTimeData}
         ></DoughnutChart>
       );
@@ -53,6 +78,34 @@ function generateGraph(scripts, value) {
       return <></>;
     }
   }
+  // If user requests resource size graph
+  else if(value==="resource"){
+    if (resourceSizeData.length > 0) {
+      return (
+        <DoughnutChart
+          title={"Resource Size"}
+          data={resourceSizeData}
+        ></DoughnutChart>
+      );
+    } else {
+      return <></>;
+    }
+  }
+
+  // If user requests transfer size graph
+  else if(value==="transfer"){
+    if (transferSizeData.length > 0) {
+      return (
+        <DoughnutChart
+          title={"Transfer Size"}
+          data={transferSizeData}
+        ></DoughnutChart>
+      );
+    } else {
+      return <></>;
+    }
+  }
+
   // If user requests main thread time graph
   else {
     if (mainThreadTimeData.length > 0) {

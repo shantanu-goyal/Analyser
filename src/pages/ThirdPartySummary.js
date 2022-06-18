@@ -270,7 +270,9 @@ export default function ThirdPartySummary() {
                       style={{ marginTop: "2em" }}
                     >
                       <option value="mainthread">Main Thread Time</option>
-                      <option value="blocking">Render Blocking Time</option>
+                      <option value="blocking">Main Thread Blocking Time</option>
+                      <option value="transfer">Transfer Size</option>
+                      <option value="resource">Resource Size</option>
                     </select>
                     {generateGraph(thirdPartyScriptsArray, value)}
                   </>
