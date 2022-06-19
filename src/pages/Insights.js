@@ -50,8 +50,6 @@ export default function Insights() {
         summary.resourceSize += subitem.resourceSize;
         numValidSubIems += 1
       });
-      console.log("🚀 ~ file: Insights.js ~ line 55 ~ thirdPartyWithNetwork ~ summary.transferSize", summary.transferSize)
-      console.log("🚀 ~ file: Insights.js ~ line 55 ~ thirdPartyWithNetwork ~ summary.unusedPercentage", summary.unusedPercentage)
       // item.subItems.items.push(summary)
       summary.unusedPercentage  = (summary.unusedPercentage / summary.transferSize) * 100;
       
@@ -140,7 +138,7 @@ export default function Insights() {
               {getThirdPartyData().map((item) => {
                 return (
                   item.entityName && (
-                    <div style={{ marginTop: "10em" }} key={item.entityName.name}>
+                    <div key={item.entityName.name}>
                       <h1 style={{ textAlign: "center" }}>
                         {item.entityName.name}
                       </h1>
@@ -157,6 +155,7 @@ export default function Insights() {
                           showPagination={false}
                         />
                       </div>
+                      <div style={{ marginTop: "1em", textAlign: "center", marginBottom: "10em" }} >
                       <h4> What You Can Do: </h4>
                       {item.opportunities.user.map((opportunity, idx) => {
                         return (<p key={idx}>{opportunity}</p>)
@@ -165,6 +164,7 @@ export default function Insights() {
                       {item.opportunities.thirdParty.map((opportunity, idx) => {
                         return (<p key={idx}>{opportunity}</p>)
                       })}
+                      </div>
                     </div>
                   )
                 );
