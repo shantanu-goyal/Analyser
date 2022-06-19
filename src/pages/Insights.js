@@ -2,13 +2,10 @@ import React, { useContext, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import { NavBar } from "../components/NavBar";
 import { DataContext } from "../contexts/DataContext";
-import BootupTimeInsights from "../components/BootupTimeInsights";
-import MainThreadWorkInsights from "../components/MainThreadWorkInsights";
-import NetworkRequestInsights from "../components/NetworkRequestInsights";
-import NetworkRTTInsights from "../components/NetworkRTTInsights";
-import ServerLatencyInsights from "../components/ServerLatencyInsights";
-import ResourceSummaryInsights from "../components/ResourceSummaryInsights";
-import ThirdPartyInsights from "../components/ThirdPartyInsights";
+import Table from "../components/Table";
+import { thirdPartyWeb } from "../utility/third-party-web/entity-finder-api";
+import { getOpportunities } from "../utility/insightsUtility";
+
 import "../styles/Insights.css";
 import html2pdf from "html2pdf.js/src";
 import jsPDF from "jspdf/dist/jspdf.es";
@@ -18,14 +15,79 @@ export default function Insights() {
   const insightsRef = useRef(null);
 
   let data = dataContext.data.data;
-  const bootupTimeData = data["bootup-time"];
-  const mainThreadWorkData = data["mainthread-work-breakdown"];
-  const networkRequestsData = data["network-requests"];
   const networkRTTData = data["network-rtt"];
   const serverLatencyData = data["network-server-latency"];
-  const resourceData = data["resource-summary"];
   const thirdPartyData = dataContext.data.thirdParty;
   const config = dataContext.data.config;
+
+  function getThirdPartyData() {
+    const thirdPartyWithNetwork = thirdPartyData.map((item) => {
+      let numValidSubIems = 0
+      let summary = {
+        url: "Summary",
+        mainThreadTime: 0,
+        blockingTime: 0,
+        transferSize: 0,
+        resourceSize: 0,
+        rtt: 0,
+        serverResponseTime: 0,
+      };
+      item.subItems.items.forEach((subitem) => {
+        if (typeof subitem.url !== "string") return;
+        let rttOrigin = networkRTTData.details.items.find(
+          ({ origin }) =>
+            thirdPartyWeb.getRootDomain(origin) ===
+            thirdPartyWeb.getRootDomain(subitem.url)
+        );
+        let latencyOrigin = serverLatencyData.details.items.find(
+          ({ origin }) =>
+            thirdPartyWeb.getRootDomain(origin) ===
+            thirdPartyWeb.getRootDomain(subitem.url)
+        );
+        subitem.rtt = rttOrigin ? rttOrigin.rtt : 0;
+        subitem.serverResponseTime = latencyOrigin
+          ? latencyOrigin.serverResponseTime
+          : 0;
+        summary.mainThreadTime += subitem.mainThreadTime;
+        summary.blockingTime += subitem.blockingTime;
+        summary.transferSize += subitem.transferSize;
+        summary.resourceSize += subitem.resourceSize;
+        summary.rtt = Math.max(summary.rtt, subitem.rtt);
+        summary.serverResponseTime = Math.max(
+          summary.serverResponseTime,
+          subitem.serverResponseTime
+        );
+        numValidSubIems += 1
+       
+      });
+      // item.subItems.items.push(summary)
+      let opportunities = getOpportunities(summary, numValidSubIems);
+      return {
+        ...item,
+        subItems: {
+          ...item.subItems,
+          items: [...item.subItems.items, summary],
+        },
+        opportunities
+      };
+    });
+
+    return thirdPartyWithNetwork;
+  }
+
+  const headings = [
+    { key: "url", text: "URL", itemType: "link" },
+    { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
+    { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
+    { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
+    { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
+    { key: "rtt", text: "Server RTT", itemType: "ms" },
+    {
+      key: "serverResponseTime",
+      text: "Server Backend Latency",
+      itemType: "ms",
+    },
+  ];
 
   async function downloadReport() {
     const opt = {
@@ -45,11 +107,11 @@ export default function Insights() {
       "serverLatencyInsights",
       "thirdPartyInsights",
     ];
-    for(let i=0;i < insightIds.length;i++) {
+    for (let i = 0; i < insightIds.length; i++) {
       const pageImage = await html2pdf()
-      .from(document.getElementById(insightIds[i]))
-      .set(opt)
-      .outputImg();
+        .from(document.getElementById(insightIds[i]))
+        .set(opt)
+        .outputImg();
       doc.addImage(
         pageImage.src,
         "jpeg",
@@ -70,7 +132,9 @@ export default function Insights() {
         <>
           <NavBar />
           <div className="insights-wrapper">
-            <button className="insights-button" onClick={downloadReport}>Download PDF</button>
+            <button className="insights-button" onClick={downloadReport}>
+              Download PDF
+            </button>
             <div className="insights-wrapper" ref={insightsRef}>
               <a href={config.url} style={{ textAlign: "center" }}>
                 <h2>{config.url}</h2>
@@ -82,14 +146,39 @@ export default function Insights() {
                 </h4>
                 <h4>Analysis Time: {config.waitTime} ms</h4>
               </div>
-              <BootupTimeInsights data={bootupTimeData} />
-              <MainThreadWorkInsights data={mainThreadWorkData} />
-              <NetworkRequestInsights data={networkRequestsData} />
-              <NetworkRTTInsights data={networkRTTData} />
-              <ServerLatencyInsights data={serverLatencyData} />
-              <ResourceSummaryInsights data={resourceData} />
 
-              <ThirdPartyInsights data={thirdPartyData} />
+              {getThirdPartyData().map((item) => {
+                return (
+                  item.entityName && (
+                    <div style={{ marginTop: "10em" }} key={item.entityName.name}>
+                      <h1 style={{ textAlign: "center" }}>
+                        {item.entityName.name}
+                      </h1>
+                      <div
+                        className="table-container"
+                        
+                      >
+                        <Table
+                          id={item.entityName.name}
+                          headings={headings}
+                          items={item.subItems.items.filter(
+                            (item) => typeof item.url === "string"
+                          )}
+                          showPagination={false}
+                        />
+                      </div>
+                      <h4> What You Can Do: </h4>
+                      {item.opportunities.user.map((opportunity, idx) => {
+                        return (<p key={idx}>{opportunity}</p>)
+                      })}
+                      <h4> What {item.entityName.name} Can Do: </h4>
+                      {item.opportunities.thirdParty.map((opportunity, idx) => {
+                        return (<p key={idx}>{opportunity}</p>)
+                      })}
+                    </div>
+                  )
+                );
+              })}
             </div>
             <div id="editor"></div>
           </div>

@@ -10,6 +10,8 @@
 
 .insights-wrapper{
     padding: 1em;
+    align-items: center;
+    justify-content: center;
 }
 
 .insights-button{
