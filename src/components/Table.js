@@ -11,7 +11,7 @@ import Pagination from "./Pagination";
  * @param {Function} passData Callback to pass data to graph renderer
  * @returns table jsx
  */
-function Table({ id, headings, items, passData, showPagination }) {
+function Table({ id, headings, items, passData, showPagination, notShowInput }) {
   // State to hold table data items filtered on the search text
   const [filteredItems, setFilteredItems] = useState([]);
   // State to indicate whether the graph is visible
@@ -131,20 +131,26 @@ function Table({ id, headings, items, passData, showPagination }) {
 
   return (
     <>
-      <div className="toolbar">
-        <input
-          type="text"
-          placeholder="Type here to search..."
-          onChange={onSearch}
-        />
-        <div className="right-row">
-          {passData && (
-            <button onClick={handleGraphToggle}>Toggle Graph</button>
-          )}
-          <button onClick={downloadJSON}>Download JSON</button>
-        </div>
-      </div>
-      <div className="showcase"></div>
+
+      {!notShowInput && (
+        <>
+          <div className="toolbar">
+            <input
+              type="text"
+              placeholder="Type here to search..."
+              onChange={onSearch}
+            />
+            <div className="right-row">
+              {passData && (
+                <button onClick={handleGraphToggle}>Toggle Graph</button>
+              )}
+              <button onClick={downloadJSON}>Download JSON</button>
+            </div>
+          </div>
+          <div className="showcase"></div>
+        </>
+      )}
+
       <table id={id} className="styled-table">
         <thead>
           <tr>
@@ -154,8 +160,8 @@ function Table({ id, headings, items, passData, showPagination }) {
                 {itemType === "ms"
                   ? "(ms)"
                   : itemType === "bytes"
-                  ? "(KB)"
-                  : ""}
+                    ? "(KB)"
+                    : ""}
               </th>
             ))}
           </tr>
@@ -164,6 +170,38 @@ function Table({ id, headings, items, passData, showPagination }) {
           {/* Slice filtered items array to get current page items */}
           {showPagination === false
             ? filteredItems.map((item, index) => {
+              return (
+                <tr key={index}>
+                  {headings.map(({ key, itemType }) => (
+                    <td
+                      key={key}
+                      title={typeof item[key] === "string" ? item[key] : ""}
+                    >
+                      {isNaN(item[key]) ? (
+                        item[key] &&
+                          item[key].type &&
+                          item[key].type === "link" ? (
+                          <a href={item[key].url}>{item[key].text}</a>
+                        ) : (
+                          item[key]
+                        )
+                      ) : // Round the number to two digits past decimal point
+                        itemType === "bytes" ? (
+                          Math.round((item[key] / 1024) * 100) / 100
+                        ) : (
+                          Math.round(item[key] * 100) / 100
+                        )}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })
+            : filteredItems
+              .slice(
+                currentPage.indexOfFirstPost,
+                currentPage.indexOfLastPost + 1
+              )
+              .map((item, index) => {
                 return (
                   <tr key={index}>
                     {headings.map(({ key, itemType }) => (
@@ -173,63 +211,33 @@ function Table({ id, headings, items, passData, showPagination }) {
                       >
                         {isNaN(item[key]) ? (
                           item[key] &&
-                          item[key].type &&
-                          item[key].type === "link" ? (
+                            item[key].type &&
+                            item[key].type === "link" ? (
                             <a href={item[key].url}>{item[key].text}</a>
                           ) : (
                             item[key]
                           )
                         ) : // Round the number to two digits past decimal point
-                        itemType === "bytes" ? (
-                          Math.round((item[key] / 1024) * 100) / 100
-                        ) : (
-                          Math.round(item[key] * 100) / 100
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })
-            : filteredItems
-                .slice(
-                  currentPage.indexOfFirstPost,
-                  currentPage.indexOfLastPost + 1
-                )
-                .map((item, index) => {
-                  return (
-                    <tr key={index}>
-                      {headings.map(({ key, itemType }) => (
-                        <td
-                          key={key}
-                          title={typeof item[key] === "string" ? item[key] : ""}
-                        >
-                          {isNaN(item[key]) ? (
-                            item[key] &&
-                            item[key].type &&
-                            item[key].type === "link" ? (
-                              <a href={item[key].url}>{item[key].text}</a>
-                            ) : (
-                              item[key]
-                            )
-                          ) : // Round the number to two digits past decimal point
                           itemType === "bytes" ? (
                             Math.round((item[key] / 1024) * 100) / 100
                           ) : (
                             Math.round(item[key] * 100) / 100
                           )}
-                        </td>
-                      ))}
-                    </tr>
-                  );
-                })}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
         </tbody>
       </table>
       {showPagination !== false && (
-        <Pagination
-          dataPerPage={10}
-          dataLength={filteredItems.length}
-          paginate={paginate}
-        ></Pagination>
+        <div className="paginate">
+          <Pagination
+            dataPerPage={10}
+            dataLength={filteredItems.length}
+            paginate={paginate}
+          />
+        </div>
       )}
     </>
   );
@@ -241,5 +249,6 @@ Table.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   passData: PropTypes.func,
 };
+
 
 export default memo(Table);

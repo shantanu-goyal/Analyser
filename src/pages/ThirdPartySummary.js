@@ -2,10 +2,10 @@ import React, { useContext, useState, useRef } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import ThirdPartyTable from '../components/ThirdPartyTable'
-import { thirdPartyWeb } from '../utility/third-party-web/entity-finder-api'
 import { getHostname, generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
+import Table from "../components/Table";
 
 
 /**
@@ -18,16 +18,30 @@ export default function ThirdPartySummary() {
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data["third-party-summary"];
-  
+  let allData = dataContext.data.thirdParty;
+  let thirdPartyData = dataContext.data.thirdPartySummary;
+
+  // Getting data from the context
+  const userData = thirdPartyData.userInput;
+  const domainWiseScripts = thirdPartyData.domainScripts;
+  const thirdPartyScripts = thirdPartyData.thirdPartyScripts;
+
+  // Setting the data from the context in the state
+  const [userInput, setUserInput] = useState(userData);
+  const [dropdownScripts, setDropdownScripts] = useState(domainWiseScripts);
+  const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
+  const [itemState, setItemState] = useState(getItemState(thirdPartyScripts));
+
+
   // Reference to key field for new URL
   const keyRef = useRef(null);
-  
+
   // Reference to value field for new Entity
   const valueRef = useRef(null);
-  
+
   // State to store whether the graph should be shown or not.
   const [displayGraph, setDisplayGraph] = useState();
-  
+
   /* State to store the type of the graph to be generated. Defaults to the main thread time graph.*/
   const [value, setValue] = useState("mainthread");
 
@@ -41,18 +55,54 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
-  // Getting data from the context
-  const {entities, scripts, thirdPartyScripts,mapping, domainWiseScripts}=dataContext.data.thirdParty;
-  const userData = dataContext.data.thirdParty.userInput;
+  function getItemState(thirdParty) {
+    let thirdPartyScripts = {
+      type: "Third Party",
+      mainThreadTime: 0,
+      blockingTime: 0,
+      resourceSize: 0,
+      transferSize: 0
+    }
 
-  // Setting the data from the context in the state
-  const [userInput, setUserInput] = useState(userData);
-  const [entityArray, setEntityArray] = useState(entities);
-  const [scriptsArray, setScriptsArray] = useState(scripts);
-  const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
-  const [mappingArray, setMappingArray] = useState(mapping);
-  const [dropdownScripts, setDropdownScripts] = useState(domainWiseScripts);
+    let allScripts = {
+      type:"All",
+      mainThreadTime: 0,
+      blockingTime: 0,
+      resourceSize: 0,
+      transferSize: 0
+    }
 
+    let domainSpecificScripts = {
+      type: "Domain Specific",
+      mainThreadTime: 0,
+      blockingTime: 0,
+      resourceSize: 0,
+      transferSize: 0
+    }
+
+    data.details.items.map(item => {
+      allScripts.mainThreadTime += item.mainThreadTime;
+      allScripts.blockingTime += item.blockingTime;
+      allScripts.transferSize += item.transferSize;
+      allScripts.resourceSize += item.resourceSize;
+      return {};
+    })
+
+    thirdParty.map(script => {
+      thirdPartyScripts.blockingTime += script.blockingTime;
+      thirdPartyScripts.mainThreadTime += script.mainThreadTime;
+      thirdPartyScripts.resourceSize += script.resourceSize;
+      thirdPartyScripts.transferSize += script.transferSize;
+      return {};
+    })
+
+    domainSpecificScripts.mainThreadTime = allScripts.mainThreadTime - thirdPartyScripts.mainThreadTime;
+    domainSpecificScripts.blockingTime = allScripts.blockingTime - thirdPartyScripts.blockingTime;
+    domainSpecificScripts.transferSize = allScripts.transferSize - thirdPartyScripts.transferSize;
+    domainSpecificScripts.resourceSize = allScripts.resourceSize - thirdPartyScripts.resourceSize;
+
+    return [allScripts, thirdPartyScripts, domainSpecificScripts];
+  }
 
 
   /**
@@ -60,81 +110,39 @@ export default function ThirdPartySummary() {
    * 
    * @param {Array} newUserInput - The updated user selection array
    * 
-   */  
+   */
   function renderTable(newUserInput) {
-    /* Map that stores the entity name along with its corresponding main thread time, blocking time and transfer size. */
-    const byEntity = new Map();
-
-    /* Map to store scripts for each entity name*/
-    const entityWiseScripts = new Map();
-    
-    /* Array containing all the scripts */
-    const scripts = scriptsArray;
-    
-    /* Array containing only third party scripts */
-    const thirdPartyScripts = [];
-    
-    
-    scripts.forEach(script => {
-      // Extracting the hostname for the url of the script
-      let scriptURL = getHostname(script.url);
-      
-      // If URL is invalid, return
-      if (!scriptURL) {
-        return;
+    // Get all the thirdParty data
+    let data = allData;
+    // Initialise Third Party Scripts
+    let thirdPartyScripts = [];
+    // Initialise Domain Specific Scripts
+    data.map(item => {
+      // If third party
+      if (item.entityName) {
+        thirdPartyScripts = [...thirdPartyScripts, ...item.subItems.items]
       }
-
-      // Check if the hostname is in the third party web database
-      let entity = thirdPartyWeb.getEntity(scriptURL);
-
-      /* If entity is not present in the database check if it is provided by the user */
-      if (!entity) {
-
-        entity = newUserInput.find(entity => getHostname(entity.key) === scriptURL);
-        // If entity is found, update the entity
-        if (entity) {
-          entity = { name: entity.value };
+      else {
+        const entity = newUserInput.filter(data => {
+          if (getHostname(data.key) === item.entity.url) {
+            return true;
+          }
+          return false;
+        })
+        if (entity.length > 0) {
+          thirdPartyScripts = [...thirdPartyScripts, ...item.subItems.items];
         }
       }
-    
-      let scriptData = script.data;
-      const defaultConfig = {
-        mainThreadTime: 0,
-        blockingTime: 0,
-        transferSize: 0
-      }
-      if (entity) {
-        // Push the current script in the third party script array
-        thirdPartyScripts.push(script);
-        
-        /* Check if the entity was previously present in our map*/
-        const currentEntity = byEntity.get(entity.name) || { ...defaultConfig };
+      return {};
+    });
 
-        /* Get the scripts array for the particular entity */
-        const scriptForEntity = entityWiseScripts.get(entity.name) || [];
-        
-        // Push the current URL in the script array for that particular entity
-        scriptForEntity.push(script.url);
-        
-        // Update the scripts array in the map
-        entityWiseScripts.set(entity.name, scriptForEntity);
+    thirdPartyScripts = thirdPartyScripts.filter(script => {
+      return typeof (script.url) === "string";
+    });
 
-        // Update the metrics of the entity
-        currentEntity.mainThreadTime += scriptData.mainThreadTime;
-        currentEntity.blockingTime += scriptData.blockingTime;
-        currentEntity.transferSize += scriptData.transferSize;
-
-        // Set the newly updated metrics in the entity map
-        byEntity.set(entity.name, currentEntity);
-      }
-    })
-    const entities = Array.from(byEntity.entries());
-    const mapping = Array.from(entityWiseScripts.entries());
-    // Set the updated mappings array in the state
-    setMappingArray(mapping);
-    // Set the updated entity array in the state
-    setEntityArray(entities);
-    // Set the updated third party array in the state
+    // Set the new user input to the current state
+    setItemState(getItemState(thirdPartyScripts));
+    setUserInput(newUserInput);
     setThirdPartyScriptsArray(thirdPartyScripts);
   }
 
@@ -146,31 +154,30 @@ export default function ThirdPartySummary() {
     // Extract the key, value pair
     const key = keyRef.current.value;
     const value = valueRef.current.value;
-    
+
     // Error Handling
     if (!key || !value || userInput.find((ip) => ip.key === key)) {
       alert('Invalid Entry');
       return;
     }
-    
+
     // Update the user input array. Add the new key-value pair
     const newUserInput = [...userInput, { key, value }];
 
-    // Set the new user input array in the current state
-    setUserInput(newUserInput);
-    
     // Render the table
     renderTable(newUserInput);
-    
+
     // Update the dropdown menu
     const hostname = getHostname(key);
     setDropdownScripts(dropdownScripts.filter(script => {
       return script !== hostname;
     }))
-    
+
     keyRef.current.value = "";
     valueRef.current.value = "";
   }
+
+
 
   /**
    * Function for the remove button 
@@ -179,14 +186,12 @@ export default function ThirdPartySummary() {
    * @returns 
    */
   function onRemove(index) {
-    
     // Update the user input array
     const newUserInput = [...userInput.slice(0, index), ...userInput.slice(index + 1)];
-    setUserInput(newUserInput);
-    
+
     // Render the table 
     renderTable(newUserInput);
-    
+
     // Update the dropdown
     const hostname = getHostname(userInput[index].key);
     if (!hostname) {
@@ -216,14 +221,24 @@ export default function ThirdPartySummary() {
               <div className="table-container">
                 <ThirdPartyTable
                   id={"third-party-summary"}
-                  all={scriptsArray}
                   scripts={thirdPartyScriptsArray}
                   userInput={userInput}
-                  entities={entityArray}
-                  mapping={mappingArray}
                   domainWiseScripts={dropdownScripts}
                   passData={passData}
                 />
+                <div className="data-table">
+                <Table id={"summary"} headings={
+                  [
+                    { key: "type", text: "Type of Script", itemType: "text" },
+                    { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
+                    { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
+                    { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
+                    { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
+                  ]
+                } items={itemState} showPagination={false}
+                notShowInput={true}
+                 />
+                </div>
                 <h1>Add your own entities below:-</h1>
                 <table className="entity-input">
                   <thead>
@@ -280,15 +295,14 @@ export default function ThirdPartySummary() {
                         </tr>
                       );
                     })}
-
                     <tr>
                       <td>
                         <select className='entity-select'
                           ref={keyRef}
                           placeholder="Key"
                         >
-                          {dropdownScripts.map((script, idx) => {
-                            return <option key={idx} value={"https://" + script}>{script}</option>
+                          {dropdownScripts.map(script => {
+                            return <option key={script} value={"https://" + script}>{script}</option>
                           })}
                         </select>
                       </td>
@@ -307,18 +321,24 @@ export default function ThirdPartySummary() {
                   </tbody>
                 </table>
               </div>
+
               <div className="graph-container">
                 {displayGraph && (
                   <>
-                    <h1>Graph:-</h1>
-                    <select
-                      value={value}
-                      onChange={changeHandler}
-                      style={{ marginTop: "2em" }}
-                    >
-                      <option value="mainthread">Main Thread Time</option>
-                      <option value="blocking">Render Blocking Time</option>
-                    </select>
+                    <div className="graph-inner-container">
+                      <h1 style={{ textAlign: 'center' }}>Graph:-</h1>
+                      <select
+                        value={value}
+                        onChange={changeHandler}
+                        style={{ marginTop: "2em" }}
+                      >
+                        <option value="mainthread">Main Thread Time</option>
+                        <option value="blocking">Main Thread Blocking Time</option>
+                        <option value="transfer">Transfer Size</option>
+                        <option value="resource">Resource Size</option>
+                      </select>
+                    </div>
+
                     {generateGraph(thirdPartyScriptsArray, value)}
                   </>
                 )}

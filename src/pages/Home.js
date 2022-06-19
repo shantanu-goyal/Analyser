@@ -6,6 +6,7 @@ import { REACT_APP_SERVER_URL } from "../config";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Home.css";
 import { thirdPartyWeb } from "../utility/third-party-web/entity-finder-api";
+import { transformData } from "../utility/thirdPartyUtility";
 
 /**
  * Function to return JSX for Home page
@@ -37,6 +38,12 @@ export default function Home() {
       return item;
       
     });
+    const thirdParty=transformData(newItems);
+    dataContext.setData({
+      type:'thirdPartySummary',
+      data:thirdParty
+    });
+
     return newItems;
   }
 
@@ -78,9 +85,8 @@ export default function Home() {
           thirdParty: thirdParty,
         },
       });
-      console.log(result.data, thirdParty);
-      navigate("/bootup-time");
-
+      navigate('/third-party-summary')
+      console.log(result.data);
     } catch (error) {
       setError(true);
       console.log(error);
