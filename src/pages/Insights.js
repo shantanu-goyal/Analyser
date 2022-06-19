@@ -3,7 +3,6 @@ import { Navigate } from "react-router-dom";
 import { NavBar } from "../components/NavBar";
 import { DataContext } from "../contexts/DataContext";
 import Table from "../components/Table";
-import { thirdPartyWeb } from "../utility/third-party-web/entity-finder-api";
 import { getOpportunities } from "../utility/insightsUtility";
 
 import "../styles/Insights.css";
@@ -15,8 +14,8 @@ export default function Insights() {
   const insightsRef = useRef(null);
 
   let data = dataContext.data.data;
-  const networkRTTData = data["network-rtt"];
-  const serverLatencyData = data["network-server-latency"];
+  const unminifiedJSData = data["unminified-javascript"];
+  const unusedJSData = data["unused-javascript"];
   const thirdPartyData = dataContext.data.thirdParty;
   const config = dataContext.data.config;
 
@@ -29,38 +28,33 @@ export default function Insights() {
         blockingTime: 0,
         transferSize: 0,
         resourceSize: 0,
-        rtt: 0,
-        serverResponseTime: 0,
+        minified: "Yes",
+        unusedPercentage: 0
       };
       item.subItems.items.forEach((subitem) => {
         if (typeof subitem.url !== "string") return;
-        let rttOrigin = networkRTTData.details.items.find(
-          ({ origin }) =>
-            thirdPartyWeb.getRootDomain(origin) ===
-            thirdPartyWeb.getRootDomain(subitem.url)
-        );
-        let latencyOrigin = serverLatencyData.details.items.find(
-          ({ origin }) =>
-            thirdPartyWeb.getRootDomain(origin) ===
-            thirdPartyWeb.getRootDomain(subitem.url)
-        );
-        subitem.rtt = rttOrigin ? rttOrigin.rtt : 0;
-        subitem.serverResponseTime = latencyOrigin
-          ? latencyOrigin.serverResponseTime
-          : 0;
+        if(unminifiedJSData.details.items.find(({url}) => url === subitem.url)) {
+          subitem.minified = "No"
+          summary.minified = "No"
+        }
+        else subitem.minified = "Yes"
+        let js = unusedJSData.details.items.find(({url}) => url === subitem.url)
+        if(js){
+          subitem.unusedPercentage = js.wastedPercent
+          summary.unusedPercentage += js.wastedBytes
+        }
+        else subitem.unusedPercentage = 0
         summary.mainThreadTime += subitem.mainThreadTime;
         summary.blockingTime += subitem.blockingTime;
         summary.transferSize += subitem.transferSize;
         summary.resourceSize += subitem.resourceSize;
-        summary.rtt = Math.max(summary.rtt, subitem.rtt);
-        summary.serverResponseTime = Math.max(
-          summary.serverResponseTime,
-          subitem.serverResponseTime
-        );
         numValidSubIems += 1
-       
       });
+      console.log("🚀 ~ file: Insights.js ~ line 55 ~ thirdPartyWithNetwork ~ summary.transferSize", summary.transferSize)
+      console.log("🚀 ~ file: Insights.js ~ line 55 ~ thirdPartyWithNetwork ~ summary.unusedPercentage", summary.unusedPercentage)
       // item.subItems.items.push(summary)
+      summary.unusedPercentage  = (summary.unusedPercentage / summary.transferSize) * 100;
+      
       let opportunities = getOpportunities(summary, numValidSubIems);
       return {
         ...item,
@@ -81,12 +75,8 @@ export default function Insights() {
     { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
     { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
     { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
-    { key: "rtt", text: "Server RTT", itemType: "ms" },
-    {
-      key: "serverResponseTime",
-      text: "Server Backend Latency",
-      itemType: "ms",
-    },
+    { key: "minified", text: "Sctipt Minified", itemType: "binary" },
+    { key: "unusedPercentage", text: "Unused Percentage", itemType: "percentage" },
   ];
 
   async function downloadReport() {

@@ -1,4 +1,4 @@
-export function getOpportunities({mainThreadTime, blockingTime,  transferSize, resourceSize, rtt, serverResponseTime}, numItems){
+export function getOpportunities({mainThreadTime, blockingTime,  transferSize, resourceSize}, numItems){
     const oppoutunities = {
         user: [],
         thirdParty: []
@@ -20,13 +20,6 @@ export function getOpportunities({mainThreadTime, blockingTime,  transferSize, r
             oppoutunities.thirdParty.push('Try to compress resources properly before transfering over the network')
             oppoutunities.user.push('Try hosting the scripts on personal server and compress them properly')
         }
-    }
-    if(rtt > 50){
-        oppoutunities.thirdParty.push('Bring the servers closer to users to improve rtt')
-        oppoutunities.user.push('Hosting scripts on personal servers can improve rtt')
-    }
-    if(serverResponseTime > 100){
-        oppoutunities.thirdParty.push('Improve Server performance by scaling the resources and optimising code performance')
     }
     if(oppoutunities.thirdParty.length ===0 ){
         oppoutunities.thirdParty.push('Things are Pretty Optimised')
