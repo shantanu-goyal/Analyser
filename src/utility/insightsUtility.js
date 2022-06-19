@@ -60,7 +60,7 @@ export function getOpportunities(
       "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity"
     );
     oppoutunities.thirdParty.push(
-      "Divide large scripts in smaller chunks to reduce network bandwidth wastage"
+      "Divide large scripts in smaller chunks to reduce network bandwidth wastage for the unused part"
     );
   }
   if (oppoutunities.thirdParty.length === 0) {

@@ -41,8 +41,8 @@ export const NavBar = function () {
       <NavLink style={navLinkStyles} to='/bootup-time'>Bootup Time</NavLink>
       <NavLink style={navLinkStyles} to='/mainthread-work-breakdown'>Main Thread Work BreakDown</NavLink>
       <NavLink style={navLinkStyles} to='/network-requests'>Network Requests</NavLink>
-      <NavLink style={navLinkStyles} to='/network-rtt'>Network RTT</NavLink>
-      <NavLink style={navLinkStyles} to='/network-server-latency'>Network Server Latency</NavLink>
+      {/* <NavLink style={navLinkStyles} to='/network-rtt'>Network RTT</NavLink>
+      <NavLink style={navLinkStyles} to='/network-server-latency'>Network Server Latency</NavLink> */}
       <NavLink style={navLinkStyles} to='/resource-summary'>Resource Summary</NavLink>
       <NavLink style={navLinkStyles} to='#' className="icon" onClick={handleNavItemClick}>
         <div className="bar-container">

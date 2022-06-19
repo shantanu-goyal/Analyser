@@ -61,6 +61,7 @@ export default function Insights() {
       summary.blockingTime += prevSummary.blockingTime;
       summary.transferSize += prevSummary.transferSize;
       summary.resourceSize += prevSummary.resourceSize;
+      summary.minified = prevSummary.minified === 'No' ? 'No' : summary.minified
       summary.unusedPercentage =
       ((( (prevSummary.unusedPercentage * prevSummary.transferSize)/100 ) + summary.unusedPercentage) / summary.transferSize) * 100;
       let opportunities = getOpportunities(summary, newItems.length + prevNumSubItems - 1);
@@ -81,7 +82,13 @@ export default function Insights() {
       },
       opportunities,
     }];
-  }, []);
+  }, []).sort(
+    (a, b) =>
+      b.subItems.items.at(-1).mainThreadTime - a.subItems.items.at(-1).mainThreadTime ||
+      b.subItems.items.at(-1).blockingTime - a.subItems.items.at(-1).blockingTime ||
+      b.subItems.items.at(-1).transferSize - a.subItems.items.at(-1).transferSize ||
+      b.subItems.items.at(-1).resourceSize - a.subItems.items.at(-1).resourceSize
+  );
 
   const headings = [
     { key: "url", text: "URL", itemType: "link" },

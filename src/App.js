@@ -28,11 +28,11 @@ export default function App() {
               element={<MainThreadWorkBreakdown />}
             ></Route>
             <Route path="/network-requests" element={<NetworkRequests />}></Route>
-            <Route path="/network-rtt" element={<NetworkRTT />}></Route>
+            {/* <Route path="/network-rtt" element={<NetworkRTT />}></Route>
             <Route
               path="/network-server-latency"
               element={<NetworkServerLatency />}
-            ></Route>
+            ></Route> */}
             <Route path="/resource-summary" element={<ResourceSummary />}></Route>
             <Route
               path="/third-party-summary"
