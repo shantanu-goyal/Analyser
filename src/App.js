@@ -6,8 +6,8 @@ import ThirdPartySummary from "./pages/ThirdPartySummary";
 const BootupTime = lazy(() => import("./pages/BootupTime"));
 const MainThreadWorkBreakdown = lazy(() => import("./pages/MainThreadWorkBreakDown"));
 const NetworkRequests = lazy(() => import("./pages/NetworkRequests"));
-const NetworkRTT = lazy(() => import("./pages/NetworkRTT"));
-const NetworkServerLatency = lazy(() => import("./pages/NetworkServerLatency"));
+// const NetworkRTT = lazy(() => import("./pages/NetworkRTT"));
+// const NetworkServerLatency = lazy(() => import("./pages/NetworkServerLatency"));
 const ResourceSummary = lazy(() => import("./pages/ResourceSummary"));
 const Home = lazy(() => import("./pages/Home"))
 const Insights =lazy(()=>import("./pages/Insights"));
