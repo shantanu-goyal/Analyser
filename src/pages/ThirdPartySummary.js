@@ -44,6 +44,7 @@ export default function ThirdPartySummary() {
 
   /* State to store the type of the graph to be generated. Defaults to the main thread time graph.*/
   const [value, setValue] = useState("mainthread");
+  const [graphValue, setGraphValue] = useState('mainthread');
 
   // This function updates the state of the graph to be shown or not
   function passData(data) {
@@ -55,9 +56,13 @@ export default function ThirdPartySummary() {
     setValue(e.target.value);
   }
 
+  function graphChange(e) {
+    setGraphValue(e.target.value);
+  }
+
   function getItemState(thirdParty) {
     let thirdPartyScripts = {
-      type: "Third Party",
+      url: "Third Party",
       mainThreadTime: 0,
       blockingTime: 0,
       resourceSize: 0,
@@ -65,7 +70,7 @@ export default function ThirdPartySummary() {
     }
 
     let allScripts = {
-      type:"All",
+      url: "All",
       mainThreadTime: 0,
       blockingTime: 0,
       resourceSize: 0,
@@ -73,7 +78,7 @@ export default function ThirdPartySummary() {
     }
 
     let domainSpecificScripts = {
-      type: "Domain Specific",
+      url: "Domain Specific",
       mainThreadTime: 0,
       blockingTime: 0,
       resourceSize: 0,
@@ -101,7 +106,7 @@ export default function ThirdPartySummary() {
     domainSpecificScripts.transferSize = allScripts.transferSize - thirdPartyScripts.transferSize;
     domainSpecificScripts.resourceSize = allScripts.resourceSize - thirdPartyScripts.resourceSize;
 
-    return [allScripts, thirdPartyScripts, domainSpecificScripts];
+    return [thirdPartyScripts, domainSpecificScripts];
   }
 
 
@@ -226,19 +231,20 @@ export default function ThirdPartySummary() {
                   domainWiseScripts={dropdownScripts}
                   passData={passData}
                 />
-                <div className="data-table">
-                <Table id={"summary"} headings={
-                  [
-                    { key: "type", text: "Type of Script", itemType: "text" },
-                    { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
-                    { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
-                    { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
-                    { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
-                  ]
-                } items={itemState} showPagination={false}
-                notShowInput={true}
-                 />
+                <select
+                  value={graphValue}
+                  onChange={graphChange}
+                  style={{ marginTop: "2em" }}
+                >
+                  <option value="mainthread">Main Thread Time</option>
+                  <option value="blocking">Main Thread Blocking Time</option>
+                  <option value="transfer">Transfer Size</option>
+                  <option value="resource">Resource Size</option>
+                </select>
+                <div className="graph-inner-container">
+                  {/* {generateGraph(itemState,graphValue,'pie')} */}
                 </div>
+
                 <h1>Add your own entities below:-</h1>
                 <table className="entity-input">
                   <thead>

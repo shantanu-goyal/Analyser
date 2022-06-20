@@ -13,14 +13,26 @@ Chart.register(...registerables);
  * @param {titles} titles Chart Title 
  * @returns JSX for the chart
  */
-function DoughnutChart({ data, title }) {
+function Graph({ data, title, type, hideLegend }) {
+  function makeid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() *
+        charactersLength));
+    }
+    return result;
+  }
+
   // Create a reference to the legend element
   const legendRef = useRef();
   // Create a reference to the canvas element
   const canvasRef = useRef();
+  const id = makeid(100);
   useEffect(() => {
     // We get the initial configuration of the chart
-    const cfg = processChart(data, title, 'doughnut');
+    const cfg = processChart(data, title, type == 'pie' ? 'pie' : 'doughnut');
     // Storing reference to the canvas element
     const canvas = canvasRef.current;
     // Storing reference to the legend element 
@@ -53,7 +65,9 @@ function DoughnutChart({ data, title }) {
     const chart = new Chart(canvas.getContext('2d'), config);
 
     // Cleanup function to remove the legend element and the chart
-    return () => { chart.destroy(); legendDiv.innerHTML = ""; }
+    return () => { 
+      chart.destroy();
+      legendDiv.innerHTML = ""; }
   }, [data, title]);
 
 
@@ -61,18 +75,20 @@ function DoughnutChart({ data, title }) {
     <>
       <div className='final-graph'>
         <div className='doughnut'>
-          <canvas ref={canvasRef} id={"mychart" + title} />
+          <canvas ref={canvasRef} id={id} />
         </div>
-        <div className='legend-box'>
-          <h1 style={{ textAlign: "center" }}>Legend</h1>
-          <div ref={legendRef} className='custom-legend'></div>
-        </div>
+        {!hideLegend && (
+          <div className='legend-box'>
+            <h1 style={{ textAlign: "center" }}>Legend</h1>
+            <div ref={legendRef} className='custom-legend'></div>
+          </div>
+        )}
       </div>
     </>)
 }
 
-DoughnutChart.propTypes = {
+Graph.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   title: PropTypes.string.isRequired
 }
-export default DoughnutChart;
+export default Graph;

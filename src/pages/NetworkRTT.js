@@ -1,7 +1,7 @@
 import { Navigate } from "react-router";
 import React, { useContext, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
-import DoughnutChart from "../components/Graphs/DoughnutChart";
+import Graph from "../components/Graphs/Graph";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
 import "../styles/Graph.css";
@@ -43,7 +43,7 @@ export default function NetworkRTT() {
     const details = data.details;
     const timeData = extractRTTTime(details);
     return (
-      <DoughnutChart data={timeData} title={"Network RTT"}></DoughnutChart>
+      <Graph data={timeData} title={"Network RTT"}></Graph>
     );
   }
 

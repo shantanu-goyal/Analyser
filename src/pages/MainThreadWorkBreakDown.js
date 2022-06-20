@@ -3,7 +3,7 @@ import { Navigate } from "react-router";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
-import DoughnutChart from "../components/Graphs/DoughnutChart";
+import Graph from "../components/Graphs/Graph";
 import '../styles/Graph.css'
 
 /**
@@ -44,7 +44,7 @@ export default function MainThreadWorkBreakdown() {
   function generateGraph(data) {
     const details = data.details;
     const durationData = extractTotalTime(details);
-    return <DoughnutChart data={durationData} title={"Main Thread Work Breakdown"} />
+    return <Graph data={durationData} title={"Main Thread Work Breakdown"} />
   }
 
   // This function updates the state of the graph to be shown or not

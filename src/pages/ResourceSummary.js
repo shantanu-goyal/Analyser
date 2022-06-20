@@ -3,7 +3,7 @@ import { Navigate } from "react-router";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
-import DoughnutChart from '../components/Graphs/DoughnutChart'
+import Graph from '../components/Graphs/Graph'
 import "../styles/Graph.css"
 
 
@@ -43,7 +43,7 @@ export default function ResourceSummary() {
   function generateGraph(data) {
     const details = data.details;
     const transferSizeData = extractTransferSize(details);
-    return (<DoughnutChart data={transferSizeData} title={"Resource Summary"} />)
+    return (<Graph data={transferSizeData} title={"Resource Summary"} />)
   }
 
   // This function updates the state of the graph to be shown or not

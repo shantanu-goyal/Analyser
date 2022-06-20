@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom'
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
-import DoughnutChart from "../components/Graphs/DoughnutChart";
+import Graph from "../components/Graphs/Graph";
 import "../styles/Graph.css"
 
 
@@ -84,15 +84,15 @@ export default function BootupTime() {
     const parsing = extractScriptParsingTime(details);
     // User requests the total CPU time graph
     if (value === "total") {
-      return <DoughnutChart title={"Total CPU Time"} data={total}></DoughnutChart>
+      return <Graph title={"Total CPU Time"} data={total}></Graph>
     }
     // User requests the script parsing time graph
     else if (value === "script-parsing") {
-      return <DoughnutChart title={"Script Parsing Time"} data={parsing}></DoughnutChart>
+      return <Graph title={"Script Parsing Time"} data={parsing}></Graph>
     }
     // User requests the script evaluation time graph
     else {
-      return <DoughnutChart title={"Script Evaluation Time"} data={evaluation} />
+      return <Graph title={"Script Evaluation Time"} data={evaluation} />
     }
   }
 
