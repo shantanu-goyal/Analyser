@@ -79,42 +79,34 @@ export default function Insights() {
         summary.resourceSize += prevSummary.resourceSize;
         summary.minified =
           prevSummary.minified === "No" ? "No" : summary.minified;
+        if(renderBlockingResources) summary.renderBlocking = renderBlockingSummary
+        let opportunities = getOpportunities(
+          summary,
+          newItems.length + prevNumSubItems - 1
+        );
         summary.unusedPercentage =
           (((prevSummary.unusedPercentage * prevSummary.transferSize) / 100 +
             summary.unusedPercentage) /
             summary.transferSize) *
           100;
-        let opportunities = getOpportunities(
-          summary,
-          newItems.length + prevNumSubItems - 1
-        );
+
         prevItem.subItems.items.pop();
-        prevItem.subItems.items = renderBlockingResources
-          ? [
-              ...prevItem.subItems.items,
-              ...newItems,
-              { ...summary, renderBlocking: renderBlockingSummary },
-            ]
-          : [...prevItem.subItems.items, ...newItems, summary];
+        prevItem.subItems.items = [...prevItem.subItems.items, ...newItems, summary];
         prevItem.opportunities = opportunities;
         return acc;
       }
+      if(renderBlockingResources) summary.renderBlocking = renderBlockingSummary
+      let opportunities = getOpportunities(summary, newItems.length);
       summary.unusedPercentage =
         (summary.unusedPercentage / summary.transferSize) * 100;
 
-      let opportunities = getOpportunities(summary, newItems.length);
       return [
         ...acc,
         {
           ...item,
           subItems: {
             ...item.subItems,
-            items: renderBlockingResources
-              ? [
-                  ...item.subItems.items,
-                  { ...summary, renderBlocking: renderBlockingSummary },
-                ]
-              : [...item.subItems.items, summary],
+            items: [...item.subItems.items, summary],
           },
           opportunities,
         },

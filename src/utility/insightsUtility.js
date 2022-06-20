@@ -6,6 +6,7 @@ export function getOpportunities(
     resourceSize,
     minified,
     unusedPercentage,
+    renderBlocking,
   },
   numItems
 ) {
@@ -18,7 +19,9 @@ export function getOpportunities(
       "Remove unnecessary scripts to optimise main thread time and blocking time"
     );
     oppoutunities.user.push(
-      "Shift Scripts to web workers in order to improve to optimise main thread time and blocking time"
+      `Shift Scripts to web workers in order to save ${
+        Math.round((mainThreadTime + blockingTime) * 100) / 100
+      } ms of main thread time and blocking time`
     );
     oppoutunities.thirdParty.push(
       "Optimise scripts to run faster to optimise main thread time and blocking time"
@@ -29,7 +32,7 @@ export function getOpportunities(
   }
   if (blockingTime > 0) {
     oppoutunities.user.push(
-      "Try to keep tasks short to optimise blocking time"
+      `Try to keep tasks short to save ${Math.round(blockingTime * 100) / 100} ms of blocking time`
     );
     oppoutunities.thirdParty.push(
       "Try to keep tasks short and fast, if not possible break them into many smaller ones to optimise blocking time"
@@ -57,10 +60,15 @@ export function getOpportunities(
   }
   if (unusedPercentage > 0) {
     oppoutunities.user.push(
-      "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity"
+      `Reduce unused JavaScript and defer loading scripts until they are required to decrease ${Math.round((unusedPercentage /1024) * 100) / 100} bytes consumed by network activity`
     );
     oppoutunities.thirdParty.push(
       "Divide large scripts in smaller chunks to reduce network bandwidth wastage for the unused part"
+    );
+  }
+  if (renderBlocking) {
+    oppoutunities.user.push(
+      `Move critical code in inline Scripts and use async and defer for non-critical parts and scripts to save ${Math.round(renderBlocking * 100) / 100} ms of render Blocking time`
     );
   }
   if (oppoutunities.thirdParty.length === 0) {
