@@ -147,15 +147,10 @@ export default function Insights() {
     };
     const doc = new jsPDF(opt.jsPDF);
     const pageSize = jsPDF.getPageSize(opt.jsPDF);
-    const insightIds = [
-      "bootupTimeInsights",
-      "mainThreadWorkInsights",
-      "networkReuestInsights",
-      "networkRTTInsights",
-      "resourceSummaryInsights",
-      "serverLatencyInsights",
-      "thirdPartyInsights",
-    ];
+    let insightIds =thirdPartyWithNetwork.map(item=>{
+      return item.entityName.name
+    });
+
     for (let i = 0; i < insightIds.length; i++) {
       const pageImage = await html2pdf()
         .from(document.getElementById(insightIds[i]))
@@ -198,7 +193,7 @@ export default function Insights() {
 
               {thirdPartyWithNetwork.map((item, idx) => {
                 return (
-                  <div key={idx}>
+                  <div key={idx} id={item.entityName.name}>
                     <h1 style={{ textAlign: "center" }}>
                       {item.entityName.name}
                     </h1>
