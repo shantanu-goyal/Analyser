@@ -3,8 +3,8 @@ import { Navigate } from "react-router";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
-import Graph from "../components/Graphs/Graph";
 import "../styles/Graph.css"
+import Bar from "../components/Graphs/Bar";
 
 
 /**
@@ -52,7 +52,7 @@ export default function NetworkRequests() {
   function generateGraph(data) {
     const details = data.details;
     const durationTimeData = extractDurationTime(details);
-    return <Graph data={durationTimeData} title={"Durartion of Network Requests"} />
+    return <Bar data={durationTimeData} title={"Durartion of Network Requests"} />
   }
 
   // This function updates the state of the graph to be shown or not

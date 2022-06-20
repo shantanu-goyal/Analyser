@@ -5,7 +5,8 @@ import ThirdPartyTable from '../components/ThirdPartyTable'
 import { getHostname, generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
-import Table from "../components/Table";
+import Pie from "../components/Graphs/Pie";
+
 
 
 /**
@@ -205,6 +206,46 @@ export default function ThirdPartySummary() {
     setDropdownScripts([...dropdownScripts, hostname]);
   }
 
+  function renderGraph() {
+    let data;
+    if (graphValue === "mainthread") {
+      data = itemState.map(item => {
+        return {
+          data: item.mainThreadTime,
+          url: item.url
+        }
+      })
+    }
+    else if (graphValue === 'blocking') {
+      data = itemState.map(item => {
+        return {
+          data: item.blockingTime,
+          url: item.url
+        }
+      })
+    }
+    else if (graphValue === 'transfer') {
+      data = itemState.map(item => {
+        return {
+          data: item.transferSize/1024,
+          url: item.url
+        }
+      })
+    }
+    else {
+      data = itemState.map(item => {
+        return {
+          data: item.resourceSize/1024,
+          url: item.url
+        }
+      })
+    }
+    return data;
+  }
+
+
+
+
 
   return (
     <>
@@ -241,9 +282,10 @@ export default function ThirdPartySummary() {
                   <option value="transfer">Transfer Size</option>
                   <option value="resource">Resource Size</option>
                 </select>
-                <div className="graph-inner-container">
-                  {/* {generateGraph(itemState,graphValue,'pie')} */}
+                <div className="big-pie graph-inner-container">
+                  <Pie data={renderGraph()} title={'Domain Specific Scripts vs Third Party Scirpts'} />
                 </div>
+
 
                 <h1>Add your own entities below:-</h1>
                 <table className="entity-input">

@@ -32,7 +32,7 @@ function Graph({ data, title, type, hideLegend }) {
   const id = makeid(100);
   useEffect(() => {
     // We get the initial configuration of the chart
-    const cfg = processChart(data, title, type == 'pie' ? 'pie' : 'doughnut');
+    const cfg = processChart(data, title, type === 'pie' ? 'pie' : 'doughnut');
     // Storing reference to the canvas element
     const canvas = canvasRef.current;
     // Storing reference to the legend element 
