@@ -10,73 +10,50 @@ export function getOpportunities(
   },
   numItems
 ) {
-  const oppoutunities = {
+  const opportunities = {
     user: [],
     thirdParty: [],
   };
-  if (mainThreadTime / numItems > 50 || blockingTime > 0) {
-    oppoutunities.user.push(
-      "Optimize main thread time and blocking time by removing unnecessary scripts"
-    );
-    oppoutunities.user.push(
-      `Move scripts to web workers in order to save ${
-        Math.round((mainThreadTime + blockingTime) * 100) / 100
-      } ms of main thread time and blocking time`
-    );
-    oppoutunities.thirdParty.push(
-      "Optimize scripts to run faster to reduce main thread and blocking time"
-    );
-    oppoutunities.thirdParty.push(
-      "Smaller JS payloads reduce compilation and parsing time"
-    );
+  if (mainThreadTime / numItems > 50) {
+    let opp = `Move scripts to web workers to save ${
+      Math.round(mainThreadTime * 100) / 100
+    } ms of main thread time`;
+    if (blockingTime > 0)
+      opp +=
+        opp === ""
+          ? `Move scripts to web workers to remove main-thread blocking time of ${Math.round( blockingTime * 100) / 100} ms`
+          : ` and to remove main-thread blocking time of ${Math.round(blockingTime * 100) / 100} ms`;
+    opportunities.user.push(opp);
   }
   if (blockingTime > 0) {
-    oppoutunities.user.push(
-      `Keep tasks short to save ${Math.round(blockingTime * 100) / 100} ms of main thread blocking time`
-    );
-    oppoutunities.thirdParty.push(
-      "If possible, break large tasks into smaller ones to make blocking time as short as possible"
-    );
-  }
-  if (transferSize / numItems > 50 * 1024) {
     if (mainThreadTime / numItems <= 50) {
-      oppoutunities.user.push(
-        "Remove unnecessary scripts to reduce tansfer of data over network"
+      opportunities.user.push(
+        `Move scripts to web workers to remove main-thread blocking time of ${Math.round(blockingTime * 100) / 100} ms`
+      );
+      opportunities.thirdParty.push(
+        "Optimise task execution time, try to split longer tasks into smaller ones to reduce blocking time "
       );
     }
-    if (resourceSize / transferSize < 3) {
-      oppoutunities.thirdParty.push(
-        "Try to compress resources properly before transfering over the network"
-      );
-    }
+  }
+
+  if (unusedPercentage > 0) {
+    opportunities.thirdParty.push(
+      "Use code splitting to allow users reduce main-thread time and network time by importing and executing critical chunks"
+    );
   }
   if (minified === "No") {
-    oppoutunities.thirdParty.push(
-      "Minify Scripts to reduce payload sizes and script parse time."
-    );
-    oppoutunities.user.push(
-      "Use minified scripts to reduce payload sizes and script parse time."
-    );
-  }
-  if (unusedPercentage > 0) {
-    oppoutunities.user.push(
-      `Defer loading scripts until they are required to decrease ${Math.round((unusedPercentage * transferSize) /1024) / 100} KiB consumed by network activity`
-    );
-    console.log(unusedPercentage, transferSize)
-    oppoutunities.thirdParty.push(
-      "Split large scripts into smaller chunks to reduce unused network bandwidth"
-    );
+    let opp = "";
+    if (resourceSize / transferSize < 2) {
+      opp = `Compress`;
+    }
+    opp += opp === "" ? "Minify" : " and minify";
+    opp += " scripts to reduce parsing and network time";
+    opportunities.thirdParty.push(opp);
   }
   if (renderBlocking) {
-    oppoutunities.user.push(
-      `Use async and defer for non-critical parts and scripts to save ${Math.round(renderBlocking * 100) / 100} ms of render Blocking time`
+    opportunities.user.push(
+      `Use async and defer for non-critical scripts to reduce render Blocking time`
     );
   }
-  if (oppoutunities.thirdParty.length === 0) {
-    oppoutunities.thirdParty.push("Things are Pretty Optimised! Good Job!");
-  }
-  if (oppoutunities.user.length === 0) {
-    oppoutunities.user.push("Things are Pretty Optimised! Good Job!");
-  }
-  return oppoutunities;
+  return opportunities;
 }
