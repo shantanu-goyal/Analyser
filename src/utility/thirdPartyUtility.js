@@ -1,4 +1,4 @@
-import Graph from '../components/Graphs/Graph'
+import Bar from '../components/Graphs/Bar'
 
 /**
  * Function to extract the main thread time from scripts
@@ -35,7 +35,7 @@ function getTransferSize(scripts){
   const result = scripts.map(script => {
     return {
       url: script.url,
-      data: script.transferSize
+      data: script.transferSize/1024
     }
   }).filter(script => script.data > 0);
   return result; 
@@ -45,7 +45,7 @@ function getResourceSize(scripts){
   const result = scripts.map(script => {
     return {
       url: script.url,
-      data: script.resourceSize
+      data: script.resourceSize/1024
     }
   }).filter(script => script.data > 0);
   return result;
@@ -70,10 +70,10 @@ function generateGraph(scripts, value,type="doughnut") {
   if (value === "blocking") {
     if (blockingTimeData.length > 0) {
       return (
-        <Graph type={type} hideLegend={type==="pie"?true:false}
+        <Bar
           title={"Main Thread Blocking Time"}
           data={blockingTimeData}
-        ></Graph>
+        ></Bar>
       );
     } else {
       return <></>;
@@ -83,10 +83,10 @@ function generateGraph(scripts, value,type="doughnut") {
   else if(value==="resource"){
     if (resourceSizeData.length > 0) {
       return (
-        <Graph type={type} hideLegend={type==="pie"?true:false}
+        <Bar
           title={"Resource Size"}
           data={resourceSizeData}
-        ></Graph>
+        ></Bar>
       );
     } else {
       return <></>;
@@ -97,10 +97,10 @@ function generateGraph(scripts, value,type="doughnut") {
   else if(value==="transfer"){
     if (transferSizeData.length > 0) {
       return (
-        <Graph type={type} hideLegend={type==="pie"?true:false}
+        <Bar
           title={"Transfer Size"}
           data={transferSizeData}
-        ></Graph>
+        ></Bar>
       );
     } else {
       return <></>;
@@ -111,7 +111,7 @@ function generateGraph(scripts, value,type="doughnut") {
   else {
     if (mainThreadTimeData.length > 0) {
       return (
-        <Graph hideLegend={type==="pie"?true:false} type={type} title={"Main Thread Time"} data={mainThreadTimeData} />
+        <Bar title={"Main Thread Time"} data={mainThreadTimeData} />
       );
     } else {
       return <></>;

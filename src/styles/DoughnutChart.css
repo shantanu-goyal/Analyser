@@ -36,8 +36,14 @@
     justify-content: center;
     align-items: center;
     align-items: top;
+    height: 100%;
 }
 
 .doughnut{
     width: 40%;
+}
+
+.bar{
+    width: 80%;
+    height: 80%;
 }
