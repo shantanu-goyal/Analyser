@@ -1,4 +1,4 @@
-import DoughnutChart from '../components/Graphs/DoughnutChart'
+import Graph from '../components/Graphs/Graph'
 
 /**
  * Function to extract the main thread time from scripts
@@ -60,7 +60,8 @@ function getResourceSize(scripts){
  * @param {String} value - The type of the graph to be generated
  * @returns {JSX} - The graph corresponding to the type of the graph requested by the user
  */
-function generateGraph(scripts, value) {
+function generateGraph(scripts, value,type="doughnut") {
+  console.log(scripts, value);
   const mainThreadTimeData = getMainThreadTime(scripts);
   const blockingTimeData = getRenderBlockingTime(scripts);
   const resourceSizeData=getResourceSize(scripts);
@@ -69,10 +70,10 @@ function generateGraph(scripts, value) {
   if (value === "blocking") {
     if (blockingTimeData.length > 0) {
       return (
-        <DoughnutChart
+        <Graph type={type}
           title={"Main Thread Blocking Time"}
           data={blockingTimeData}
-        ></DoughnutChart>
+        ></Graph>
       );
     } else {
       return <></>;
@@ -82,10 +83,10 @@ function generateGraph(scripts, value) {
   else if(value==="resource"){
     if (resourceSizeData.length > 0) {
       return (
-        <DoughnutChart
+        <Graph type={type}
           title={"Resource Size"}
           data={resourceSizeData}
-        ></DoughnutChart>
+        ></Graph>
       );
     } else {
       return <></>;
@@ -96,10 +97,10 @@ function generateGraph(scripts, value) {
   else if(value==="transfer"){
     if (transferSizeData.length > 0) {
       return (
-        <DoughnutChart
+        <Graph type={type}
           title={"Transfer Size"}
           data={transferSizeData}
-        ></DoughnutChart>
+        ></Graph>
       );
     } else {
       return <></>;
@@ -110,7 +111,7 @@ function generateGraph(scripts, value) {
   else {
     if (mainThreadTimeData.length > 0) {
       return (
-        <DoughnutChart title={"Main Thread Time"} data={mainThreadTimeData} />
+        <Graph type={type} title={"Main Thread Time"} data={mainThreadTimeData} />
       );
     } else {
       return <></>;

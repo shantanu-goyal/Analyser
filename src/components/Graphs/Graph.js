@@ -13,14 +13,14 @@ Chart.register(...registerables);
  * @param {titles} titles Chart Title 
  * @returns JSX for the chart
  */
-function DoughnutChart({ data, title }) {
+function Graph({ data, title,type}) {
   // Create a reference to the legend element
   const legendRef = useRef();
   // Create a reference to the canvas element
   const canvasRef = useRef();
   useEffect(() => {
     // We get the initial configuration of the chart
-    const cfg = processChart(data, title, 'doughnut');
+    const cfg = processChart(data, title, type=='pie'?'pie':'doughnut');
     // Storing reference to the canvas element
     const canvas = canvasRef.current;
     // Storing reference to the legend element 
@@ -71,8 +71,8 @@ function DoughnutChart({ data, title }) {
     </>)
 }
 
-DoughnutChart.propTypes = {
+Graph.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   title: PropTypes.string.isRequired
 }
-export default DoughnutChart;
+export default Graph;

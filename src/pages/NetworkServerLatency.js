@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Navigate } from "react-router";
 import { DataContext } from "../contexts/DataContext";
-import DoughnutChart from "../components/Graphs/DoughnutChart";
+import Graph from "../components/Graphs/Graph";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
 import "../styles/Graph.css";
@@ -43,7 +43,7 @@ export default function NetworkServerLatency() {
     const details = data.details;
     const latencyTime = extractNetworkServerLatencyTime(details);
     return (
-      <DoughnutChart data={latencyTime} title={"Network Server Latency"} />
+      <Graph data={latencyTime} title={"Network Server Latency"} />
     );
   }
 
