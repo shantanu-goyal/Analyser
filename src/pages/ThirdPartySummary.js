@@ -227,7 +227,7 @@ export default function ThirdPartySummary() {
     else if (graphValue === 'transfer') {
       data = itemState.map(item => {
         return {
-          data: item.transferSize,
+          data: item.transferSize/1024,
           url: item.url
         }
       })
@@ -235,7 +235,7 @@ export default function ThirdPartySummary() {
     else {
       data = itemState.map(item => {
         return {
-          data: item.resourceSize,
+          data: item.resourceSize/1024,
           url: item.url
         }
       })
@@ -282,10 +282,8 @@ export default function ThirdPartySummary() {
                   <option value="transfer">Transfer Size</option>
                   <option value="resource">Resource Size</option>
                 </select>
-                <div className="graph-container">
-                  <div className="graph-inner-container">
-                    <Pie data={renderGraph()} title={'Domain Specific Scripts vs Third Party Scirpts'} />
-                  </div>
+                <div className="big-pie graph-inner-container">
+                  <Pie data={renderGraph()} title={'Domain Specific Scripts vs Third Party Scirpts'} />
                 </div>
 
 
