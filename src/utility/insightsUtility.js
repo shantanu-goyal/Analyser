@@ -16,26 +16,26 @@ export function getOpportunities(
   };
   if (mainThreadTime / numItems > 50 || blockingTime > 0) {
     oppoutunities.user.push(
-      "Remove unnecessary scripts to optimise main thread time and blocking time"
+      "Optimize main thread time and blocking time by removing unnecessary scripts"
     );
     oppoutunities.user.push(
-      `Shift Scripts to web workers in order to save ${
+      `Move scripts to web workers in order to save ${
         Math.round((mainThreadTime + blockingTime) * 100) / 100
       } ms of main thread time and blocking time`
     );
     oppoutunities.thirdParty.push(
-      "Optimise scripts to run faster to optimise main thread time and blocking time"
+      "Optimize scripts to run faster to reduce main thread and blocking time"
     );
     oppoutunities.thirdParty.push(
-      "Deliver smaller JS payloads to reduce parsing and compilation time"
+      "Smaller JS payloads reduce compilation and parsing time"
     );
   }
   if (blockingTime > 0) {
     oppoutunities.user.push(
-      `Try to keep tasks short to save ${Math.round(blockingTime * 100) / 100} ms of blocking time`
+      `Keep tasks short to save ${Math.round(blockingTime * 100) / 100} ms of main thread blocking time`
     );
     oppoutunities.thirdParty.push(
-      "Try to keep tasks short and fast, if not possible break them into many smaller ones to optimise blocking time"
+      "If possible, break large tasks into smaller ones to make blocking time as short as possible"
     );
   }
   if (transferSize / numItems > 50 * 1024) {
@@ -60,15 +60,16 @@ export function getOpportunities(
   }
   if (unusedPercentage > 0) {
     oppoutunities.user.push(
-      `Reduce unused JavaScript and defer loading scripts until they are required to decrease ${Math.round((unusedPercentage /1024) * 100) / 100} bytes consumed by network activity`
+      `Defer loading scripts until they are required to decrease ${Math.round((unusedPercentage * transferSize) /1024) / 100} KiB consumed by network activity`
     );
+    console.log(unusedPercentage, transferSize)
     oppoutunities.thirdParty.push(
-      "Divide large scripts in smaller chunks to reduce network bandwidth wastage for the unused part"
+      "Split large scripts into smaller chunks to reduce unused network bandwidth"
     );
   }
   if (renderBlocking) {
     oppoutunities.user.push(
-      `Move critical code in inline Scripts and use async and defer for non-critical parts and scripts to save ${Math.round(renderBlocking * 100) / 100} ms of render Blocking time`
+      `Use async and defer for non-critical parts and scripts to save ${Math.round(renderBlocking * 100) / 100} ms of render Blocking time`
     );
   }
   if (oppoutunities.thirdParty.length === 0) {

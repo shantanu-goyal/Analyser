@@ -20,31 +20,50 @@ export default function Insights() {
   const thirdPartyData = dataContext.data.insights;
   const config = dataContext.data.config;
 
+  function getSummary(item) {
+    const summary = {
+      url: "Summary",
+      mainThreadTime: 0,
+      blockingTime: 0,
+      transferSize: 0,
+      resourceSize: 0,
+      minified: "Yes",
+      unusedPercentage: 0,
+    };
+    item.subItems.items.forEach((subitem) => {
+      summary.mainThreadTime += subitem.mainThreadTime;
+      summary.blockingTime += subitem.blockingTime;
+      summary.resourceSize += subitem.resourceSize;
+      summary.minified = summary.minified === "No" ? "No" : subitem.minified;
+      summary.unusedPercentage =
+        (summary.unusedPercentage * summary.transferSize +
+          subitem.unusedPercentage * subitem.transferSize) /
+        (summary.transferSize + subitem.transferSize);
+      summary.transferSize += subitem.transferSize;
+      if (subitem.renderBlocking !== undefined)
+        summary.renderBlocking = summary.renderBlocking
+          ? summary.renderBlocking + subitem.renderBlocking
+          : subitem.renderBlocking;
+    });
+    return summary;
+  }
+
   const thirdPartyWithNetwork = thirdPartyData
     .reduce((acc, item) => {
       if (!item.entityName) return acc;
       let prevItem = acc.find(
         ({ entityName }) => item.entityName === entityName
       );
-      let summary = {
-        url: "Summary",
-        mainThreadTime: 0,
-        blockingTime: 0,
-        transferSize: 0,
-        resourceSize: 0,
-        minified: "Yes",
-        unusedPercentage: 0,
-      };
-      let renderBlockingSummary = 0;
       let newItems = [];
       item.subItems.items.forEach((subitem) => {
         if (typeof subitem.url !== "string") return;
+
         if (
           unminifiedJSData.details.items.find(({ url }) => url === subitem.url)
         ) {
           subitem.minified = "No";
-          summary.minified = "No";
         } else subitem.minified = "Yes";
+
         if (renderBlockingResources) {
           let renderBlockingResource =
             renderBlockingResources.details.items.find(
@@ -52,53 +71,34 @@ export default function Insights() {
             );
           if (renderBlockingResource) {
             subitem.renderBlocking = renderBlockingResource.wastedMs;
-            renderBlockingSummary += renderBlockingResource.wastedMs;
           } else subitem.renderBlocking = 0;
         }
+
         let js = unusedJSData.details.items.find(
           ({ url }) => url === subitem.url
         );
         if (js) {
           subitem.unusedPercentage = js.wastedPercent;
-          summary.unusedPercentage += js.wastedBytes;
         } else subitem.unusedPercentage = 0;
-        summary.mainThreadTime += subitem.mainThreadTime;
-        summary.blockingTime += subitem.blockingTime;
-        summary.transferSize += subitem.transferSize;
-        summary.resourceSize += subitem.resourceSize;
         newItems.push(subitem);
       });
-      // item.subItems.items.push(summary)
+
       if (prevItem) {
-        let prevNumSubItems = prevItem.subItems.items.length;
-        let prevSummary = prevItem.subItems.items[prevNumSubItems - 1];
-        summary.mainThreadTime += prevSummary.mainThreadTime;
-        summary.blockingTime += prevSummary.blockingTime;
-        renderBlockingSummary += prevSummary.renderBlocking;
-        summary.transferSize += prevSummary.transferSize;
-        summary.resourceSize += prevSummary.resourceSize;
-        summary.minified =
-          prevSummary.minified === "No" ? "No" : summary.minified;
-        if(renderBlockingResources) summary.renderBlocking = renderBlockingSummary
+        if (prevItem.subItems.items.length > 1) prevItem.subItems.items.pop();
+        prevItem.subItems.items = [...prevItem.subItems.items, ...newItems];
+        let summary = getSummary(prevItem);
         let opportunities = getOpportunities(
           summary,
-          newItems.length + prevNumSubItems - 1
+          prevItem.subItems.items.length
         );
-        summary.unusedPercentage =
-          (((prevSummary.unusedPercentage * prevSummary.transferSize) / 100 +
-            summary.unusedPercentage) /
-            summary.transferSize) *
-          100;
-
-        prevItem.subItems.items.pop();
-        prevItem.subItems.items = [...prevItem.subItems.items, ...newItems, summary];
+        if (prevItem.subItems.items.length > 1)
+          prevItem.subItems.items.push(summary);
         prevItem.opportunities = opportunities;
         return acc;
       }
-      if(renderBlockingResources) summary.renderBlocking = renderBlockingSummary
-      let opportunities = getOpportunities(summary, newItems.length);
-      summary.unusedPercentage =
-        (summary.unusedPercentage / summary.transferSize) * 100;
+
+      let summary = getSummary(item);
+      let opportunities = getOpportunities(summary, item.subItems.items.length);
 
       return [
         ...acc,
@@ -106,7 +106,10 @@ export default function Insights() {
           ...item,
           subItems: {
             ...item.subItems,
-            items: [...item.subItems.items, summary],
+            items:
+              item.subItems.items.length > 1
+                ? [...item.subItems.items, summary]
+                : [...item.subItems.items],
           },
           opportunities,
         },
