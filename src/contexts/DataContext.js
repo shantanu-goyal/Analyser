@@ -17,6 +17,8 @@ const switchData = (state, action) => {
       return {...state, config: action.data}
     case "thirdPartySummary":
       return {...state, thirdPartySummary:action.data}
+    case "updateThirdParty":
+      return {...state, insights:action.data}
     default:
       return state;
   }
@@ -30,6 +32,7 @@ const DataContextProvider = ({ children }) => {
     thirdPartySummary:{},
     data: {},
     thirdParty:{},
+    insights:{},
     config: {
       deviceType: 'mobile',
       url: '',

@@ -73,12 +73,71 @@ function ThirdPartyTable({
     return Array.from(byEntity.entries());
   }
 
-  /**
-   * Toogle view of third party table from script view to entity view and vice-versa
-   * @param {Object} event Object to hold data for event which triggered view change
-   */
-  function changeView(view) {
+
+  function updateContext(){
+    const byEntity=new Map();
+    console.log(data);
     // Update the global data context with the props recieved
+    data.map(item=>{
+      if(item.entityName){
+        const entity=byEntity.get(item.entityName.name)||{
+          blockingTime:0,
+          transferSize:0,
+          mainThreadTime:0,
+          resourceSize:0,
+          subItems:{
+            items:[]
+          },
+          entityName:{}
+        }
+        entity.blockingTime+=item.blockingTime;
+        entity.transferSize+=item.transferSize;
+        entity.mainThreadTime+=item.mainThreadTime;
+        entity.resourceSize+=item.resourceSize;
+        entity.subItems.items=[...entity.subItems.items,...item.subItems.items];
+        entity.entityName={name:item.entityName.name};
+        byEntity.set(item.entityName.name,entity);
+      }
+      if(!item.entityName){
+        let entityArray=userInput.filter(dt=>{
+          if(getHostname(dt.key)===item.entity.url){
+            return true;
+          }
+          return false;
+        });
+
+        if(entityArray.length>0){
+          let entityName={name:entityArray[0].value};
+          const entity=byEntity.get(entityName.name)||{
+            blockingTime:0,
+            transferSize:0,
+            mainThreadTime:0,
+            resourceSize:0,
+            subItems:{
+              items:[]
+            },
+            entityName:{}
+          }
+          entity.blockingTime+=item.blockingTime;
+          entity.transferSize+=item.transferSize;
+          entity.mainThreadTime+=item.mainThreadTime;
+          entity.resourceSize+=item.resourceSize;
+          entity.subItems.items=[...entity.subItems.items,...item.subItems.items ];
+          entity.entityName=entityName;
+          byEntity.set(entityName.name,entity);
+        }
+      }
+      return {};
+    });
+
+    const dataArray=Array.from(byEntity.values());
+    console.log(dataArray);
+
+    // dataContext.setData({
+    //   type:'updateThirdParty',
+    //   data:dataArray
+    // });
+
     dataContext.setData({
       type: "thirdPartySummary",
       data: {
@@ -87,7 +146,97 @@ function ThirdPartyTable({
         domainScripts:domainWiseScripts
       }
     });
+  }
 
+
+  function updateContext(){
+    const byEntity=new Map();
+    // Update the global data context with the props recieved
+    data.map(item=>{
+      if(item.entityName){
+        const entity=byEntity.get(item.entityName.name)||{
+          blockingTime:0,
+          transferSize:0,
+          mainThreadTime:0,
+          resourceSize:0,
+          subItems:{
+            items:[]
+          },
+          entityName:{}
+        }
+        entity.blockingTime+=item.blockingTime;
+        entity.transferSize+=item.transferSize;
+        entity.mainThreadTime+=item.mainThreadTime;
+        entity.resourceSize+=item.resourceSize;
+        entity.subItems.items=[...entity.subItems.items,...item.subItems.items];
+        entity.entityName={name:item.entityName.name};
+        byEntity.set(item.entityName.name,entity);
+      }
+      if(!item.entityName){
+        let entityArray=userInput.filter(dt=>{
+          if(getHostname(dt.key)===item.entity.url){
+            return true;
+          }
+          return false;
+        });
+
+        if(entityArray.length>0){
+          let entityName={name:entityArray[0].value};
+          const entity=byEntity.get(entityName.name)||{
+            blockingTime:0,
+            transferSize:0,
+            mainThreadTime:0,
+            resourceSize:0,
+            subItems:{
+              items:[]
+            },
+            entityName:{}
+          }
+          entity.blockingTime+=item.blockingTime;
+          entity.transferSize+=item.transferSize;
+          entity.mainThreadTime+=item.mainThreadTime;
+          entity.resourceSize+=item.resourceSize;
+          entity.subItems.items=[...entity.subItems.items,...item.subItems.items ];
+          entity.entityName=entityName;
+          byEntity.set(entityName.name,entity);
+        }
+      }
+      return {};
+    });
+
+    let dataArray=Array.from(byEntity.values());
+    console.log(dataArray);
+
+    dataArray=dataArray.map(item=>{
+      item.subItems.items=item.subItems.items.filter(i=>{
+        return typeof(i.url)=="string";
+      })
+      return item;
+    })
+
+    dataContext.setData({
+      type:'updateThirdParty',
+      data:dataArray
+    });
+
+    dataContext.setData({
+      type: "thirdPartySummary",
+      data: {
+        thirdPartyScripts: scripts,
+        userInput,
+        domainScripts:domainWiseScripts
+      }
+    });
+  }
+
+
+  /**
+   * Toogle view of third party table from script view to entity view and vice-versa
+   * @param {Object} event Object to hold data for event which triggered view change
+   */
+
+  function changeView(view) {
+    updateContext();
     // If the current view is script view
     if (view === "script") {
       // Update Table headings

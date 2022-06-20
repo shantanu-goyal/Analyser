@@ -17,7 +17,7 @@ export default function Insights() {
   const unminifiedJSData = data["unminified-javascript"];
   const unusedJSData = data["unused-javascript"];
   const renderBlockingResources = data["render-blocking-resources"];
-  const thirdPartyData = dataContext.data.thirdParty;
+  const thirdPartyData = dataContext.data.insights;
   const config = dataContext.data.config;
 
   const thirdPartyWithNetwork = thirdPartyData
