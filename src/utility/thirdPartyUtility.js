@@ -70,7 +70,7 @@ function generateGraph(scripts, value,type="doughnut") {
   if (value === "blocking") {
     if (blockingTimeData.length > 0) {
       return (
-        <Graph type={type}
+        <Graph type={type} hideLegend={type=="pie"?true:false}
           title={"Main Thread Blocking Time"}
           data={blockingTimeData}
         ></Graph>
@@ -83,7 +83,7 @@ function generateGraph(scripts, value,type="doughnut") {
   else if(value==="resource"){
     if (resourceSizeData.length > 0) {
       return (
-        <Graph type={type}
+        <Graph type={type} hideLegend={type=="pie"?true:false}
           title={"Resource Size"}
           data={resourceSizeData}
         ></Graph>
@@ -97,7 +97,7 @@ function generateGraph(scripts, value,type="doughnut") {
   else if(value==="transfer"){
     if (transferSizeData.length > 0) {
       return (
-        <Graph type={type}
+        <Graph type={type} hideLegend={type=="pie"?true:false}
           title={"Transfer Size"}
           data={transferSizeData}
         ></Graph>
@@ -111,7 +111,7 @@ function generateGraph(scripts, value,type="doughnut") {
   else {
     if (mainThreadTimeData.length > 0) {
       return (
-        <Graph type={type} title={"Main Thread Time"} data={mainThreadTimeData} />
+        <Graph hideLegend={type=="pie"?true:false} type={type} title={"Main Thread Time"} data={mainThreadTimeData} />
       );
     } else {
       return <></>;

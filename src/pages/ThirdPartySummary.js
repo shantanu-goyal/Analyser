@@ -242,7 +242,7 @@ export default function ThirdPartySummary() {
                   <option value="resource">Resource Size</option>
                 </select>
                 <div className="graph-inner-container">
-                  {generateGraph(itemState,graphValue,'pie')}
+                  {/* {generateGraph(itemState,graphValue,'pie')} */}
                 </div>
 
                 <h1>Add your own entities below:-</h1>
