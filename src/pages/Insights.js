@@ -85,18 +85,19 @@ export default function Insights() {
 
       if (prevItem) {
         if (prevItem.subItems.items.length > 1) prevItem.subItems.items.pop();
-        prevItem.subItems.items = [...prevItem.subItems.items, ...newItems];
-        let summary = getSummary(prevItem);
+        newItems = [...prevItem.subItems.items, ...newItems];
+        let summary = getSummary(newItems);
         let opportunities = getOpportunities(
           summary,
-          prevItem.subItems.items.length
+          newItems.length
         );
-        if (prevItem.subItems.items.length > 1)
-          prevItem.subItems.items.push(summary);
+        if (newItems.length > 1)
+          newItems.push(summary);
         prevItem.opportunities = opportunities;
+        prevItem.subItems.items = newItems
         return acc;
       }
-
+      item.subItems.items = newItems
       let summary = getSummary(item);
       let opportunities = getOpportunities(summary, item.subItems.items.length);
 
@@ -117,14 +118,10 @@ export default function Insights() {
     }, [])
     .sort(
       (a, b) =>
-        b.subItems.items.at(-1).mainThreadTime -
-          a.subItems.items.at(-1).mainThreadTime ||
-        b.subItems.items.at(-1).blockingTime -
-          a.subItems.items.at(-1).blockingTime ||
-        b.subItems.items.at(-1).transferSize -
-          a.subItems.items.at(-1).transferSize ||
-        b.subItems.items.at(-1).resourceSize -
-          a.subItems.items.at(-1).resourceSize
+        b.opportunities.user.length +
+          b.opportunities.thirdParty.length -
+          (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
+        b.opportunities.user.length - a.opportunities.user.length
     );
 
   const headings = [
@@ -150,8 +147,8 @@ export default function Insights() {
     };
     const doc = new jsPDF(opt.jsPDF);
     const pageSize = jsPDF.getPageSize(opt.jsPDF);
-    let insightIds =thirdPartyWithNetwork.map(item=>{
-      return item.entityName.name
+    let insightIds = thirdPartyWithNetwork.map((item) => {
+      return item.entityName.name;
     });
 
     for (let i = 0; i < insightIds.length; i++) {
@@ -228,14 +225,25 @@ export default function Insights() {
                         marginBottom: "10em",
                       }}
                     >
-                      <h4> What You Can Do: </h4>
-                      {item.opportunities.user.map((opportunity, idx) => {
-                        return <p key={idx}>{opportunity}</p>;
-                      })}
-                      <h4> What {item.entityName.name} Can Do: </h4>
-                      {item.opportunities.thirdParty.map((opportunity, idx) => {
-                        return <p key={idx}>{opportunity}</p>;
-                      })}
+                      {item.opportunities.user.length>0 && (
+                        <>
+                          <h4> What You Can Do: </h4>
+                          {item.opportunities.user.map((opportunity, idx) => {
+                            return <p key={idx}>{opportunity}</p>;
+                          })}
+                        </>
+                      )}
+
+                      {item.opportunities.thirdParty.length > 0 && (
+                        <>
+                          <h4> What {item.entityName.name} Can Do: </h4>
+                          {item.opportunities.thirdParty.map(
+                            (opportunity, idx) => {
+                              return <p key={idx}>{opportunity}</p>;
+                            }
+                          )}
+                        </>
+                      )}
                     </div>
                   </div>
                 );
