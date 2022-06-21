@@ -1,4 +1,3 @@
-import { Legend } from "chart.js";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import "../styles/Pagination.css";
