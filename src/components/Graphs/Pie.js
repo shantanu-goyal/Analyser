@@ -17,7 +17,7 @@ Chart.register(...registerables);
 function Pie({ data, title}) {
 
   let divRef=useRef();
-
+  let legendRef=useRef();
   function makeid(length) {
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -35,14 +35,36 @@ function Pie({ data, title}) {
     const cfg = processChart(data, title, 'pie');
     let div=divRef.current;
     div.innerHTML=`<canvas id=${id} />`
-
+    const legendDiv = legendRef.current;
+    const config = {
+      ...cfg, // The previous configuration
+      plugins: [
+        {
+          // Function to render the legend of the chart seperately
+          beforeInit: function (chart) {
+            const ul = document.createElement('ul');
+            chart.data.labels.forEach((label, i) => {
+              ul.innerHTML += `
+                <li>
+                  <span style="background-color: ${chart.data.datasets[0].backgroundColor[i]}">
+                  </span>
+                  ${label}
+                </li>
+              `;
+            });
+            return legendRef.current.appendChild(ul);
+          }
+        }
+      ]
+    }
     //Render the chart
-    const chart = new Chart(document.getElementById(id).getContext('2d'), cfg);
+    const chart = new Chart(document.getElementById(id).getContext('2d'), config);
 
     // Cleanup function to remove the legend element and the chart
     return () => { 
       chart.destroy();
       div.innerHTML="";
+      legendDiv.innerHTML = "";
     }
   }, [data, title, id]);
 
@@ -52,6 +74,10 @@ function Pie({ data, title}) {
       <div className='final-graph'>
         <div ref={divRef}>
         </div>
+        <div className='legend-box'>
+            <h1 style={{ textAlign: "center" }}>Legend</h1>
+            <div ref={legendRef} className='custom-legend'></div>
+          </div>
       </div>
     </>)
 }
