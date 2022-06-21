@@ -21,7 +21,7 @@ export default function ThirdPartySummary() {
   data = data["third-party-summary"];
   let allData = dataContext.data.thirdParty;
   let thirdPartyData = dataContext.data.thirdPartySummary;
-
+  let details=data.details||{};
   // Getting data from the context
   const userData = thirdPartyData.userInput;
   const domainWiseScripts = thirdPartyData.domainScripts;
@@ -86,7 +86,8 @@ export default function ThirdPartySummary() {
       transferSize: 0
     }
 
-    data.details.items.map(item => {
+    let items=details.items||[];
+    items.map(item => {
       allScripts.mainThreadTime += item.mainThreadTime;
       allScripts.blockingTime += item.blockingTime;
       allScripts.transferSize += item.transferSize;

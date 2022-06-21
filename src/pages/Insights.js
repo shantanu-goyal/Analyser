@@ -16,7 +16,7 @@ export default function Insights() {
   const unminifiedJSData = data["unminified-javascript"];
   const unusedJSData = data["unused-javascript"];
   const renderBlockingResources = data["render-blocking-resources"];
-  const thirdPartyData = dataContext.data.insights;
+  const thirdPartyData = dataContext.data.insights || [];
   const config = dataContext.data.config;
 
   function getSummary(item) {
@@ -47,77 +47,80 @@ export default function Insights() {
     return summary;
   }
 
-  const thirdPartyWithNetwork = thirdPartyData
-    .reduce((acc, item) => {
-      if (!item.entityName) return acc;
-      let prevItem = acc.find(
-        ({ entityName }) => item.entityName === entityName
-      );
-      let newItems = [];
-      item.subItems.items.forEach((subitem) => {
-        if (typeof subitem.url !== "string") return;
-
-        if (
-          unminifiedJSData.details.items.find(({ url }) => url === subitem.url)
-        ) {
-          subitem.minified = "No";
-        } else subitem.minified = "Yes";
-
-        if (renderBlockingResources) {
-          let renderBlockingResource =
-            renderBlockingResources.details.items.find(
-              ({ url }) => url === subitem.url
-            );
-          if (renderBlockingResource) {
-            subitem.renderBlocking = renderBlockingResource.wastedMs;
-          } else subitem.renderBlocking = 0;
-        }
-
-        let js = unusedJSData.details.items.find(
-          ({ url }) => url === subitem.url
+  let thirdPartyWithNetwork = [];
+  if (thirdPartyData.length > 0) {
+    thirdPartyWithNetwork = thirdPartyData
+      .reduce((acc, item) => {
+        if (!item.entityName) return acc;
+        let prevItem = acc.find(
+          ({ entityName }) => item.entityName === entityName
         );
-        if (js) {
-          subitem.unusedPercentage = js.wastedPercent;
-        } else subitem.unusedPercentage = 0;
-        newItems.push(subitem);
-      });
+        let newItems = [];
+        item.subItems.items.forEach((subitem) => {
+          if (typeof subitem.url !== "string") return;
 
-      if (prevItem) {
-        if (prevItem.subItems.items.length > 1) prevItem.subItems.items.pop();
-        newItems = [...prevItem.subItems.items, ...newItems];
-        let summary = getSummary(newItems);
-        let opportunities = getOpportunities(summary, newItems.length);
-        if (newItems.length > 1) newItems.push(summary);
-        prevItem.opportunities = opportunities;
-        prevItem.subItems.items = newItems;
-        return acc;
-      }
-      item.subItems.items = newItems;
-      let summary = getSummary(item);
-      let opportunities = getOpportunities(summary, item.subItems.items.length);
+          if (
+            unminifiedJSData.details.items.find(({ url }) => url === subitem.url)
+          ) {
+            subitem.minified = "No";
+          } else subitem.minified = "Yes";
 
-      return [
-        ...acc,
-        {
-          ...item,
-          subItems: {
-            ...item.subItems,
-            items:
-              item.subItems.items.length > 1
-                ? [...item.subItems.items, summary]
-                : [...item.subItems.items],
+          if (renderBlockingResources) {
+            let renderBlockingResource =
+              renderBlockingResources.details.items.find(
+                ({ url }) => url === subitem.url
+              );
+            if (renderBlockingResource) {
+              subitem.renderBlocking = renderBlockingResource.wastedMs;
+            } else subitem.renderBlocking = 0;
+          }
+
+          let js = unusedJSData.details.items.find(
+            ({ url }) => url === subitem.url
+          );
+          if (js) {
+            subitem.unusedPercentage = js.wastedPercent;
+          } else subitem.unusedPercentage = 0;
+          newItems.push(subitem);
+        });
+
+        if (prevItem) {
+          if (prevItem.subItems.items.length > 1) prevItem.subItems.items.pop();
+          newItems = [...prevItem.subItems.items, ...newItems];
+          let summary = getSummary(newItems);
+          let opportunities = getOpportunities(summary, newItems.length);
+          if (newItems.length > 1) newItems.push(summary);
+          prevItem.opportunities = opportunities;
+          prevItem.subItems.items = newItems;
+          return acc;
+        }
+        item.subItems.items = newItems;
+        let summary = getSummary(item);
+        let opportunities = getOpportunities(summary, item.subItems.items.length);
+
+        return [
+          ...acc,
+          {
+            ...item,
+            subItems: {
+              ...item.subItems,
+              items:
+                item.subItems.items.length > 1
+                  ? [...item.subItems.items, summary]
+                  : [...item.subItems.items],
+            },
+            opportunities,
           },
-          opportunities,
-        },
-      ];
-    }, [])
-    .sort(
-      (a, b) =>
-        b.opportunities.user.length +
+        ];
+      }, [])
+      .sort(
+        (a, b) =>
+          b.opportunities.user.length +
           b.opportunities.thirdParty.length -
           (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
-        b.opportunities.user.length - a.opportunities.user.length
-    );
+          b.opportunities.user.length - a.opportunities.user.length
+      )
+  }
 
   const headings = [
     { key: "url", text: "URL", itemType: "link" },
@@ -142,16 +145,16 @@ export default function Insights() {
     maxHeight = Math.min(1920, maxHeight)
     let displays = [];
     for (let i = 0; i < divsToHide.length; i++) {
-      maxHeight = Math.max(maxHeight, )
+      maxHeight = Math.max(maxHeight,)
       displays.push(divsToHide[i].style.display);
       divsToHide[i].style.display = "none";
     }
     try {
       const opt = {
         filename: "report.pdf",
-        pagebreak: { mode: 'avoid-all'},
+        pagebreak: { mode: 'avoid-all' },
         enableLinks: true,
-        jsPDF: { orientation: "landscape", unit: "in", format: [12, maxHeight/96] },
+        jsPDF: { orientation: "landscape", unit: "in", format: [12, maxHeight / 96] },
       };
       await html2pdf().set(opt).from(insightsRef.current).save();
     } catch (err) {
@@ -203,13 +206,13 @@ export default function Insights() {
                         headings={
                           renderBlockingResources
                             ? [
-                                ...headings,
-                                {
-                                  key: "renderBlocking",
-                                  text: "Render Blocking Time",
-                                  itemType: "ms",
-                                },
-                              ]
+                              ...headings,
+                              {
+                                key: "renderBlocking",
+                                text: "Render Blocking Time",
+                                itemType: "ms",
+                              },
+                            ]
                             : headings
                         }
                         items={item.subItems.items.filter(

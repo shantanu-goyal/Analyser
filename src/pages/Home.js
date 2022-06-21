@@ -25,7 +25,8 @@ export default function Home() {
   const navigate = useNavigate();
 
   function getThirdPartyData(data){
-    const items=data.details.items;
+    const details=data.details||{};
+    const items=details.items||[];
     const newItems=items.map(item=>{
       const URL=item.entity.url;
       const entity=thirdPartyWeb.getEntity(URL);
