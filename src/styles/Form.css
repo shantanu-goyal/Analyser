@@ -20,6 +20,7 @@
 .url-input label{
   display: inline-block;
     margin-bottom: 0.5em;
+    margin-right: 0.5em;
 }
 
 .url-input input {
@@ -90,7 +91,7 @@
   margin: 0.5em;
 }
 
-.select-box{
+.url-input .select-box{
   display: block;
   width: 100%;
     padding: .375rem .75rem;
@@ -100,4 +101,10 @@
     outline: none;
     text-align: left;
     margin-top: 0;
+    margin-right: 1em;
+}
+
+.selectors{
+  display: flex;
+  justify-content: flex-start;
 }

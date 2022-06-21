@@ -10,6 +10,7 @@ import "../styles/Form.css";
 function Form({ onFormSubmit }) {
   // State to hold list of headers for the website
   const [headers, setHeaders] = useState([]);
+  const [flow, setFlow] = useState("navigation");
 
   // Reference to input field for the website url
   const urlRef = useRef(null);
@@ -35,7 +36,7 @@ function Form({ onFormSubmit }) {
     }, {});
     const url = urlRef.current.value;
     const deviceType = deviceRef.current.value;
-    const waitTime = waitTimeRef.current.value;
+    const waitTime = waitTimeRef.current ? waitTimeRef.current.value : 0;
     onFormSubmit(url, headerObject, deviceType, waitTime);
   }
 
@@ -60,18 +61,37 @@ function Form({ onFormSubmit }) {
   return (
     <div className="url-form">
       <div className="url-input">
-      <label htmlFor="device-input">Device Type</label>
-        <select className="select-box" ref={deviceRef} id="device-input" style={{marginTop: '0'}}>
-          <option value="mobile">Mobile</option>
-          <option value="desktop">Desktop</option>
-        </select>
-        <label htmlFor="wait-input">Wait Time</label>
-        <input
-          type="number"
-          id="wait-input"
-          placeholder="Analysis Duration in ms"
-          ref={waitTimeRef}
-        />
+        <div className="selectors">
+          <label htmlFor="device-input">Device Type: </label>
+          <select className="select-box" ref={deviceRef} id="device-input">
+            <option value="mobile">Mobile</option>
+            <option value="desktop">Desktop</option>
+          </select>
+
+          <label htmlFor="flow-input">Analysis Type: </label>
+          <select
+            className="select-box"
+            id="device-input"
+            onChange={(e) => {
+              setFlow(e.target.value);
+            }}
+          >
+            <option value="navigation">Navigation</option>
+            <option value="timespan">Timespan</option>
+          </select>
+        </div>
+        {flow === "timespan" && (
+          <>
+            <label htmlFor="wait-input">Wait Time</label>
+            <input
+              type="number"
+              id="wait-input"
+              placeholder="Analysis Duration in ms"
+              ref={waitTimeRef}
+            />
+          </>
+        )}
+
         <label htmlFor="url-input">URL</label>
         <input
           type="text"
