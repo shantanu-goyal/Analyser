@@ -19,10 +19,7 @@ export function getOpportunities(
       Math.round(mainThreadTime * 100) / 100
     } ms of main thread time`;
     if (blockingTime > 0)
-      opp +=
-        opp === ""
-          ? `Move scripts to web workers to remove main-thread blocking time of ${Math.round( blockingTime * 100) / 100} ms`
-          : ` and to remove main-thread blocking time of ${Math.round(blockingTime * 100) / 100} ms`;
+      opp += ` and to remove main-thread blocking time of ${Math.round(blockingTime * 100) / 100} ms`;
     opportunities.user.push(opp);
   }
   if (blockingTime > 0) {
@@ -42,11 +39,10 @@ export function getOpportunities(
     );
   }
   if (minified === "No") {
-    let opp = "";
+    let opp = "Minify";
     if (resourceSize / transferSize < 2) {
-      opp = `Compress`;
+      opp += ` and compress`;
     }
-    opp += opp === "" ? "Minify" : " and minify";
     opp += " scripts to reduce parsing and network time";
     opportunities.thirdParty.push(opp);
   }
