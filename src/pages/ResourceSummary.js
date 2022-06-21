@@ -29,7 +29,7 @@ export default function ResourceSummary() {
     let transferSizeData = data.items.map(item => {
       return {
         url: item.label,
-        data: item.transferSize
+        data: item.transferSize/1024
       }
     })
     return transferSizeData;

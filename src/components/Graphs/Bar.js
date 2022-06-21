@@ -27,9 +27,11 @@ function Bar({ data, title, type }) {
     const divRef=useRef();
     const id = makeid(100);
     useEffect(() => {
+        const n=Math.min(30,data.length);
+
         // We get the initial configuration of the chart
         const cfg = renderBar(data, title, type);
-
+        data=data.slice(0,n);
         const div=divRef.current;
         div.innerHTML=`<canvas id=${id} />`
 

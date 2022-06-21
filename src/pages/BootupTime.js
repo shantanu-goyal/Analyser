@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom'
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
-import Graph from "../components/Graphs/Graph";
 import "../styles/Graph.css"
+import Bar from "../components/Graphs/Bar";
 
 
 /**
@@ -84,15 +84,15 @@ export default function BootupTime() {
     const parsing = extractScriptParsingTime(details);
     // User requests the total CPU time graph
     if (value === "total") {
-      return <Graph title={"Total CPU Time"} data={total}></Graph>
+      return <Bar title={"Total CPU Time"} data={total}></Bar>
     }
     // User requests the script parsing time graph
     else if (value === "script-parsing") {
-      return <Graph title={"Script Parsing Time"} data={parsing}></Graph>
+      return <Bar title={"Script Parsing Time"} data={parsing}></Bar>
     }
     // User requests the script evaluation time graph
     else {
-      return <Graph title={"Script Evaluation Time"} data={evaluation} />
+      return <Bar title={"Script Evaluation Time"} data={evaluation} />
     }
   }
 

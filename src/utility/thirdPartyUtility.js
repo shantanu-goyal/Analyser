@@ -65,7 +65,7 @@ function generateGraph(scripts, value,type="doughnut") {
   const mainThreadTimeData = getMainThreadTime(scripts);
   const blockingTimeData = getRenderBlockingTime(scripts);
   const resourceSizeData=getResourceSize(scripts);
-  const transferSizeData=getTransferSize(scripts)
+  const transferSizeData=getTransferSize(scripts);
   // If user requests blocking time graph
   if (value === "blocking") {
     if (blockingTimeData.length > 0) {
