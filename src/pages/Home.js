@@ -54,6 +54,7 @@ export default function Home() {
    * @param {String} formFactor Type of device
    */
   async function onFormSubmit(url, headers, formFactor, waitTime) {
+    waitTime = Number(waitTime)
     setFormSubmitted(true);
     setLoading(true);
     try {
@@ -63,7 +64,7 @@ export default function Home() {
           url,
           headers,
           formFactor,
-          waitTime,
+          waitTime:  isNaN(waitTime) ? 0 : waitTime * 1000,
         },
       });
 
@@ -74,7 +75,7 @@ export default function Home() {
         data: {
           deviceType: formFactor,
           url,
-          waitTime,
+          waitTime : isNaN(waitTime) ? 0 : waitTime * 1000,
         },
       });
       const thirdParty = getThirdPartyData(result.data["third-party-summary"]);

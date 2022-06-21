@@ -7,7 +7,6 @@ import { getOpportunities } from "../utility/insightsUtility";
 
 import "../styles/Insights.css";
 import html2pdf from "html2pdf.js/src";
-import jsPDF from "jspdf/dist/jspdf.es";
 
 export default function Insights() {
   const dataContext = useContext(DataContext);
@@ -87,17 +86,13 @@ export default function Insights() {
         if (prevItem.subItems.items.length > 1) prevItem.subItems.items.pop();
         newItems = [...prevItem.subItems.items, ...newItems];
         let summary = getSummary(newItems);
-        let opportunities = getOpportunities(
-          summary,
-          newItems.length
-        );
-        if (newItems.length > 1)
-          newItems.push(summary);
+        let opportunities = getOpportunities(summary, newItems.length);
+        if (newItems.length > 1) newItems.push(summary);
         prevItem.opportunities = opportunities;
-        prevItem.subItems.items = newItems
+        prevItem.subItems.items = newItems;
         return acc;
       }
-      item.subItems.items = newItems
+      item.subItems.items = newItems;
       let summary = getSummary(item);
       let opportunities = getOpportunities(summary, item.subItems.items.length);
 
@@ -139,34 +134,32 @@ export default function Insights() {
   ];
 
   async function downloadReport() {
-    const opt = {
-      margin: [0, 0],
-      image: { type: "jpeg", quality: 1 },
-      html2canvas: { dpi: 192, letterRendering: true },
-      jsPDF: { unit: "in", format: "letter", orientation: "l" },
-    };
-    const doc = new jsPDF(opt.jsPDF);
-    const pageSize = jsPDF.getPageSize(opt.jsPDF);
-    let insightIds = thirdPartyWithNetwork.map((item) => {
-      return item.entityName.name;
-    });
-
-    for (let i = 0; i < insightIds.length; i++) {
-      const pageImage = await html2pdf()
-        .from(document.getElementById(insightIds[i]))
-        .set(opt)
-        .outputImg();
-      doc.addImage(
-        pageImage.src,
-        "jpeg",
-        opt.margin[0],
-        opt.margin[1],
-        pageSize.width,
-        pageSize.height
-      );
-      doc.addPage();
+    let divsToHide = document.getElementsByClassName("toolbar"); //divsToHide is an array
+    let maxHeight = 0
+    thirdPartyWithNetwork.forEach(item => {
+      maxHeight = Math.max(maxHeight, document.getElementById(item.entityName.name).clientHeight)
+    })
+    maxHeight = Math.min(1920, maxHeight)
+    let displays = [];
+    for (let i = 0; i < divsToHide.length; i++) {
+      maxHeight = Math.max(maxHeight, )
+      displays.push(divsToHide[i].style.display);
+      divsToHide[i].style.display = "none";
     }
-    doc.save("report.pdf");
+    try {
+      const opt = {
+        filename: "report.pdf",
+        pagebreak: { avoid: ["table", 'p']},
+        enableLinks: true,
+        jsPDF: { orientation: "landscape", unit: "in", format: [12, maxHeight/96] },
+      };
+      await html2pdf().set(opt).from(insightsRef.current).save();
+    } catch (err) {
+      console.log(err);
+    }
+    for (let i = 0; i < divsToHide.length; i++) {
+      divsToHide[i].style.display = displays[i];
+    }
   }
 
   return (
@@ -188,11 +181,14 @@ export default function Insights() {
                   Device Type:{" "}
                   {config.deviceType === "mobile" ? "Mobile" : "Desktop"}
                 </h4>
-                {
-                  config.waitTime ? <><h4>Analysis Type: Timespan</h4><h4>Waiting Time: {config.waitTime} ms</h4></> 
-                  : <h4>Analysis Type: Navigation</h4>
-                }
-                
+                {config.waitTime ? (
+                  <>
+                    <h4>Analysis Type: Timespan</h4>
+                    <h4>Waiting Time: {config.waitTime} ms</h4>
+                  </>
+                ) : (
+                  <h4>Analysis Type: Navigation</h4>
+                )}
               </div>
 
               {thirdPartyWithNetwork.map((item, idx) => {
@@ -229,7 +225,7 @@ export default function Insights() {
                         marginBottom: "10em",
                       }}
                     >
-                      {item.opportunities.user.length>0 && (
+                      {item.opportunities.user.length > 0 && (
                         <>
                           <h4> What You Can Do: </h4>
                           {item.opportunities.user.map((opportunity, idx) => {
@@ -253,7 +249,6 @@ export default function Insights() {
                 );
               })}
             </div>
-            <div id="editor"></div>
           </div>
         </>
       )}
