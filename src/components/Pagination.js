@@ -19,27 +19,35 @@ const Pagination = ({ dataPerPage, dataLength, paginate }) => {
    */
   function getPageNumbers(active) {
     const arr = [];
-    const length = Math.ceil(dataLength / dataPerPage);
-    for (let i = Math.max(active - 4, 2); i <= Math.min(active + 4, length-1); i++) {
+    let numberBehind = Math.min(2, active - 1);
+    let numberAhead = Math.min(LENGTH - active, 2)
+    if (numberBehind < 2) {
+      numberAhead = Math.min(LENGTH - active, 4 - numberBehind);
+    }
+    else if (numberAhead < 2) {
+      numberBehind = Math.min(active - 1, 4 - numberAhead);
+    }
+    for (let i = Math.max(active - numberBehind, 1); i <= Math.min(active + numberAhead, LENGTH); i++) {
       arr.push(i);
     }
     return arr;
   }
-
-  const LENGTH=Math.ceil(dataLength/dataPerPage);
+  const LENGTH = Math.ceil(dataLength / dataPerPage);
 
   return (
     <nav>
-      <ul className="pagination">
-        <li className="page-item">
-          <button id={1} onClick={(e) => {
-                e.preventDefault();
-                setActive(1);
-                paginate(1);
-              }} className={active === 1? "page-link active" : "page-link"}>1</button>
-        </li>
+      <div className="pagination">
+        <div className="page-item-btn">
+          <button className="page-link-button"
+            onClick={(e) => {
+              e.preventDefault();
+              setActive(1);
+              paginate(1);
+            }}
+          >First</button>
+        </div>
         {getPageNumbers(active).map((number) => (
-          <li key={number} className="page-item">
+          <div key={number} className="page-item page-item-btn">
             <button
               id={number}
               onClick={(e) => {
@@ -51,18 +59,18 @@ const Pagination = ({ dataPerPage, dataLength, paginate }) => {
             >
               {number}
             </button>
-          </li>
+          </div>
         ))}
-        {LENGTH!==1 && (
-          <li className="page-item">
-          <button id={LENGTH} onClick={(e) => {
-                e.preventDefault();
-                setActive(LENGTH);
-                paginate(LENGTH);
-              }} className={active === LENGTH? "page-link active" : "page-link"}>{LENGTH}</button>
-        </li>
-        )}
-      </ul>
+        <div className="page-item-btn">
+          <button className="page-link-button"
+            onClick={(e) => {
+              e.preventDefault();
+              setActive(LENGTH);
+              paginate(LENGTH);
+            }}
+          >Last</button>
+        </div>
+      </div>
     </nav>
   );
 };
