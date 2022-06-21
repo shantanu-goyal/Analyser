@@ -1,10 +1,20 @@
 .pagination{
     margin-top: 10px;
-    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
-.page-item{
+.page-item, .page-item-btn{
     display: inline;
+}
+
+.page-item-btn button{
+    width:  50px !important;
+    height: 30px !important;
+    border: 1px solid black !important;
+    margin: 5px !important;
+    transition: 0.3s !important;
 }
 
 .page-item button{
@@ -15,7 +25,7 @@
     transition: 0.3s !important;
 }
 
-.page-item button:hover{
+.page-item button:hover, .page-item-btn button:hover{
     background-color: #126ed8 !important;
     color: white !important;
     font-weight: bold !important;
