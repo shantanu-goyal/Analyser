@@ -45,6 +45,7 @@ export function getOpportunities(
     }
     opp += " scripts to reduce parsing and network time";
     opportunities.thirdParty.push(opp);
+    opportunities.user.push('Use minified scripts to reduce parsing and network time');
   }
   if (renderBlocking) {
     opportunities.user.push(

@@ -141,7 +141,10 @@ export default function Insights() {
     let maxHeight = 0
     thirdPartyWithNetwork.forEach(item => {
       maxHeight = Math.max(maxHeight, document.getElementById(item.entityName.name).clientHeight)
+      document.getElementById(item.entityName.name).querySelector('h1').style.wordSpacing = "0.5em"
+      document.getElementById(item.entityName.name).querySelector('h1').style.letterSpacing = "0.1em"
     })
+    insightsRef.current.querySelector('a').style.letterSpacing = "0.1rem"
     maxHeight = Math.min(1920, maxHeight)
     let displays = [];
     for (let i = 0; i < divsToHide.length; i++) {
@@ -163,6 +166,12 @@ export default function Insights() {
     for (let i = 0; i < divsToHide.length; i++) {
       divsToHide[i].style.display = displays[i];
     }
+    insightsRef.current.querySelector('a').style.letterSpacing = "normal"
+    thirdPartyWithNetwork.forEach(item => {
+      maxHeight = Math.max(maxHeight, document.getElementById(item.entityName.name).clientHeight)
+      document.getElementById(item.entityName.name).querySelector('h1').style.wordSpacing = "normal"
+      document.getElementById(item.entityName.name).querySelector('h1').style.letterSpacing = "normal"
+    })
   }
 
   return (
