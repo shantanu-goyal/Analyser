@@ -149,7 +149,7 @@ export default function Insights() {
     try {
       const opt = {
         filename: "report.pdf",
-        pagebreak: { avoid: ["table", 'p']},
+        pagebreak: { mode: 'avoid-all'},
         enableLinks: true,
         jsPDF: { orientation: "landscape", unit: "in", format: [12, maxHeight/96] },
       };
