@@ -188,7 +188,11 @@ export default function Insights() {
                   Device Type:{" "}
                   {config.deviceType === "mobile" ? "Mobile" : "Desktop"}
                 </h4>
-                <h4>Analysis Time: {config.waitTime} ms</h4>
+                {
+                  config.waitTime ? <><h4>Analysis Type: Timespan</h4><h4>Waiting Time: {config.waitTime} ms</h4></> 
+                  : <h4>Analysis Type: Navigation</h4>
+                }
+                
               </div>
 
               {thirdPartyWithNetwork.map((item, idx) => {
