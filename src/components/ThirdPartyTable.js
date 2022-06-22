@@ -31,6 +31,7 @@ function ThirdPartyTable({
   
   useEffect(() => {
     changeView("entity");
+    // eslint-disable-next-line
   }, [userInput, scripts, domainWiseScripts]);
 
 

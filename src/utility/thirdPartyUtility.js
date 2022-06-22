@@ -124,6 +124,7 @@ function generateGraph(scripts, value,type="doughnut") {
  * @returns hostname or null
  */
 function getHostname(url){
+    //eslint-disable-next-line
     const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
     return matches && matches[1];
 }

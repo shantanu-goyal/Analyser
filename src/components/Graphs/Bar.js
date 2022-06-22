@@ -42,7 +42,7 @@ function Bar({ data, title}) {
             chart.destroy();
             div.innerHTML="";
         }
-    }, [data, title]);
+    }, [data, title,id]);
 
 
     return (

@@ -68,7 +68,7 @@ function Graph({ data, title, type, hideLegend }) {
     return () => { 
       chart.destroy();
       legendDiv.innerHTML = ""; }
-  }, [data, title]);
+  }, [data, title,type]);
 
 
   return (
