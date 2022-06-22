@@ -52,7 +52,7 @@ export default function NetworkRequests() {
   function generateGraph(data) {
     const details = data.details;
     const durationTimeData = extractDurationTime(details);
-    return <Bar data={durationTimeData} title={"Durartion of Network Requests"} />
+    return <Bar data={{result:durationTimeData,type:"ms"}} title={"Durartion of Network Requests"} />
   }
 
   // This function updates the state of the graph to be shown or not

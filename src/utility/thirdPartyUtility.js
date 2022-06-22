@@ -13,7 +13,7 @@ function getMainThreadTime(scripts) {
       data: script.mainThreadTime
     }
   }).filter(script => script.data > 0);
-  return result;
+  return {result, type:"ms"};
 }
 
 /**
@@ -28,7 +28,7 @@ function getRenderBlockingTime(scripts) {
       data: script.blockingTime
     }
   }).filter(script => script.data > 0);
-  return result;
+  return {result, type:"ms"};
 }
 
 function getTransferSize(scripts){
@@ -38,7 +38,7 @@ function getTransferSize(scripts){
       data: script.transferSize/1024
     }
   }).filter(script => script.data > 0);
-  return result; 
+  return {result, type:"kb"}; 
 }
 
 function getResourceSize(scripts){
@@ -48,7 +48,7 @@ function getResourceSize(scripts){
       data: script.resourceSize/1024
     }
   }).filter(script => script.data > 0);
-  return result;
+  return {result, type:"kb"};
 }
 
 
@@ -61,14 +61,14 @@ function getResourceSize(scripts){
  * @returns {JSX} - The graph corresponding to the type of the graph requested by the user
  */
 function generateGraph(scripts, value,type="doughnut") {
-  console.log(scripts, value);
   const mainThreadTimeData = getMainThreadTime(scripts);
   const blockingTimeData = getRenderBlockingTime(scripts);
   const resourceSizeData=getResourceSize(scripts);
   const transferSizeData=getTransferSize(scripts);
+  console.log(transferSizeData);
   // If user requests blocking time graph
   if (value === "blocking") {
-    if (blockingTimeData.length > 0) {
+    if (blockingTimeData.result.length > 0) {
       return (
         <Bar
           title={"Main Thread Blocking Time"}
@@ -81,7 +81,7 @@ function generateGraph(scripts, value,type="doughnut") {
   }
   // If user requests resource size graph
   else if(value==="resource"){
-    if (resourceSizeData.length > 0) {
+    if (resourceSizeData.result.length > 0) {
       return (
         <Bar
           title={"Resource Size"}
@@ -95,7 +95,7 @@ function generateGraph(scripts, value,type="doughnut") {
 
   // If user requests transfer size graph
   else if(value==="transfer"){
-    if (transferSizeData.length > 0) {
+    if (transferSizeData.result.length > 0) {
       return (
         <Bar
           title={"Transfer Size"}
@@ -109,7 +109,7 @@ function generateGraph(scripts, value,type="doughnut") {
 
   // If user requests main thread time graph
   else {
-    if (mainThreadTimeData.length > 0) {
+    if (mainThreadTimeData.result.length > 0) {
       return (
         <Bar title={"Main Thread Time"} data={mainThreadTimeData} />
       );

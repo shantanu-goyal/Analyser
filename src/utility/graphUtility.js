@@ -137,8 +137,17 @@ function renderBar(data, title, type) {
           beginAtZero: true,
           ticks:{
             display:false
+          },
+          title: {
+            display: true,
+            text: 'Labels'
           }
-        
+        },
+        x:{
+          title: {
+            display: true,
+            text: title+' in '+type
+          }
         }
       },
       plugins: {

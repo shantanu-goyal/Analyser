@@ -18,7 +18,6 @@ export default function BootupTime() {
   const [value, setValue] = useState("total");
   // The Global data context
   const dataContext = useContext(DataContext);
-  console.log(dataContext);
   // Extracting the data from the context
   let data = dataContext.data.data;
   data = data['bootup-time'];
@@ -84,15 +83,18 @@ export default function BootupTime() {
     const parsing = extractScriptParsingTime(details);
     // User requests the total CPU time graph
     if (value === "total") {
-      return <Bar title={"Total CPU Time"} data={total}></Bar>
+      data={result:total, type:"ms"};
+      return <Bar title={"Total CPU Time"} data={data}></Bar>
     }
     // User requests the script parsing time graph
     else if (value === "script-parsing") {
-      return <Bar title={"Script Parsing Time"} data={parsing}></Bar>
+      data={result:parsing, type:"ms"};
+      return <Bar title={"Script Parsing Time"} data={data}></Bar>
     }
     // User requests the script evaluation time graph
     else {
-      return <Bar title={"Script Evaluation Time"} data={evaluation} />
+      data={result:evaluation, type:"ms"};
+      return <Bar title={"Script Evaluation Time"} data={data} />
     }
   }
 
