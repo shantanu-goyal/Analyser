@@ -130,8 +130,6 @@ function ThirdPartyTable({
     });
 
     let dataArray=Array.from(byEntity.values());
-    console.log(dataArray);
-
     dataArray=dataArray.map(item=>{
       item.subItems.items=item.subItems.items.filter(i=>{
         return typeof(i.url)=="string";

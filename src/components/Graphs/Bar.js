@@ -27,7 +27,6 @@ function Bar({ data, title}) {
     const divRef=useRef();
     const id = makeid(100);
     useEffect(() => {
-        console.log(data);
         const n=Math.min(30,data.result.length);
         data.result=data.result.slice(0,n);
         // We get the initial configuration of the chart

@@ -68,8 +68,6 @@ export default function Home() {
           waitTime:  isNaN(waitTime) ? 0 : waitTime * 1000,
         },
       });
-
-      console.log(result.data);
       setLoading(false);
       dataContext.setData({
         type: "analysisSetup",
@@ -88,7 +86,6 @@ export default function Home() {
         },
       });
       navigate('/third-party-summary')
-      console.log(result.data);
     } catch (error) {
       setError(true);
       console.log(error);

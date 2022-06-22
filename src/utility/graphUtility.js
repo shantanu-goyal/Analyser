@@ -94,8 +94,6 @@ function renderBar(data, title, type) {
     b.data -
     a.data
   )
-  console.log(data);
-
   // Initialising the background color array
   const bgColor = []
 

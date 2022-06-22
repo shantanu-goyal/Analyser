@@ -6,7 +6,6 @@ import Bar from '../components/Graphs/Bar'
  * @returns {Array} - Array of objects containing the url of the script along with its main thread time. 
  */
 function getMainThreadTime(scripts) {
-  console.log(scripts);
   const result = scripts.map(script => {
     return {
       url: script.url,
@@ -65,7 +64,6 @@ function generateGraph(scripts, value,type="doughnut") {
   const blockingTimeData = getRenderBlockingTime(scripts);
   const resourceSizeData=getResourceSize(scripts);
   const transferSizeData=getTransferSize(scripts);
-  console.log(transferSizeData);
   // If user requests blocking time graph
   if (value === "blocking") {
     if (blockingTimeData.result.length > 0) {
