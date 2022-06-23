@@ -5,7 +5,6 @@ import Form from "../components/Form";
 import { REACT_APP_SERVER_URL } from "../config";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Home.css";
-import { thirdPartyWeb } from "../utility/third-party-web/entity-finder-api";
 import { transformData } from "../utility/thirdPartyUtility";
 
 /**
@@ -27,25 +26,13 @@ export default function Home() {
   function getThirdPartyData(data){
     const details=data.details||{};
     const items=details.items||[];
-    const newItems=items.map(item=>{
-      const URL=item.entity.url;
-      const entity=thirdPartyWeb.getEntity(URL);
-      if(entity){
-        return {
-          ...item,
-          entityName:entity
-        }
-      }
-      return item;
-      
-    });
-    const thirdParty=transformData(newItems);
+    const thirdParty=transformData(items);
     dataContext.setData({
       type:'thirdPartySummary',
       data:thirdParty
     });
 
-    return newItems;
+    return items;
   }
 
   /**
@@ -68,6 +55,7 @@ export default function Home() {
           waitTime:  isNaN(waitTime) ? 0 : waitTime * 1000,
         },
       });
+      console.log(result.data);
       setLoading(false);
       dataContext.setData({
         type: "analysisSetup",

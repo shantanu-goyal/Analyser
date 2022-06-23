@@ -69,3 +69,12 @@
     padding: 0 !important;
     margin: 0 !important ;
   }
+
+  .table-container-thirdparty{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left:1em;
+    margin-top: 2em;
+  }

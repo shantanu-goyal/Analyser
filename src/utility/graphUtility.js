@@ -166,4 +166,4 @@ function renderBar(data, title, type) {
 
 
 
-export { processChart, renderBar };
+export { processChart, renderBar, round };

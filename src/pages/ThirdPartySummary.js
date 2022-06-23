@@ -6,7 +6,7 @@ import { getHostname, generateGraph } from '../utility/thirdPartyUtility';
 import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
 import Pie from "../components/Graphs/Pie";
-
+import Table from "../components/Table";
 
 
 /**
@@ -21,7 +21,7 @@ export default function ThirdPartySummary() {
   data = data["third-party-summary"];
   let allData = dataContext.data.thirdParty;
   let thirdPartyData = dataContext.data.thirdPartySummary;
-  let details=data.details||{};
+  let details = data.details || {};
   // Getting data from the context
   const userData = thirdPartyData.userInput;
   const domainWiseScripts = thirdPartyData.domainScripts;
@@ -86,7 +86,7 @@ export default function ThirdPartySummary() {
       transferSize: 0
     }
 
-    let items=details.items||[];
+    let items = details.items || [];
     items.map(item => {
       allScripts.mainThreadTime += item.mainThreadTime;
       allScripts.blockingTime += item.blockingTime;
@@ -228,7 +228,7 @@ export default function ThirdPartySummary() {
     else if (graphValue === 'transfer') {
       data = itemState.map(item => {
         return {
-          data: item.transferSize/1024,
+          data: item.transferSize / 1024,
           url: item.url
         }
       })
@@ -236,7 +236,7 @@ export default function ThirdPartySummary() {
     else {
       data = itemState.map(item => {
         return {
-          data: item.resourceSize/1024,
+          data: item.resourceSize / 1024,
           url: item.url
         }
       })
@@ -273,6 +273,19 @@ export default function ThirdPartySummary() {
                   domainWiseScripts={dropdownScripts}
                   passData={passData}
                 />
+                <div className="table-container-thirdparty">
+                  <Table id={'summary-thirdparty-table'} notShowInput={true} showPagination={false}
+                    headings={[
+                      { key: "url", text: "Summary", itemType: "text" },
+                      { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
+                      { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
+                      { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
+                      { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
+                    ]}
+                    items={itemState}
+                  />
+                </div>
+
                 <select
                   value={graphValue}
                   onChange={graphChange}
