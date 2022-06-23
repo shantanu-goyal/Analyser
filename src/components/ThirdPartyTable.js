@@ -60,13 +60,15 @@ function ThirdPartyTable({
           blockingTime:0,
           mainThreadTime:0,
           resourceSize:0,
-          transferSize:0
+          transferSize:0,
+          intervals:[]
         }
         let entityData=byEntity.get(entity)||defaultConfig;
         entityData.blockingTime+=item.blockingTime;
         entityData.resourceSize+=item.resourceSize;
         entityData.transferSize+=item.transferSize;
         entityData.mainThreadTime+=item.mainThreadTime;
+        entityData.intervals=[...entityData.intervals, ...item.intervals]
         byEntity.set(entity,entityData);
       }
       return {};
@@ -88,6 +90,7 @@ function ThirdPartyTable({
           subItems:{
             items:[]
           },
+          intervals:[],
           entityName:{}
         }
         entity.blockingTime+=item.blockingTime;
@@ -95,6 +98,7 @@ function ThirdPartyTable({
         entity.mainThreadTime+=item.mainThreadTime;
         entity.resourceSize+=item.resourceSize;
         entity.subItems.items=[...entity.subItems.items,...item.subItems.items];
+        entity.intervals=[...entity.intervals, ...item.intervals ]
         entity.entityName={name:item.entityName.name};
         byEntity.set(item.entityName.name,entity);
       }
@@ -116,7 +120,8 @@ function ThirdPartyTable({
             subItems:{
               items:[]
             },
-            entityName:{}
+            entityName:{},
+            intervals:[]
           }
           entity.blockingTime+=item.blockingTime;
           entity.transferSize+=item.transferSize;
@@ -124,6 +129,7 @@ function ThirdPartyTable({
           entity.resourceSize+=item.resourceSize;
           entity.subItems.items=[...entity.subItems.items,...item.subItems.items ];
           entity.entityName=entityName;
+          entity.intervals=[...entity.intervals, ...item.intervals ];
           byEntity.set(entityName.name,entity);
         }
       }

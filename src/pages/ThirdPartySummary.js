@@ -273,6 +273,7 @@ export default function ThirdPartySummary() {
                   domainWiseScripts={dropdownScripts}
                   passData={passData}
                 />
+                <h2 style={{textAlign:"center", marginTop:"1em"}}>Summary View</h2>
                 <div className="table-container-thirdparty">
                   <Table id={'summary-thirdparty-table'} notShowInput={true} showPagination={false}
                     headings={[
