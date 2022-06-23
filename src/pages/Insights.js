@@ -4,6 +4,7 @@ import { NavBar } from "../components/NavBar";
 import { DataContext } from "../contexts/DataContext";
 import Table from "../components/Table";
 import { getOpportunities } from "../utility/insightsUtility";
+import ActionTable from "../components/ActionTable";
 
 import "../styles/Insights.css";
 import html2pdf from "html2pdf.js/src";
@@ -44,6 +45,7 @@ export default function Insights() {
           ? summary.renderBlocking + subitem.renderBlocking
           : subitem.renderBlocking;
     });
+    if(summary.mainThreadTime === 0) summary.unusedPercentage = 100
     return summary;
   }
 
@@ -60,7 +62,9 @@ export default function Insights() {
           if (typeof subitem.url !== "string") return;
 
           if (
-            unminifiedJSData.details.items.find(({ url }) => url === subitem.url)
+            unminifiedJSData.details.items.find(
+              ({ url }) => url === subitem.url
+            )
           ) {
             subitem.minified = "No";
           } else subitem.minified = "Yes";
@@ -80,7 +84,11 @@ export default function Insights() {
           );
           if (js) {
             subitem.unusedPercentage = js.wastedPercent;
-          } else subitem.unusedPercentage = 0;
+          } else {
+            if(subitem.mainThreadTime)
+            subitem.unusedPercentage = 0;
+            else subitem.unusedPercentage = 100
+          }
           newItems.push(subitem);
         });
 
@@ -96,7 +104,10 @@ export default function Insights() {
         }
         item.subItems.items = newItems;
         let summary = getSummary(item);
-        let opportunities = getOpportunities(summary, item.subItems.items.length);
+        let opportunities = getOpportunities(
+          summary,
+          item.subItems.items.length
+        );
 
         return [
           ...acc,
@@ -116,10 +127,10 @@ export default function Insights() {
       .sort(
         (a, b) =>
           b.opportunities.user.length +
-          b.opportunities.thirdParty.length -
-          (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
+            b.opportunities.thirdParty.length -
+            (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
           b.opportunities.user.length - a.opportunities.user.length
-      )
+      );
   }
 
   const headings = [
@@ -138,26 +149,37 @@ export default function Insights() {
 
   async function downloadReport() {
     let divsToHide = document.getElementsByClassName("toolbar"); //divsToHide is an array
-    let maxHeight = 0
-    thirdPartyWithNetwork.forEach(item => {
-      maxHeight = Math.max(maxHeight, document.getElementById(item.entityName.name).clientHeight)
-      document.getElementById(item.entityName.name).querySelector('h1').style.wordSpacing = "0.5em"
-      document.getElementById(item.entityName.name).querySelector('h1').style.letterSpacing = "0.1em"
-    })
-    insightsRef.current.querySelector('a').style.letterSpacing = "0.1rem"
-    maxHeight = Math.min(1920, maxHeight)
+    let maxHeight = 0;
+    thirdPartyWithNetwork.forEach((item) => {
+      maxHeight = Math.max(
+        maxHeight,
+        document.getElementById(item.entityName.name).clientHeight
+      );
+      document
+        .getElementById(item.entityName.name)
+        .querySelector("h1").style.wordSpacing = "0.5em";
+      document
+        .getElementById(item.entityName.name)
+        .querySelector("h1").style.letterSpacing = "0.1em";
+    });
+    insightsRef.current.querySelector("a").style.letterSpacing = "0.1rem";
+    maxHeight = Math.min(1920, maxHeight);
     let displays = [];
     for (let i = 0; i < divsToHide.length; i++) {
-      maxHeight = Math.max(maxHeight,)
+      maxHeight = Math.max(maxHeight);
       displays.push(divsToHide[i].style.display);
       divsToHide[i].style.display = "none";
     }
     try {
       const opt = {
         filename: "report.pdf",
-        pagebreak: { mode: 'avoid-all' },
+        pagebreak: { mode: "avoid-all" },
         enableLinks: true,
-        jsPDF: { orientation: "landscape", unit: "in", format: [12, maxHeight / 96] },
+        jsPDF: {
+          orientation: "landscape",
+          unit: "in",
+          format: [12, maxHeight / 96],
+        },
       };
       await html2pdf().set(opt).from(insightsRef.current).save();
     } catch (err) {
@@ -166,12 +188,19 @@ export default function Insights() {
     for (let i = 0; i < divsToHide.length; i++) {
       divsToHide[i].style.display = displays[i];
     }
-    insightsRef.current.querySelector('a').style.letterSpacing = "normal"
-    thirdPartyWithNetwork.forEach(item => {
-      maxHeight = Math.max(maxHeight, document.getElementById(item.entityName.name).clientHeight)
-      document.getElementById(item.entityName.name).querySelector('h1').style.wordSpacing = "normal"
-      document.getElementById(item.entityName.name).querySelector('h1').style.letterSpacing = "normal"
-    })
+    insightsRef.current.querySelector("a").style.letterSpacing = "normal";
+    thirdPartyWithNetwork.forEach((item) => {
+      maxHeight = Math.max(
+        maxHeight,
+        document.getElementById(item.entityName.name).clientHeight
+      );
+      document
+        .getElementById(item.entityName.name)
+        .querySelector("h1").style.wordSpacing = "normal";
+      document
+        .getElementById(item.entityName.name)
+        .querySelector("h1").style.letterSpacing = "normal";
+    });
   }
 
   return (
@@ -202,6 +231,7 @@ export default function Insights() {
                   <h4>Analysis Type: Navigation</h4>
                 )}
               </div>
+              <ActionTable data={thirdPartyWithNetwork}/>
 
               {thirdPartyWithNetwork.map((item, idx) => {
                 return (
@@ -215,13 +245,13 @@ export default function Insights() {
                         headings={
                           renderBlockingResources
                             ? [
-                              ...headings,
-                              {
-                                key: "renderBlocking",
-                                text: "Render Blocking Time",
-                                itemType: "ms",
-                              },
-                            ]
+                                ...headings,
+                                {
+                                  key: "renderBlocking",
+                                  text: "Render Blocking Time",
+                                  itemType: "ms",
+                                },
+                              ]
                             : headings
                         }
                         items={item.subItems.items.filter(
