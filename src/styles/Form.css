@@ -1,9 +1,18 @@
+.website-title{
+  width: 100%;
+  position: relative;
+  top: 0;
+  height: max(30vh, 400px);
+  background-image: url('/public/bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 .url-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80vw;
 }
 
 .url-input {
@@ -43,10 +52,10 @@
   color: aliceblue;
   width: 8em;
   height: 2em;
-  margin-bottom: 2em;
+  margin: 1em 0;
   border: none;
   cursor: pointer;
-  border-radius: .25rem;
+  border-radius: 1rem;
 }
 
 .url-input button:hover {
@@ -97,7 +106,6 @@
     padding: .375rem .75rem;
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    margin-bottom: 1em;
     outline: none;
     text-align: left;
     margin-top: 0;
@@ -108,4 +116,11 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+}
+
+.form-note{
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color:rgb(131, 129, 129);
+  margin-bottom: 1em;
 }

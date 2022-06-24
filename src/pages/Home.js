@@ -41,7 +41,7 @@ export default function Home() {
    * @param {Object} headers Headers that need to be sent in request along with url
    * @param {String} formFactor Type of device
    */
-  async function onFormSubmit(url, headers, formFactor, waitTime) {
+  async function onFormSubmit(url, formFactor, waitTime) {
     waitTime = Number(waitTime)
     setFormSubmitted(true);
     setLoading(true);
@@ -50,7 +50,6 @@ export default function Home() {
         method: "GET",
         params: {
           url,
-          headers,
           formFactor,
           waitTime:  isNaN(waitTime) ? 0 : waitTime * 1000,
         },
