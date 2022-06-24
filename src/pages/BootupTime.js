@@ -4,8 +4,7 @@ import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
 import "../styles/Graph.css"
-import Bar from "../components/Graphs/Bar";
-
+import { generateGraph } from "../utility/bootupTImeUtility";
 
 /**
  * Function to render the jsx of the bootup time component
@@ -22,82 +21,6 @@ export default function BootupTime() {
   // Extracting the data from the context
   let data = dataContext.data.data;
   data = data['bootup-time'];
-
-  /**
-   * Function to extract the total CPU time corresponding to each url from the data 
-   * @param {object} data
-   * @returns {object} - The data containing all urls and total CPU time corresponding to each url
-   */
-  function extractTotalTime(data) {
-    let totalTimeData = data.items.map(item => {
-      return {
-        url: item.url,
-        data: item.total
-      }
-    })
-    return totalTimeData;
-  }
-
-  /**
-   * Function to extract the total script evaluation time corresponding to each url from the data 
-   * @param {object} data
-   * @returns {object} - The data containing all urls and total script evaluation time corresponding to each url
-   */
-  function extractScriptEvaluationTime(data) {
-    let scriptEvaluationTimeData = data.items.map(item => {
-      return {
-        url: item.url,
-        data: item.scripting
-      }
-    })
-    return scriptEvaluationTimeData;
-  }
-
-  /**
-   * Function to extract the total script parsing time corresponding to each url from the data 
-   * @param {object} data
-   * @returns {object} - The data containing all urls and total scirpt parsing time corresponding to each url
-   */
-  function extractScriptParsingTime(data) {
-    let scriptParsingTimeData = data.items.map(item => {
-      return {
-        url: item.url,
-        data: item.scriptParseCompile
-      }
-    })
-    return scriptParsingTimeData;
-  }
-
-  /**
-   * Function to generate the graph for the bootup time
-   * 
-   * @param {object} data - The data corresponding to the bootup time
-   * @param {string} value - The type of the graph to be generated
-   * @returns {JSX} - The graph corresponding to the type of the graph requested by the user
-   */
-
-  function generateGraph(data, value) {
-    // Extracting the details from the data
-    const details = data.details;
-    const total = extractTotalTime(details);
-    const evaluation = extractScriptEvaluationTime(details);
-    const parsing = extractScriptParsingTime(details);
-    // User requests the total CPU time graph
-    if (value === "total") {
-      data={result:total, type:"ms"};
-      return <Bar title={"Total CPU Time"} data={data}></Bar>
-    }
-    // User requests the script parsing time graph
-    else if (value === "script-parsing") {
-      data={result:parsing, type:"ms"};
-      return <Bar title={"Script Parsing Time"} data={data}></Bar>
-    }
-    // User requests the script evaluation time graph
-    else {
-      data={result:evaluation, type:"ms"};
-      return <Bar title={"Script Evaluation Time"} data={data} />
-    }
-  }
 
   // This function is fired whenever a different type of graph is requested and it sets the value of the type of graph requested in the state
   function changeHandler(e) {
