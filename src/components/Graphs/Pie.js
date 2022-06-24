@@ -75,7 +75,6 @@ function Pie({ data, title}) {
         <div ref={divRef}>
         </div>
         <div className='legend-box'>
-            <h1 style={{ textAlign: "center" }}>Legend</h1>
             <div ref={legendRef} className='custom-legend'></div>
           </div>
       </div>
