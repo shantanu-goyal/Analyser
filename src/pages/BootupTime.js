@@ -5,6 +5,7 @@ import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
 import "../styles/Graph.css"
 import { generateGraph } from "../utility/bootupTImeUtility";
+import Select from "../components/Select";
 
 /**
  * Function to render the jsx of the bootup time component
@@ -53,11 +54,11 @@ export default function BootupTime() {
           <div className="graph-container">
             {displayGraph && (
               <>
-                <select value={value} onChange={changeHandler} style={{ marginTop: "2em" }}>
+                <Select value={value} onChange={changeHandler} style={{ marginTop: "2em" }}>
                   <option value="total">Total CPU Time</option>
                   <option value="script-evaluation">Script Evaluation Time</option>
                   <option value="script-parsing">Script Parsing Time</option>
-                </select>
+                </Select>
                 {generateGraph(data, value)}
               </>
             )}

@@ -7,7 +7,7 @@ import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
 import Pie from "../components/Graphs/Pie";
 import Table from "../components/Table";
-
+import Select from "../components/Select";
 
 /**
  * 
@@ -287,16 +287,15 @@ export default function ThirdPartySummary() {
                   />
                 </div>
 
-                <select
+                <Select
                   value={graphValue}
                   onChange={graphChange}
-                  style={{ marginTop: "2em" }}
                 >
                   <option value="mainthread">Main Thread Time</option>
                   <option value="blocking">Main Thread Blocking Time</option>
                   <option value="transfer">Transfer Size</option>
                   <option value="resource">Resource Size</option>
-                </select>
+                </Select>
                 <div className="big-pie graph-inner-container">
                   <Pie data={renderGraph()} title={'Domain Specific Scripts vs Third Party Scirpts'} />
                 </div>
@@ -390,16 +389,15 @@ export default function ThirdPartySummary() {
                   <>
                     <div className="graph-inner-container">
                       <h1 style={{ textAlign: 'center' }}>Graph:-</h1>
-                      <select
+                      <Select
                         value={value}
                         onChange={changeHandler}
-                        style={{ marginTop: "2em" }}
                       >
                         <option value="mainthread">Main Thread Time</option>
                         <option value="blocking">Main Thread Blocking Time</option>
                         <option value="transfer">Transfer Size</option>
                         <option value="resource">Resource Size</option>
-                      </select>
+                      </Select>
                     </div>
 
                     {generateGraph(thirdPartyScriptsArray, value)}

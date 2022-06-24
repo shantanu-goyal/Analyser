@@ -222,7 +222,7 @@ function ThirdPartyTable({
     <div className="third-party-wrapper" style={{ marginLeft: "1em" }}>
       <select
         ref={selectRef}
-        className="select-box"
+        className="select-tag"
         onChange={(e) => changeView(e.target.value)}
         style={{ width: "fit-content" }}
       >
