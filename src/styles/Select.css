@@ -1,0 +1,10 @@
+.select-tag{
+    border: 1px solid rgb(24, 88, 206);
+    height: 2em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    border-radius: 4px;
+    text-align: center;
+    box-sizing: content-box;
+    padding: 3px;
+}

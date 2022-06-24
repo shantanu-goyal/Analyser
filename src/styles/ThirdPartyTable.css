@@ -12,11 +12,3 @@
   align-items: center;
   flex-direction: column;
 }
-.third-party-wrapper .select-box {
-  margin-top: 2em ;
-  border: none;
-  width: 150px ;
-  font-size: 0.8em;
-  height: 30px;
-  text-align: center;
-}

@@ -14,13 +14,3 @@
     flex-direction: column;
     width: 100%;
 }
-
-select {
-    border: none;
-    text-align: center;
-    background-color: transparent;
-    width: 175px;
-    height: 30px;
-    margin-bottom: 2em;
-}
-
