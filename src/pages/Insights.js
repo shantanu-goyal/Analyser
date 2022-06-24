@@ -19,6 +19,7 @@ export default function Insights() {
   const renderBlockingResources = data["render-blocking-resources"];
   const thirdPartyData = dataContext.data.insights || [];
   const config = dataContext.data.config;
+  const fcp = data["first-contentful-paint"].numericValue;
 
   function getSummary(item) {
     const summary = {
@@ -45,7 +46,8 @@ export default function Insights() {
           ? summary.renderBlocking + subitem.renderBlocking
           : subitem.renderBlocking;
     });
-    if (summary.mainThreadTime === 0) summary.unusedPercentage = 100
+    summary.startTime = item.intervals.length ? item.intervals[0].startTime : '-'
+    if(summary.mainThreadTime === 0) summary.unusedPercentage = 100
     return summary;
   }
 
@@ -89,6 +91,7 @@ export default function Insights() {
               subitem.unusedPercentage = 0;
             else subitem.unusedPercentage = 100
           }
+          subitem.startTime = subitem.intervals.length ? subitem.intervals[0].startTime : '-'
           newItems.push(subitem);
         });
 
@@ -144,6 +147,11 @@ export default function Insights() {
       key: "unusedPercentage",
       text: "Unused Percentage",
       itemType: "percentage",
+    },
+    {
+      key: "startTime",
+      text: "First Start Time",
+      itemType: "ms",
     },
   ];
 
@@ -224,11 +232,12 @@ export default function Insights() {
                   Device Type:{" "}
                   {config.deviceType === "mobile" ? "Mobile" : "Desktop"}
                 </h4>
+                <h4>First contentful paint: {Math.round(fcp *100)/ 100} ms</h4>
                 {config.waitTime ? (
-                  <>
+                  <div>
                     <h4>Analysis Type: Timespan</h4>
                     <h4>Waiting Time: {config.waitTime} ms</h4>
-                  </>
+                  </div>
                 ) : (
                   <h4>Analysis Type: Navigation</h4>
                 )}
