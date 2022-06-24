@@ -16,9 +16,8 @@ function ActionTable({ data }) {
         entity.subItems.items.some(
           ({ unusedPercentage }) => unusedPercentage === 100
         ) ||
-        (entity.intervals.length > 0
-          && entity.intervals[0].startTime <= fcp + 500
-         ),
+        (entity.intervals.length > 0 &&
+          entity.intervals[0].startTime <= fcp + 500),
       heavy:
         entity.subItems.items.length > 0 &&
         (entity.subItems.items.at(-1).blockingTime > 0 ||
@@ -26,16 +25,17 @@ function ActionTable({ data }) {
           entity.subItems.items.at(-1).mainThreadTime /
             entity.subItems.items.length >
             50),
-      old:entity.subItems.items.length > 0 &&
+      old:
+        entity.subItems.items.length > 0 &&
         (entity.subItems.items.at(-1).resourceSize /
           entity.subItems.items.at(-1).transferSize <=
           2 ||
-        entity.subItems.items.at(-1).minified === "No" ||
-        entity.subItems.items.at(-1).unusedPercentage >= 50 ||
-        entity.subItems.items.at(-1).blockingTime > 250 ||
-        entity.subItems.items.at(-1).blockingTime /
-          entity.subItems.items.length >
-          50),
+          entity.subItems.items.at(-1).minified === "No" ||
+          entity.subItems.items.at(-1).unusedPercentage >= 50 ||
+          entity.subItems.items.at(-1).blockingTime > 250 ||
+          entity.subItems.items.at(-1).blockingTime /
+            entity.subItems.items.length >
+            50),
     };
     if (renderBlockingResources)
       obj.renderBlocking =
@@ -78,8 +78,8 @@ function ActionTable({ data }) {
           a web worker
         </h6>
         <h6>
-          Use async if it's important to have the script run earlier in the
-          loading process.
+          Always use async if it's important to have the script run earlier in
+          the loading process.
         </h6>
         <h6>Use defer for less critical resources.</h6>
         <h6>
@@ -87,8 +87,7 @@ function ActionTable({ data }) {
           the conditions at which the script loads, try lazy loading the script
         </h6>
         <h6>
-          Use minified version of the script for lesser bandwith usuage during
-          download phase
+          Finally check if your script matches with the latest available version
         </h6>
       </div>
     </div>
