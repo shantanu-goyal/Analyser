@@ -45,7 +45,7 @@ export default function Insights() {
           ? summary.renderBlocking + subitem.renderBlocking
           : subitem.renderBlocking;
     });
-    if(summary.mainThreadTime === 0) summary.unusedPercentage = 100
+    if (summary.mainThreadTime === 0) summary.unusedPercentage = 100
     return summary;
   }
 
@@ -85,8 +85,8 @@ export default function Insights() {
           if (js) {
             subitem.unusedPercentage = js.wastedPercent;
           } else {
-            if(subitem.mainThreadTime)
-            subitem.unusedPercentage = 0;
+            if (subitem.mainThreadTime)
+              subitem.unusedPercentage = 0;
             else subitem.unusedPercentage = 100
           }
           newItems.push(subitem);
@@ -127,8 +127,8 @@ export default function Insights() {
       .sort(
         (a, b) =>
           b.opportunities.user.length +
-            b.opportunities.thirdParty.length -
-            (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
+          b.opportunities.thirdParty.length -
+          (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
           b.opportunities.user.length - a.opportunities.user.length
       );
   }
@@ -149,6 +149,8 @@ export default function Insights() {
 
   async function downloadReport() {
     let divsToHide = document.getElementsByClassName("toolbar"); //divsToHide is an array
+    let tableToHide = document.getElementsByClassName('to-hide');
+    divsToHide = [...divsToHide, ...tableToHide];
     let maxHeight = 0;
     thirdPartyWithNetwork.forEach((item) => {
       maxHeight = Math.max(
@@ -231,7 +233,9 @@ export default function Insights() {
                   <h4>Analysis Type: Navigation</h4>
                 )}
               </div>
-              <ActionTable data={thirdPartyWithNetwork}/>
+              <div className="to-hide">
+                <ActionTable data={thirdPartyWithNetwork} />
+              </div>
 
               {thirdPartyWithNetwork.map((item, idx) => {
                 return (
@@ -245,13 +249,13 @@ export default function Insights() {
                         headings={
                           renderBlockingResources
                             ? [
-                                ...headings,
-                                {
-                                  key: "renderBlocking",
-                                  text: "Render Blocking Time",
-                                  itemType: "ms",
-                                },
-                              ]
+                              ...headings,
+                              {
+                                key: "renderBlocking",
+                                text: "Render Blocking Time",
+                                itemType: "ms",
+                              },
+                            ]
                             : headings
                         }
                         items={item.subItems.items.filter(
