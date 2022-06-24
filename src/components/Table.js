@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState, memo } from "react";
 import "../styles/Table.css";
+import Button from "./Button";
 import Pagination from "./Pagination";
 
 /**
@@ -148,12 +149,11 @@ function Table({
             />
             <div className="right-row">
               {passData && (
-                <button onClick={handleGraphToggle}>Toggle Graph</button>
+                <Button onClick={handleGraphToggle}>Toggle Graph</Button>
               )}
-              <button onClick={downloadJSON}>Download JSON</button>
+              <Button onClick={downloadJSON}>Download JSON</Button>
             </div>
           </div>
-          <div className="showcase"></div>
         </>
       )}
 

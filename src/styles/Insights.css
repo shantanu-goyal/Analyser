@@ -13,15 +13,3 @@
     align-items: center;
     justify-content: center;
 }
-
-.insights-button{
-    font-size: 1em;
-    background-color: #107eff;
-    color: aliceblue;
-    width: 8em;
-    height: 2em;
-    margin-bottom: 2em;
-    border: none;
-    cursor: pointer;
-    border-radius: .25rem;
-  }

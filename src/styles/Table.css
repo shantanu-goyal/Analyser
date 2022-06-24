@@ -1,5 +1,5 @@
 .styled-table {
-  border: 1px solid #126ed8;
+  border: 1px solid rgb(24, 88, 206);
   box-sizing: border-box;
   border-collapse: collapse;
   font-size: 12px;
@@ -7,7 +7,7 @@
   width: 80%;
 }
 .styled-table thead tr {
-  background-color: #107eff;
+  background-color: rgb(24, 88, 206);
   color: #fff;
   text-align: left;
   cursor: pointer;
@@ -36,24 +36,11 @@
 .styled-table tbody tr td:first-child{
   max-width: 25em;
 }
-.showcase {
-  position: sticky;
-  top: 0;
-  margin-bottom: -100vh;
-  width: 100vw;
-  height: 100vh;
-  background-image: url(../../public/sprinklr.png);
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.2;
-  z-index: -1;
-}
 .styled-table tbody tr:nth-of-type(even) {
   background-color: #f3f3f3;
 }
 .styled-table tbody tr:last-of-type {
-  border-bottom: 2px solid #107eff;
+  border-bottom: 2px solid rgb(24, 88, 206);
 }
 .toolbar input {
   width: 20em;
@@ -62,6 +49,7 @@
   border-bottom: 1px solid black;
   margin: 2em;
   font-size: 1em;
+
 }
 .toolbar input:focus {
   outline: 0;
@@ -74,20 +62,7 @@
   align-items: center;
   margin-bottom: 10px;
 }
-.toolbar button {
-  box-sizing: content-box;
-  background-color: #107eff;
-  color: #f0f8ff;
-  height: 2em;
-  margin-right: 1em;
-  padding: 5px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 8em;
-  font-size: 0.8em;
-  transition: 0.3s ease;
-}
+
 
 .toolbar button:hover{
   background-color: #126ed8;

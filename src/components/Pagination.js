@@ -35,43 +35,47 @@ const Pagination = ({ dataPerPage, dataLength, paginate }) => {
   const LENGTH = Math.ceil(dataLength / dataPerPage);
 
   return (
-    <nav>
-      <div className="pagination">
-        <div className="page-item-btn">
-          <button className="page-link-button"
-            onClick={(e) => {
-              e.preventDefault();
-              setActive(1);
-              paginate(1);
-            }}
-          >First</button>
-        </div>
-        {getPageNumbers(active).map((number) => (
-          <div key={number} className="page-item page-item-btn">
-            <button
-              id={number}
-              onClick={(e) => {
-                e.preventDefault();
-                setActive(number);
-                paginate(number);
-              }}
-              className={active === number ? "page-link active" : "page-link"}
-            >
-              {number}
-            </button>
+    <>
+      {(LENGTH > 1) && (
+        <nav>
+          <div className="pagination">
+            <div className="page-item-btn">
+              <button className="page-link-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActive(1);
+                  paginate(1);
+                }}
+              > &#x2190; First</button>
+            </div>
+            {getPageNumbers(active).map((number) => (
+              <div key={number} className="page-item page-item-btn">
+                <button
+                  id={number}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActive(number);
+                    paginate(number);
+                  }}
+                  className={active === number ? "page-link active-btn" : "page-link"}
+                >
+                  {number}
+                </button>
+              </div>
+            ))}
+            <div className="page-item-btn">
+              <button className="page-link-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActive(LENGTH);
+                  paginate(LENGTH);
+                }}
+              >Last &#x2192;</button>
+            </div>
           </div>
-        ))}
-        <div className="page-item-btn">
-          <button className="page-link-button"
-            onClick={(e) => {
-              e.preventDefault();
-              setActive(LENGTH);
-              paginate(LENGTH);
-            }}
-          >Last</button>
-        </div>
-      </div>
-    </nav>
+        </nav>
+      )}
+    </>
   );
 };
 
