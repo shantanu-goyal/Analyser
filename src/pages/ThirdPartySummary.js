@@ -7,6 +7,7 @@ import { Navigate } from 'react-router-dom';
 import "../styles/ThirdPartySummary.css"
 import Pie from "../components/Graphs/Pie";
 import Table from "../components/Table";
+import Button from "../components/Button";
 
 
 /**

@@ -5,9 +5,9 @@ import { DataContext } from "../contexts/DataContext";
 import Table from "../components/Table";
 import { getOpportunities } from "../utility/insightsUtility";
 import ActionTable from "../components/ActionTable";
-
 import "../styles/Insights.css";
 import html2pdf from "html2pdf.js/src";
+import Button from "../components/Button";
 
 export default function Insights() {
   const dataContext = useContext(DataContext);
@@ -215,9 +215,9 @@ export default function Insights() {
         <>
           <NavBar />
           <div className="insights-wrapper">
-            <button className="insights-button" onClick={downloadReport}>
+            <Button onClick={downloadReport}>
               Download PDF
-            </button>
+            </Button>
             <div className="insights-wrapper" ref={insightsRef}>
               <a href={config.url} style={{ textAlign: "center" }}>
                 <h2>{config.url}</h2>

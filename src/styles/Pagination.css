@@ -9,30 +9,33 @@
     display: inline;
 }
 
-.page-item-btn button{
-    width:  50px !important;
-    height: 30px !important;
-    border: 1px solid black !important;
-    margin: 5px !important;
-    transition: 0.3s !important;
+.page-link-button{
+    width:  60px ;
+    height: 30px ;
+    border: 1px solid rgb(24, 88, 206) ;
+    margin: 5px ;
+    color: rgb(24, 88, 206);
+    background-color: white;
+    border-radius: 8px;
 }
 
 .page-item button{
-    width:  30px !important;
-    height: 30px !important;
-    border: 1px solid black !important;
-    margin: 5px !important;
-    transition: 0.3s !important;
+    width:  30px ;
+    background-color: white;
+    border-radius:10px;
+    height: 30px ;
+    border: 1px solid black ;
+    margin: 5px ;
 }
 
 .page-item button:hover, .page-item-btn button:hover{
-    background-color: #126ed8 !important;
-    color: white !important;
-    font-weight: bold !important;
+    background-color: #126ed8 ;
+    color: white ;
+    font-weight: bold ;
 }
 
-.active{
-    background-color: #126ed8;
+.active-btn{
     font-weight: bold;  
     color: white;
+    background-color: rgb(24, 88, 206) !important;
 }

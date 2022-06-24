@@ -1,0 +1,21 @@
+.tbl-btn{
+    background-color: rgb(24, 88, 206);
+    align-items: center;
+    appearance: none;
+    border-radius: 8px;
+    border: 1px solid rgb(24, 88, 206);
+    box-sizing: border-box;
+    color: rgb(255, 255, 255);
+    color-scheme: light;
+    cursor: pointer;
+    display: inline-flex;
+    flex-direction: row;
+    font-size: 14px;
+    font-stretch: 100%;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 18px;
+    min-width: 98px;
+    padding: 10px 10px;
+    margin: 2px;
+}
