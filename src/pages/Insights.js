@@ -28,7 +28,7 @@ export default function Insights() {
       transferSize: 0,
       resourceSize: 0,
       minified: "Yes",
-      unusedPercentage: 0,
+      unusedPercentage: 100,
     };
     item.subItems.items.forEach((subitem) => {
       summary.mainThreadTime += subitem.mainThreadTime;
