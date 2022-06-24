@@ -52,8 +52,8 @@ function ActionTable({ data }) {
   ];
 
   return (
-    <div style={{ marginBottom: "1em" }}>
-      <h1 style={{ textAlign: "center", margin: "1em" }}>Possible Fixes: </h1>
+    <div style={{ marginBottom: "10em" }}>
+      <h1 style={{ textAlign: "center", margin: "1em" }}>Possible Optimisations </h1>
       <div className="table-container">
         <Table
           headings={

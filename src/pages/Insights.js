@@ -46,8 +46,10 @@ export default function Insights() {
           ? summary.renderBlocking + subitem.renderBlocking
           : subitem.renderBlocking;
     });
-    summary.startTime = item.intervals.length ? item.intervals[0].startTime : '-'
-    if(summary.mainThreadTime === 0) summary.unusedPercentage = 100
+    summary.startTime = item.intervals.length
+      ? item.intervals[0].startTime
+      : "-";
+    if (summary.mainThreadTime === 0) summary.unusedPercentage = 100;
     return summary;
   }
 
@@ -87,11 +89,12 @@ export default function Insights() {
           if (js) {
             subitem.unusedPercentage = js.wastedPercent;
           } else {
-            if(subitem.mainThreadTime)
-            subitem.unusedPercentage = 0;
-            else subitem.unusedPercentage = 100
+            if (subitem.mainThreadTime) subitem.unusedPercentage = 0;
+            else subitem.unusedPercentage = 100;
           }
-          subitem.startTime = subitem.intervals.length ? subitem.intervals[0].startTime : '-'
+          subitem.startTime = subitem.intervals.length
+            ? subitem.intervals[0].startTime
+            : "-";
           newItems.push(subitem);
         });
 
@@ -99,7 +102,7 @@ export default function Insights() {
           if (prevItem.subItems.items.length > 1) prevItem.subItems.items.pop();
           newItems = [...prevItem.subItems.items, ...newItems];
           let summary = getSummary(newItems);
-          let opportunities = getOpportunities(summary, newItems.length);
+          let opportunities = getOpportunities(summary, newItems.length, fcp);
           if (newItems.length > 1) newItems.push(summary);
           prevItem.opportunities = opportunities;
           prevItem.subItems.items = newItems;
@@ -109,7 +112,8 @@ export default function Insights() {
         let summary = getSummary(item);
         let opportunities = getOpportunities(
           summary,
-          item.subItems.items.length
+          item.subItems.items.length,
+          fcp
         );
 
         return [
@@ -158,17 +162,16 @@ export default function Insights() {
   async function downloadReport() {
     let divsToHide = document.getElementsByClassName("toolbar"); //divsToHide is an array
     let maxHeight = 0;
+    let headers = insightsRef.current.querySelectorAll("h1");
+    for (let i = 0; i < headers.length; i++) {
+      headers[i].style.wordSpacing = "0.5em";
+      headers[i].style.letterSpacing = "0.1em";
+    }
     thirdPartyWithNetwork.forEach((item) => {
       maxHeight = Math.max(
         maxHeight,
         document.getElementById(item.entityName.name).clientHeight
       );
-      document
-        .getElementById(item.entityName.name)
-        .querySelector("h1").style.wordSpacing = "0.5em";
-      document
-        .getElementById(item.entityName.name)
-        .querySelector("h1").style.letterSpacing = "0.1em";
     });
     insightsRef.current.querySelector("a").style.letterSpacing = "0.1rem";
     maxHeight = Math.min(1920, maxHeight);
@@ -186,7 +189,7 @@ export default function Insights() {
         jsPDF: {
           orientation: "landscape",
           unit: "in",
-          format: [12, maxHeight / 96],
+          format: [12, maxHeight / 90],
         },
       };
       await html2pdf().set(opt).from(insightsRef.current).save();
@@ -197,18 +200,10 @@ export default function Insights() {
       divsToHide[i].style.display = displays[i];
     }
     insightsRef.current.querySelector("a").style.letterSpacing = "normal";
-    thirdPartyWithNetwork.forEach((item) => {
-      maxHeight = Math.max(
-        maxHeight,
-        document.getElementById(item.entityName.name).clientHeight
-      );
-      document
-        .getElementById(item.entityName.name)
-        .querySelector("h1").style.wordSpacing = "normal";
-      document
-        .getElementById(item.entityName.name)
-        .querySelector("h1").style.letterSpacing = "normal";
-    });
+    for (let i = 0; i < headers.length; i++) {
+      headers[i].style.wordSpacing = "normal";
+      headers[i].style.letterSpacing = "normal";
+    }
   }
 
   return (
@@ -230,7 +225,9 @@ export default function Insights() {
                   Device Type:{" "}
                   {config.deviceType === "mobile" ? "Mobile" : "Desktop"}
                 </h4>
-                <h4>First contentful paint: {Math.round(fcp *100)/ 100} ms</h4>
+                <h4>
+                  First contentful paint: {Math.round(fcp * 100) / 100} ms
+                </h4>
                 {config.waitTime ? (
                   <div>
                     <h4>Analysis Type: Timespan</h4>
@@ -240,7 +237,7 @@ export default function Insights() {
                   <h4>Analysis Type: Navigation</h4>
                 )}
               </div>
-              <ActionTable data={thirdPartyWithNetwork}/>
+              <ActionTable data={thirdPartyWithNetwork} />
 
               {thirdPartyWithNetwork.map((item, idx) => {
                 return (

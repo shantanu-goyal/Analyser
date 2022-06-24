@@ -6,9 +6,11 @@ export function getOpportunities(
     resourceSize,
     minified,
     unusedPercentage,
+    startTime,
     renderBlocking,
   },
-  numItems
+  numItems,
+  fcp
 ) {
   const opportunities = {
     user: [],
@@ -36,6 +38,11 @@ export function getOpportunities(
   if (unusedPercentage > 0) {
     opportunities.thirdParty.push(
       "Use code splitting to allow users reduce main-thread time and network time by importing and executing critical chunks"
+    );
+  }
+  if (unusedPercentage > 50 || startTime <= fcp + 500) {
+    opportunities.user.push(
+      "Lazyload scripts which are not critical"
     );
   }
   if (minified === "No") {
