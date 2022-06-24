@@ -31,18 +31,29 @@ function Form({ onFormSubmit }) {
   }
 
   return (
-    <>
-    <div className="website-title"></div>
-    <div className="url-form">
-      
-      <div className="url-input">
+    <div className="home-page">
+      <div className="website-title">
+        <div className="title">Third Party Analyser</div>
+        <div className="description">Analyse Impact of Third Party Scripts on Your Website</div>
+      </div>
+      <div className="form">
+        <h1 className="form-title">Start a new analysis!</h1>
+        <input
+          className="form-text-input"
+          type="text"
+          id="url-input"
+          placeholder="Enter a website URL..."
+          ref={urlRef}
+        />
+        <div className="form-options">
+          <div className="form-group">
           <label htmlFor="device-input">Device Type: </label>
-          <select className="select-box" ref={deviceRef} id="device-input">
+          <select ref={deviceRef} id="device-input">
             <option value="mobile">Mobile</option>
             <option value="desktop">Desktop</option>
           </select>
-          <small class="form-note">Select a device type on wchich we have to simulate analysis</small>
-
+          </div>
+          <div className="form-group">
           <label htmlFor="flow-input">Analysis Type: </label>
           <select
             className="select-box"
@@ -54,31 +65,22 @@ function Form({ onFormSubmit }) {
             <option value="navigation">Navigation</option>
             <option value="timespan">Timespan</option>
           </select>
-          <small class="form-note">Select navigate for page load analysis, use timespan to let analysis wait for some time for interaction</small>
-        {flow === "timespan" && (
-          <>
-            <label htmlFor="wait-input">Wait Time</label>
-            <input
-              type="number"
-              id="wait-input"
-              placeholder="e.g. 10"
-              ref={waitTimeRef}
-            />
-          </>
-        )}
-
-        <label htmlFor="url-input">URL</label>
-        <input
-          type="text"
-          id="url-input"
-          placeholder="e.g. https://example.com"
-          ref={urlRef}
-        />
-        <button onClick={handleUrlSubmit}>Submit</button>
+          </div>
+          {flow === "timespan" && (
+            <div className="form-group">
+              <label htmlFor="wait-input">Wait Time</label>
+              <input
+                type="number"
+                id="wait-input"
+                value={0}
+                ref={waitTimeRef}
+              />
+            </div>
+          )}
+           <button onClick={handleUrlSubmit}>Submit &#8594;</button>
+        </div>
       </div>
-      <small style={{float: 'right', fontSize: '0.25rem'}}><a href='https://www.freepik.com/vectors/data-flow'>Data flow vector created by starline - www.freepik.com</a></small>
     </div>
-    </>
   );
 }
 
