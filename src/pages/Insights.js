@@ -29,7 +29,7 @@ export default function Insights() {
       transferSize: 0,
       resourceSize: 0,
       minified: "Yes",
-      unusedPercentage: 0,
+      unusedPercentage: 100,
     };
     item.subItems.items.forEach((subitem) => {
       summary.mainThreadTime += subitem.mainThreadTime;
@@ -134,8 +134,8 @@ export default function Insights() {
       .sort(
         (a, b) =>
           b.opportunities.user.length +
-            b.opportunities.thirdParty.length -
-            (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
+          b.opportunities.thirdParty.length -
+          (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
           b.opportunities.user.length - a.opportunities.user.length
       );
   }
@@ -161,6 +161,8 @@ export default function Insights() {
 
   async function downloadReport() {
     let divsToHide = document.getElementsByClassName("toolbar"); //divsToHide is an array
+    let tableToHide = document.getElementsByClassName('to-hide');
+    divsToHide = [...divsToHide, ...tableToHide];
     let maxHeight = 0;
     let headers = insightsRef.current.querySelectorAll("h1");
     for (let i = 0; i < headers.length; i++) {
@@ -237,7 +239,9 @@ export default function Insights() {
                   <h4>Analysis Type: Navigation</h4>
                 )}
               </div>
-              <ActionTable data={thirdPartyWithNetwork} />
+              <div className="to-hide">
+                <ActionTable data={thirdPartyWithNetwork} />
+              </div>
 
               {thirdPartyWithNetwork.map((item, idx) => {
                 return (
@@ -251,13 +255,13 @@ export default function Insights() {
                         headings={
                           renderBlockingResources
                             ? [
-                                ...headings,
-                                {
-                                  key: "renderBlocking",
-                                  text: "Render Blocking Time",
-                                  itemType: "ms",
-                                },
-                              ]
+                              ...headings,
+                              {
+                                key: "renderBlocking",
+                                text: "Render Blocking Time",
+                                itemType: "ms",
+                              },
+                            ]
                             : headings
                         }
                         items={item.subItems.items.filter(
