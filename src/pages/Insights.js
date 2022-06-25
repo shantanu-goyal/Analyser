@@ -185,7 +185,7 @@ export default function Insights() {
     }
     try {
       const opt = {
-        filename: `${new URL(config.url).hostname+'-'+(config.waitTime?"Timespan":"Navigation")}.pdf`,
+        filename: `${new URL(config.url).hostname + '-' + (config.waitTime ? "Timespan" : "Navigation")}.pdf`,
         pagebreak: { mode: "avoid-all" },
         enableLinks: true,
         jsPDF: {
@@ -228,14 +228,8 @@ export default function Insights() {
               <div>
                 <b>First contentful paint:{" "}</b>{Math.round(fcp * 100) / 100} ms
               </div>
-              {config.waitTime ? (
-                <div>
-                  <div><b>Analysis Type:{" "}</b>Timespan</div>
-                  <div><b>Waiting Time:{" "}</b>{config.waitTime} ms</div>
-                </div>
-              ) : (
-                <div><b>Analysis Type:{" "}</b>Navigation</div>
-              )}
+              {config.waitTime ? <div><b>Analysis Type:{" "}</b>Timespan</div> : <div><b>Analysis Type:{" "}</b>Navigation</div>}
+              {config.waitTime ? <div><b>Wait Time:{" "}</b>{config.waitTime} ms</div> :<></>}
             </div>
           </Title>
           <div className="download-btn">
