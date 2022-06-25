@@ -176,7 +176,6 @@ export default function Insights() {
         document.getElementById(item.entityName.name).clientHeight
       );
     });
-    insightsRef.current.querySelector("a").style.letterSpacing = "0.1rem";
     maxHeight = Math.min(1920, maxHeight);
     let displays = [];
     for (let i = 0; i < divsToHide.length; i++) {
@@ -217,7 +216,7 @@ export default function Insights() {
           <NavBar />
           <Title heading={"Insights"}>
             <div className="insight-title" style={{ textAlign: "left" }}>
-              <div>
+              <div >
                 <b>URL:{" "}</b><a href={config.url} style={{ textAlign: "center" }}>
                   {config.url}
                 </a>
