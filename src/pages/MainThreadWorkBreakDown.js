@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Navigate } from "react-router";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
@@ -18,7 +18,10 @@ export default function MainThreadWorkBreakdown() {
   // Extracting the data from the context
   let data = dataContext.data.data;
   data = data['mainthread-work-breakdown'];
-
+  const graphRef = useRef(null)
+  useEffect(() => {
+    if(displayGraph)graphRef.current.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }, [displayGraph])
   // This function updates the state of the graph to be shown or not
   function passData(data) {
     setDisplayGraph(data);
@@ -37,7 +40,7 @@ export default function MainThreadWorkBreakdown() {
         <div className="table-container">
           <Table id={'mainthread-work-breakdown'} headings={data.details.headings} items={data.details.items} passData={passData} />
         </div>
-        <div className="graph-container">
+        <div className="graph-container" ref={graphRef}>
           {displayGraph && (generateGraph(data))}
         </div>
       </div>)}

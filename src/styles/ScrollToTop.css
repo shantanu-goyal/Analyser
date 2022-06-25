@@ -1,0 +1,13 @@
+.scroll-container{
+    z-index: 5;
+    position: fixed;
+    bottom: 2em;
+    right: 2em;
+   cursor: pointer;
+}
+
+.scroll-container img{
+    color: blue;
+    height: 60px;
+    width: 60px;
+}

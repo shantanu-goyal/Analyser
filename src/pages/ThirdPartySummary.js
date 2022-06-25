@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import ThirdPartyTable from '../components/ThirdPartyTable'
@@ -35,6 +35,8 @@ export default function ThirdPartySummary() {
   const [itemState, setItemState] = useState(getItemState(thirdPartyScripts));
 
 
+ 
+ 
   // Reference to key field for new URL
   const keyRef = useRef(null);
 
@@ -47,7 +49,10 @@ export default function ThirdPartySummary() {
   /* State to store the type of the graph to be generated. Defaults to the main thread time graph.*/
   const [value, setValue] = useState("mainthread");
   const [graphValue, setGraphValue] = useState('mainthread');
-
+  const graphRef = useRef(null)
+  useEffect(() => {
+    if(displayGraph)graphRef.current.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }, [displayGraph])
   // This function updates the state of the graph to be shown or not
   function passData(data) {
     setDisplayGraph(data);
@@ -315,7 +320,7 @@ export default function ThirdPartySummary() {
                 </div>
               </div>
 
-              <div className="graph-container">
+              <div className="graph-container" ref={graphRef}>
                 {displayGraph && (
                   <>
                     <div className="graph-inner-container">
@@ -413,6 +418,7 @@ export default function ThirdPartySummary() {
           </table>
         </>
       )}
+      
     </>
   );
 }

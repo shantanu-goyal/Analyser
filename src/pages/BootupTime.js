@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Navigate } from 'react-router-dom'
 import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
@@ -24,6 +24,10 @@ export default function BootupTime() {
   let data = dataContext.data.data;
   data = data['bootup-time'];
 
+  const graphRef = useRef(null)
+  useEffect(() => {
+    if(displayGraph)graphRef.current.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }, [displayGraph])
   // This function is fired whenever a different type of graph is requested and it sets the value of the type of graph requested in the state
   function changeHandler(e) {
     setValue(e.target.value);
@@ -51,7 +55,7 @@ export default function BootupTime() {
             <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items.filter(({url}) => url !== 'Unattributable')} passData={passData} />
 
           </div>
-          <div className="graph-container">
+          <div className="graph-container" ref={graphRef}>
             {displayGraph && (
               <>
                 <Select value={value} onChange={changeHandler} style={{ marginTop: "2em" }}>

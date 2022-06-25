@@ -63,7 +63,6 @@ function Graph({ data, title, type, hideLegend }) {
 
     //Render the chart
     const chart = new Chart(canvas.getContext('2d'), config);
-
     // Cleanup function to remove the legend element and the chart
     return () => { 
       chart.destroy();

@@ -114,6 +114,7 @@ function Table({
    */
   function handleGraphToggle(event) {
     event.preventDefault();
+
     setGraphVisible(!isGraphVisible);
     passData(!isGraphVisible);
   }
