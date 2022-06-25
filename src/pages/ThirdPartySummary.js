@@ -9,6 +9,8 @@ import Pie from "../components/Graphs/Pie";
 import Table from "../components/Table";
 import Select from "../components/Select";
 import Title from "../components/Title";
+import Modal from "../components/Modal";
+import Button from "../components/Button";
 
 /**
  * 
@@ -34,9 +36,6 @@ export default function ThirdPartySummary() {
   const [thirdPartyScriptsArray, setThirdPartyScriptsArray] = useState(thirdPartyScripts);
   const [itemState, setItemState] = useState(getItemState(thirdPartyScripts));
 
-
- 
- 
   // Reference to key field for new URL
   const keyRef = useRef(null);
 
@@ -51,7 +50,7 @@ export default function ThirdPartySummary() {
   const [graphValue, setGraphValue] = useState('mainthread');
   const graphRef = useRef(null)
   useEffect(() => {
-    if(displayGraph)graphRef.current.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    if (displayGraph) graphRef.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
   }, [displayGraph])
   // This function updates the state of the graph to be shown or not
   function passData(data) {
@@ -291,7 +290,86 @@ export default function ThirdPartySummary() {
                 domainWiseScripts={dropdownScripts}
                 passData={passData}
               />
-              <h2 style={{ textAlign: "center", marginTop: "1em" }}>Summary View</h2>
+              <div className="table-container">
+                <Modal name={"Update Entities"} >
+                  <table className="entity-input">
+                    <thead>
+                      <tr>
+                        <th>URL</th>
+                        <th>ENTITY NAME</th>
+                        <th>ACTION</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {userInput.map(({ key, value }, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>
+                              <input
+                                type="text"
+                                value={key}
+                                onChange={(e) => {
+                                  addKey(e, index, value);
+                                }}
+                                spellCheck="false"
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                value={value}
+                                onChange={(e) => {
+                                  addValue(e, index, key);
+                                }}
+                                spellCheck="false"
+                              />
+                            </td>
+                            <td>
+                              <Button
+                               style={{color:"red",border:"1px solid red", padding:"0.5em", borderRadius:"0px"}}
+                                onClick={
+                                  (e) => {
+                                    onRemove(index);
+                                  }
+                                }
+                              >
+                                Remove
+                              </Button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      <tr>
+                        <td>
+                          <select className='entity-select'
+                            ref={keyRef}
+                            placeholder="Key"
+                          >
+                            {dropdownScripts.map(script => {
+                              return <option key={script} value={"https://" + script}>{script}</option>
+                            })}
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            ref={valueRef}
+                            placeholder="Value"
+                            spellCheck="false"
+                          />
+                        </td>
+                        <td>
+                          <Button
+                          style={{color:"green",border:"1px solid green", padding:"0.5em", borderRadius:"0px"}}
+                          onClick={onAdd}>Add</Button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </Modal>
+              </div>
+              <h2 style={{ textAlign: "center", marginTop: "1em", marginBottom: "1em" }}>Summary View</h2>
               <div className="table-container ml-1">
                 <Table id={'summary-thirdparty-table'} notShowInput={true} showPagination={false}
                   headings={[
@@ -323,7 +401,7 @@ export default function ThirdPartySummary() {
               <div className="graph-container" ref={graphRef}>
                 {displayGraph && (
                   <>
-                    <div className="graph-inner-container">
+                    <div className="table-container">
                       <Select
                         value={value}
                         onChange={changeHandler}
@@ -343,78 +421,6 @@ export default function ThirdPartySummary() {
           ) : (
             <h2 style={{ textAlign: "center" }}> Nothing to show here... </h2>
           )}
-          <table className="entity-input">
-            <thead>
-              <tr>
-                <th>URL</th>
-                <th>ENTITY NAME</th>
-                <th></th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {userInput.map(({ key, value }, index) => {
-                return (
-                  <tr key={index}>
-                    <td>
-                      <input
-                        type="text"
-                        value={key}
-                        onChange={(e) => {
-                          addKey(e, index, value);
-                        }}
-                        spellCheck="false"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={value}
-                        onChange={(e) => {
-                          addValue(e, index, key);
-                        }}
-                        spellCheck="false"
-                      />
-                    </td>
-                    <td>
-                      <img
-                        src="remove.png"
-                        alt="Remove"
-                        onClick={
-                          (e) => {
-                            onRemove(index);
-                          }
-                        }
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-              <tr>
-                <td>
-                  <select className='entity-select'
-                    ref={keyRef}
-                    placeholder="Key"
-                  >
-                    {dropdownScripts.map(script => {
-                      return <option key={script} value={"https://" + script}>{script}</option>
-                    })}
-                  </select>
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    ref={valueRef}
-                    placeholder="Value"
-                    spellCheck="false"
-                  />
-                </td>
-                <td>
-                  <img src="add.png" alt="Add" onClick={onAdd} />
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </>
       )}
 

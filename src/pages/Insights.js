@@ -3,7 +3,10 @@ import { Navigate } from "react-router-dom";
 import { NavBar } from "../components/NavBar";
 import { DataContext } from "../contexts/DataContext";
 import Table from "../components/Table";
-import { getThirdPartyDataWithNetworkDetails, headings } from "../utility/insightsUtility";
+import {
+  getThirdPartyDataWithNetworkDetails,
+  headings,
+} from "../utility/insightsUtility";
 import ActionTable from "../components/ActionTable";
 import "../styles/Insights.css";
 import html2pdf from "html2pdf.js/src";
@@ -14,21 +17,32 @@ export default function Insights() {
   const dataContext = useContext(DataContext);
   const insightsRef = useRef(null);
 
-  let data = dataContext.data.data;
-  const unminifiedJSData = data["unminified-javascript"];
-  const unusedJSData = data["unused-javascript"];
-  const renderBlockingResources = data["render-blocking-resources"];
-  const thirdPartyData = dataContext.data.insights || [];
-  const config = dataContext.data.config;
-  const fcp = data["first-contentful-paint"].numericValue;
-
-  const thirdPartyWithNetwork = getThirdPartyDataWithNetworkDetails(
-    thirdPartyData,
+  let data,
     unminifiedJSData,
-    renderBlockingResources,
     unusedJSData,
-    fcp
-  );
+    renderBlockingResources,
+    thirdPartyData,
+    config,
+    fcp,
+    thirdPartyWithNetwork;
+  try {
+    data = dataContext.data.data;
+    unminifiedJSData = data["unminified-javascript"];
+    unusedJSData = data["unused-javascript"];
+    renderBlockingResources = data["render-blocking-resources"];
+    thirdPartyData = dataContext.data.insights;
+    config = dataContext.data.config;
+    fcp = data["first-contentful-paint"].numericValue;
+    thirdPartyWithNetwork = getThirdPartyDataWithNetworkDetails(
+      thirdPartyData,
+      unminifiedJSData,
+      renderBlockingResources,
+      unusedJSData,
+      fcp
+    );
+  } catch (err) {
+    return <Navigate to="/" />;
+  }
 
   async function downloadReport() {
     let divsToHide = document.getElementsByClassName("toolbar"); //divsToHide is an array
