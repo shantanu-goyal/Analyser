@@ -9,7 +9,6 @@ function ActionTable({ data }) {
   const fcp = dataContext.data.data["first-contentful-paint"].numericValue;
 
   const tableData = data.map((entity) => {
-    console.log(entity.intervals);
     const obj = {
       entity: entity.entityName.name,
       unused:
