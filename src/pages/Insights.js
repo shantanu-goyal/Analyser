@@ -185,7 +185,7 @@ export default function Insights() {
     }
     try {
       const opt = {
-        filename: "report.pdf",
+        filename: `${new URL(config.url).hostname+'-'+(config.waitTime?"Timespan":"Navigation")}.pdf`,
         pagebreak: { mode: "avoid-all" },
         enableLinks: true,
         jsPDF: {
