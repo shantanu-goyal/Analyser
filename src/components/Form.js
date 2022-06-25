@@ -72,7 +72,7 @@ function Form({ onFormSubmit }) {
               <input
                 type="number"
                 id="wait-input"
-                value={0}
+                placeholder="in seconds"
                 ref={waitTimeRef}
               />
             </div>
