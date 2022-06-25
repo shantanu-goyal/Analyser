@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../styles/Modal.css";
 
 function Modal({ name, children }) {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   function toggleVisibility() {
     setVisible(!visible);
