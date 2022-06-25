@@ -324,7 +324,6 @@ export default function ThirdPartySummary() {
                 {displayGraph && (
                   <>
                     <div className="graph-inner-container">
-                      <h1 style={{ textAlign: 'center' }}>Graph:-</h1>
                       <Select
                         value={value}
                         onChange={changeHandler}
@@ -418,7 +417,7 @@ export default function ThirdPartySummary() {
           </table>
         </>
       )}
-      
+
     </>
   );
 }

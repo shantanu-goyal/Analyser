@@ -3,12 +3,12 @@ import { Navigate } from "react-router-dom";
 import { NavBar } from "../components/NavBar";
 import { DataContext } from "../contexts/DataContext";
 import Table from "../components/Table";
-import { getOpportunities } from "../utility/insightsUtility";
+import { getThirdPartyDataWithNetworkDetails, headings } from "../utility/insightsUtility";
 import ActionTable from "../components/ActionTable";
 import "../styles/Insights.css";
 import html2pdf from "html2pdf.js/src";
 import Button from "../components/Button";
-import Title from '../components/Title'
+import Title from "../components/Title";
 
 export default function Insights() {
   const dataContext = useContext(DataContext);
@@ -22,147 +22,17 @@ export default function Insights() {
   const config = dataContext.data.config;
   const fcp = data["first-contentful-paint"].numericValue;
 
-  function getSummary(item) {
-    const summary = {
-      url: "Summary",
-      mainThreadTime: 0,
-      blockingTime: 0,
-      transferSize: 0,
-      resourceSize: 0,
-      minified: "Yes",
-      unusedPercentage: 100,
-    };
-    item.subItems.items.forEach((subitem) => {
-      summary.mainThreadTime += subitem.mainThreadTime;
-      summary.blockingTime += subitem.blockingTime;
-      summary.resourceSize += subitem.resourceSize;
-      summary.minified = summary.minified === "No" ? "No" : subitem.minified;
-      summary.unusedPercentage =
-        (summary.unusedPercentage * summary.transferSize +
-          subitem.unusedPercentage * subitem.transferSize) /
-        (summary.transferSize + subitem.transferSize);
-      summary.transferSize += subitem.transferSize;
-      if (subitem.renderBlocking !== undefined)
-        summary.renderBlocking = summary.renderBlocking
-          ? summary.renderBlocking + subitem.renderBlocking
-          : subitem.renderBlocking;
-    });
-    summary.startTime = item.intervals.length
-      ? item.intervals[0].startTime
-      : "-";
-    if (summary.mainThreadTime === 0) summary.unusedPercentage = 100;
-    return summary;
-  }
-
-  let thirdPartyWithNetwork = [];
-  if (thirdPartyData.length > 0) {
-    thirdPartyWithNetwork = thirdPartyData
-      .reduce((acc, item) => {
-        if (!item.entityName) return acc;
-        let prevItem = acc.find(
-          ({ entityName }) => item.entityName === entityName
-        );
-        let newItems = [];
-        item.subItems.items.forEach((subitem) => {
-          if (typeof subitem.url !== "string") return;
-
-          if (
-            unminifiedJSData.details.items.find(
-              ({ url }) => url === subitem.url
-            )
-          ) {
-            subitem.minified = "No";
-          } else subitem.minified = "Yes";
-
-          if (renderBlockingResources) {
-            let renderBlockingResource =
-              renderBlockingResources.details.items.find(
-                ({ url }) => url === subitem.url
-              );
-            if (renderBlockingResource) {
-              subitem.renderBlocking = renderBlockingResource.wastedMs;
-            } else subitem.renderBlocking = 0;
-          }
-
-          let js = unusedJSData.details.items.find(
-            ({ url }) => url === subitem.url
-          );
-          if (js) {
-            subitem.unusedPercentage = js.wastedPercent;
-          } else {
-            if (subitem.mainThreadTime) subitem.unusedPercentage = 0;
-            else subitem.unusedPercentage = 100;
-          }
-          subitem.startTime = subitem.intervals.length
-            ? subitem.intervals[0].startTime
-            : "-";
-          newItems.push(subitem);
-        });
-
-        if (prevItem) {
-          if (prevItem.subItems.items.length > 1) prevItem.subItems.items.pop();
-          newItems = [...prevItem.subItems.items, ...newItems];
-          let summary = getSummary(newItems);
-          let opportunities = getOpportunities(summary, newItems.length, fcp);
-          if (newItems.length > 1) newItems.push(summary);
-          prevItem.opportunities = opportunities;
-          prevItem.subItems.items = newItems;
-          return acc;
-        }
-        item.subItems.items = newItems;
-        let summary = getSummary(item);
-        let opportunities = getOpportunities(
-          summary,
-          item.subItems.items.length,
-          fcp
-        );
-
-        return [
-          ...acc,
-          {
-            ...item,
-            subItems: {
-              ...item.subItems,
-              items:
-                item.subItems.items.length > 1
-                  ? [...item.subItems.items, summary]
-                  : [...item.subItems.items],
-            },
-            opportunities,
-          },
-        ];
-      }, [])
-      .sort(
-        (a, b) =>
-          b.opportunities.user.length +
-          b.opportunities.thirdParty.length -
-          (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
-          b.opportunities.user.length - a.opportunities.user.length
-      );
-  }
-
-  const headings = [
-    { key: "url", text: "URL", itemType: "link" },
-    { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
-    { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
-    { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
-    { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
-    { key: "minified", text: "Script Minified", itemType: "binary" },
-    {
-      key: "unusedPercentage",
-      text: "Unused Percentage",
-      itemType: "percentage",
-    },
-    {
-      key: "startTime",
-      text: "First Start Time",
-      itemType: "ms",
-    },
-  ];
+  const thirdPartyWithNetwork = getThirdPartyDataWithNetworkDetails(
+    thirdPartyData,
+    unminifiedJSData,
+    renderBlockingResources,
+    unusedJSData,
+    fcp
+  );
 
   async function downloadReport() {
     let divsToHide = document.getElementsByClassName("toolbar"); //divsToHide is an array
-    let tableToHide = document.getElementsByClassName('to-hide');
+    let tableToHide = document.getElementsByClassName("to-hide");
     divsToHide = [...divsToHide, ...tableToHide];
     let maxHeight = 0;
     let headers = insightsRef.current.querySelectorAll("h1");
@@ -185,7 +55,11 @@ export default function Insights() {
     }
     try {
       const opt = {
-        filename: `${new URL(config.url).hostname + '-' + (config.waitTime ? "Timespan" : "Navigation")}.pdf`,
+        filename: `${
+          new URL(config.url).hostname +
+          "-" +
+          (config.waitTime ? "Timespan" : "Navigation")
+        }.pdf`,
         pagebreak: { mode: "avoid-all" },
         enableLinks: true,
         jsPDF: {
@@ -216,20 +90,37 @@ export default function Insights() {
           <NavBar />
           <Title heading={"Insights"}>
             <div className="insight-title" style={{ textAlign: "left" }}>
-              <div >
-                <b>URL:{" "}</b><a href={config.url} style={{ textAlign: "center" }}>
+              <div>
+                <b>URL: </b>
+                <a href={config.url} style={{ textAlign: "center" }}>
                   {config.url}
                 </a>
               </div>
               <div>
-                <b>Device Type:{" "}</b>
+                <b>Device Type: </b>
                 {config.deviceType === "mobile" ? "Mobile" : "Desktop"}
               </div>
               <div>
-                <b>First contentful paint:{" "}</b>{Math.round(fcp * 100) / 100} ms
+                <b>First contentful paint: </b>
+                {Math.round(fcp * 100) / 100} ms
               </div>
-              {config.waitTime ? <div><b>Analysis Type:{" "}</b>Timespan</div> : <div><b>Analysis Type:{" "}</b>Navigation</div>}
-              {config.waitTime ? <div><b>Wait Time:{" "}</b>{config.waitTime} ms</div> :<></>}
+              {config.waitTime ? (
+                <div>
+                  <b>Analysis Type: </b>Timespan
+                </div>
+              ) : (
+                <div>
+                  <b>Analysis Type: </b>Navigation
+                </div>
+              )}
+              {config.waitTime ? (
+                <div>
+                  <b>Wait Time: </b>
+                  {config.waitTime} ms
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </Title>
           <div className="download-btn">
@@ -251,13 +142,13 @@ export default function Insights() {
                       headings={
                         renderBlockingResources
                           ? [
-                            ...headings,
-                            {
-                              key: "renderBlocking",
-                              text: "Render Blocking Time",
-                              itemType: "ms",
-                            },
-                          ]
+                              ...headings,
+                              {
+                                key: "renderBlocking",
+                                text: "Render Blocking Time",
+                                itemType: "ms",
+                              },
+                            ]
                           : headings
                       }
                       items={item.subItems.items.filter(
