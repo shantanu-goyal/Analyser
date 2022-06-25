@@ -6,6 +6,7 @@ import Table from "../components/Table";
 import "../styles/Graph.css"
 import { generateGraph } from "../utility/bootupTImeUtility";
 import Select from "../components/Select";
+import Title from "../components/Title";
 
 /**
  * Function to render the jsx of the bootup time component
@@ -42,10 +43,9 @@ export default function BootupTime() {
       {data && (
         <div>
           <NavBar />
-
-          <h1 style={{ textAlign: "center" }}>Bootup Time</h1>
-          <h4 style={{ textAlign: "center" }}> {data.title}  </h4>
-          <h6 style={{ textAlign: "center" }}> Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. </h6>
+          <Title heading={"Bootup Time"} subHeading={data.title}>
+            Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this.
+          </Title>
           <div className="table-container">
 
             <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items.filter(({url}) => url !== 'Unattributable')} passData={passData} />

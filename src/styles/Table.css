@@ -63,11 +63,6 @@
   margin-bottom: 10px;
 }
 
-
-.toolbar button:hover{
-  background-color: #126ed8;
-}
-
 .right-row {
   display: flex;
   flex-direction: row;
