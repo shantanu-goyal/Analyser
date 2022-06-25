@@ -23,53 +23,53 @@ function ThirdPartyTable({
 }) {
   // State to hold current third party headings according to the view
   const dataContext = useContext(DataContext);
-  const data=dataContext.data.thirdParty;
+  const data = dataContext.data.thirdParty;
   const [thirdPartyHeadings, setThirdPartyHeadings] = useState([]);
   // State to hold current third party items according to the view
   const [thirdPartyItems, setThirdPartyItems] = useState([]);
   const selectRef = useRef("entity");
-  
+
   useEffect(() => {
     changeView("entity");
     // eslint-disable-next-line
   }, [userInput, scripts, domainWiseScripts]);
 
 
-  function getEntites(){
-    let byEntity=new Map();
-    data.map(item=>{
-      let entity=undefined;
-      if(item.entityName){
-        entity=item.entityName.name;
+  function getEntites() {
+    let byEntity = new Map();
+    data.map(item => {
+      let entity = undefined;
+      if (item.entityName) {
+        entity = item.entityName.name;
       }
-      else{
-        let entityArray=userInput.filter(data=>{
-          if(getHostname(data.key)===item.entity.url){
+      else {
+        let entityArray = userInput.filter(data => {
+          if (getHostname(data.key) === item.entity.url) {
             return true;
           }
           return false;
         });
 
-        if(entityArray.length>0){
-          entity=entityArray[0].value;
+        if (entityArray.length > 0) {
+          entity = entityArray[0].value;
         }
       }
-      
-      if(entity){
-        let defaultConfig={
-          blockingTime:0,
-          mainThreadTime:0,
-          resourceSize:0,
-          transferSize:0,
-          intervals:[]
+
+      if (entity) {
+        let defaultConfig = {
+          blockingTime: 0,
+          mainThreadTime: 0,
+          resourceSize: 0,
+          transferSize: 0,
+          intervals: []
         }
-        let entityData=byEntity.get(entity)||defaultConfig;
-        entityData.blockingTime+=item.blockingTime;
-        entityData.resourceSize+=item.resourceSize;
-        entityData.transferSize+=item.transferSize;
-        entityData.mainThreadTime+=item.mainThreadTime;
-        entityData.intervals=[...entityData.intervals, ...item.intervals]
-        byEntity.set(entity,entityData);
+        let entityData = byEntity.get(entity) || defaultConfig;
+        entityData.blockingTime += item.blockingTime;
+        entityData.resourceSize += item.resourceSize;
+        entityData.transferSize += item.transferSize;
+        entityData.mainThreadTime += item.mainThreadTime;
+        entityData.intervals = [...entityData.intervals, ...item.intervals]
+        byEntity.set(entity, entityData);
       }
       return {};
     })
@@ -77,76 +77,76 @@ function ThirdPartyTable({
   }
 
 
-  function updateContext(){
-    const byEntity=new Map();
+  function updateContext() {
+    const byEntity = new Map();
     // Update the global data context with the props recieved
-    data.map(item=>{
-      if(item.entityName){
-        const entity=byEntity.get(item.entityName.name)||{
-          blockingTime:0,
-          transferSize:0,
-          mainThreadTime:0,
-          resourceSize:0,
-          subItems:{
-            items:[]
+    data.map(item => {
+      if (item.entityName) {
+        const entity = byEntity.get(item.entityName.name) || {
+          blockingTime: 0,
+          transferSize: 0,
+          mainThreadTime: 0,
+          resourceSize: 0,
+          subItems: {
+            items: []
           },
-          intervals:[],
-          entityName:{}
+          intervals: [],
+          entityName: {}
         }
-        entity.blockingTime+=item.blockingTime;
-        entity.transferSize+=item.transferSize;
-        entity.mainThreadTime+=item.mainThreadTime;
-        entity.resourceSize+=item.resourceSize;
-        entity.subItems.items=[...entity.subItems.items,...item.subItems.items];
-        entity.intervals=[...entity.intervals, ...item.intervals ]
-        entity.entityName={name:item.entityName.name};
-        byEntity.set(item.entityName.name,entity);
+        entity.blockingTime += item.blockingTime;
+        entity.transferSize += item.transferSize;
+        entity.mainThreadTime += item.mainThreadTime;
+        entity.resourceSize += item.resourceSize;
+        entity.subItems.items = [...entity.subItems.items, ...item.subItems.items];
+        entity.intervals = [...entity.intervals, ...item.intervals]
+        entity.entityName = { name: item.entityName.name };
+        byEntity.set(item.entityName.name, entity);
       }
-      if(!item.entityName){
-        let entityArray=userInput.filter(dt=>{
-          if(getHostname(dt.key)===item.entity.url){
+      if (!item.entityName) {
+        let entityArray = userInput.filter(dt => {
+          if (getHostname(dt.key) === item.entity.url) {
             return true;
           }
           return false;
         });
 
-        if(entityArray.length>0){
-          let entityName={name:entityArray[0].value};
-          const entity=byEntity.get(entityName.name)||{
-            blockingTime:0,
-            transferSize:0,
-            mainThreadTime:0,
-            resourceSize:0,
-            subItems:{
-              items:[]
+        if (entityArray.length > 0) {
+          let entityName = { name: entityArray[0].value };
+          const entity = byEntity.get(entityName.name) || {
+            blockingTime: 0,
+            transferSize: 0,
+            mainThreadTime: 0,
+            resourceSize: 0,
+            subItems: {
+              items: []
             },
-            entityName:{},
-            intervals:[]
+            entityName: {},
+            intervals: []
           }
-          entity.blockingTime+=item.blockingTime;
-          entity.transferSize+=item.transferSize;
-          entity.mainThreadTime+=item.mainThreadTime;
-          entity.resourceSize+=item.resourceSize;
-          entity.subItems.items=[...entity.subItems.items,...item.subItems.items ];
-          entity.entityName=entityName;
-          entity.intervals=[...entity.intervals, ...item.intervals ];
-          byEntity.set(entityName.name,entity);
+          entity.blockingTime += item.blockingTime;
+          entity.transferSize += item.transferSize;
+          entity.mainThreadTime += item.mainThreadTime;
+          entity.resourceSize += item.resourceSize;
+          entity.subItems.items = [...entity.subItems.items, ...item.subItems.items];
+          entity.entityName = entityName;
+          entity.intervals = [...entity.intervals, ...item.intervals];
+          byEntity.set(entityName.name, entity);
         }
       }
       return {};
     });
 
-    let dataArray=Array.from(byEntity.values());
-    dataArray=dataArray.map(item=>{
-      item.subItems.items=item.subItems.items.filter(i=>{
-        return typeof(i.url)=="string";
+    let dataArray = Array.from(byEntity.values());
+    dataArray = dataArray.map(item => {
+      item.subItems.items = item.subItems.items.filter(i => {
+        return typeof (i.url) == "string";
       })
       return item;
     })
 
     dataContext.setData({
-      type:'updateThirdParty',
-      data:dataArray
+      type: 'updateThirdParty',
+      data: dataArray
     });
 
     dataContext.setData({
@@ -154,7 +154,7 @@ function ThirdPartyTable({
       data: {
         thirdPartyScripts: scripts,
         userInput,
-        domainScripts:domainWiseScripts
+        domainScripts: domainWiseScripts
       }
     });
   }
@@ -174,7 +174,7 @@ function ThirdPartyTable({
       setThirdPartyHeadings([
         { key: "url", text: "URL", itemType: "text" },
         { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
-        {key:"blockingTime",text:"Main Thread Blocking Time", itemType:"ms"},
+        { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
         { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
         { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
       ]);
@@ -199,11 +199,11 @@ function ThirdPartyTable({
         { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
         { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
         { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
-  
+
       ]);
 
 
-      const entities=getEntites();
+      const entities = getEntites();
       setThirdPartyItems(
         entities.map((entity) => {
           return {
@@ -211,7 +211,7 @@ function ThirdPartyTable({
             mainThreadTime: entity[1].mainThreadTime,
             blockingTime: entity[1].blockingTime,
             transferSize: entity[1].transferSize,
-            resourceSize:entity[1].resourceSize
+            resourceSize: entity[1].resourceSize
           };
         })
       );
@@ -229,15 +229,15 @@ function ThirdPartyTable({
         <option value="entity">Entity View</option>
         <option value="script">Script View</option>
       </select>
-      <div className="table-container">
-        <Table
-          id={id}
-          headings={thirdPartyHeadings}
-          items={thirdPartyItems}
-          passData={passData}
-          showPagination={selectRef.current.value!=="entity"}
-        />
-      </div>
+
+      <Table
+        id={id}
+        headings={thirdPartyHeadings}
+        items={thirdPartyItems}
+        passData={passData}
+        showPagination={selectRef.current.value !== "entity"}
+      />
+
     </div>
   );
 }

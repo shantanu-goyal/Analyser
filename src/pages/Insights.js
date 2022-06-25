@@ -239,13 +239,11 @@ export default function Insights() {
               )}
             </div>
           </Title>
-          <div className="insights-wrapper">
-            <Button onClick={downloadReport}>Download PDF</Button>
-            <div className="insights-wrapper" ref={insightsRef}>
-              <div className="to-hide">
+          <Button onClick={downloadReport}>Download PDF</Button>
+            <div className="to-hide">
                 <ActionTable data={thirdPartyWithNetwork} />
               </div>
-
+            <div className="insights-wrapper" ref={insightsRef}>
               {thirdPartyWithNetwork.map((item, idx) => {
                 return (
                   <div key={idx} id={item.entityName.name}>
@@ -304,7 +302,6 @@ export default function Insights() {
                 );
               })}
             </div>
-          </div>
         </>
       )}
     </>

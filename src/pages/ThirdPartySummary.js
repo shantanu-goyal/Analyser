@@ -274,22 +274,20 @@ export default function ThirdPartySummary() {
           {data.details ? (
             <div>
               <Title heading={"Third Party Summary"} subHeading={data.title} >
-              Third-party code can significantly impact load performance.
+                Third-party code can significantly impact load performance.
                 Limit the number of redundant third-party providers and try to
                 load third-party code after your page has primarily finished
                 loading
               </Title>
-              <div className="table-container">
-                <ThirdPartyTable
-                  id={"third-party-summary"}
-                  scripts={thirdPartyScriptsArray}
-                  userInput={userInput}
-                  domainWiseScripts={dropdownScripts}
-                  passData={passData}
-                />
-              </div>
-              <div className="table-container">
-                <h2 style={{ textAlign: "center", marginTop: "1em" }}>Summary View</h2>
+              <ThirdPartyTable
+                id={"third-party-summary"}
+                scripts={thirdPartyScriptsArray}
+                userInput={userInput}
+                domainWiseScripts={dropdownScripts}
+                passData={passData}
+              />
+              <h2 style={{ textAlign: "center", marginTop: "1em" }}>Summary View</h2>
+              <div className="table-container ml-1">
                 <Table id={'summary-thirdparty-table'} notShowInput={true} showPagination={false}
                   headings={[
                     { key: "url", text: "Summary", itemType: "text" },
@@ -301,6 +299,7 @@ export default function ThirdPartySummary() {
                   items={itemState}
                 />
               </div>
+
               <div className="table-container">
                 <Select
                   value={graphValue}
