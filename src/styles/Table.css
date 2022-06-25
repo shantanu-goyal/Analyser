@@ -49,8 +49,8 @@
   border-bottom: 1px solid black;
   margin: 2em;
   font-size: 1em;
-
 }
+
 .toolbar input:focus {
   outline: 0;
 }
@@ -69,6 +69,12 @@
   justify-content: right;
 }
 
+.left-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items:baseline;
+}
 
 .data-table{
   display: flex;

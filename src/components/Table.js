@@ -144,17 +144,20 @@ function Table({
       {!notShowInput && (
         <>
           <div className="toolbar">
-            <input
-              type="text"
-              placeholder="Type here to search..."
-              onChange={onSearch}
-            />
+            <div className="left-row">
+            {children && children[1]}
+              <input
+                type="text"
+                placeholder="Type here to search..."
+                onChange={onSearch}
+              />
+            </div>
             <div className="right-row">
               {passData && (
                 <Button onClick={handleGraphToggle}>Toggle Graph</Button>
               )}
               <Button onClick={downloadJSON}>Download JSON</Button>
-              {children}
+              {children && children[0]}
             </div>
           </div>
         </>
