@@ -37,7 +37,7 @@ function Table({
   // State to hold current page data for pagination
   const [currentPage, setCurrentPage] = useState({
     indexOfFirstPost: 0,
-    indexOfLastPost: Math.min(10, items.length),
+    indexOfLastPost: items.length ? Math.min(10, items.length) : 10,
   });
 
   /**
