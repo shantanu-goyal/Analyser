@@ -80,10 +80,12 @@ export default function Home() {
   }
 
   return (
+    <>
     <div className="container">
       {!formSubmitted && <Form onFormSubmit={onFormSubmit} />}
       {formSubmitted && loading && !error && <div className="loader"></div>}
       {formSubmitted && error && <h1>Error..</h1>}
     </div>
+    </>
   );
 }
