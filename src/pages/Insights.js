@@ -8,6 +8,7 @@ import ActionTable from "../components/ActionTable";
 import "../styles/Insights.css";
 import html2pdf from "html2pdf.js/src";
 import Button from "../components/Button";
+import Title from '../components/Title'
 
 export default function Insights() {
   const dataContext = useContext(DataContext);
@@ -214,31 +215,33 @@ export default function Insights() {
       {data && (
         <>
           <NavBar />
-          <div className="insights-wrapper">
-            <Button onClick={downloadReport}>
-              Download PDF
-            </Button>
-            <div className="insights-wrapper" ref={insightsRef}>
-              <a href={config.url} style={{ textAlign: "center" }}>
-                <h2>{config.url}</h2>
-              </a>
-              <div className="insights-title">
-                <h4>
-                  Device Type:{" "}
-                  {config.deviceType === "mobile" ? "Mobile" : "Desktop"}
-                </h4>
-                <h4>
-                  First contentful paint: {Math.round(fcp * 100) / 100} ms
-                </h4>
-                {config.waitTime ? (
-                  <div>
-                    <h4>Analysis Type: Timespan</h4>
-                    <h4>Waiting Time: {config.waitTime} ms</h4>
-                  </div>
-                ) : (
-                  <h4>Analysis Type: Navigation</h4>
-                )}
+          <Title heading={"Insights"}>
+            <div className="insight-title" style={{ textAlign: "left" }}>
+              <div>
+                <b>URL:{" "}</b><a href={config.url} style={{ textAlign: "center" }}>
+                  {config.url}
+                </a>
               </div>
+              <div>
+                <b>Device Type:{" "}</b>
+                {config.deviceType === "mobile" ? "Mobile" : "Desktop"}
+              </div>
+              <div>
+                <b>First contentful paint:{" "}</b>{Math.round(fcp * 100) / 100} ms
+              </div>
+              {config.waitTime ? (
+                <div>
+                  <div><b>Analysis Type:{" "}</b>Timespan</div>
+                  <div><b>Waiting Time:{" "}</b>{config.waitTime} ms</div>
+                </div>
+              ) : (
+                <div><b>Analysis Type:{" "}</b>Navigation</div>
+              )}
+            </div>
+          </Title>
+          <div className="insights-wrapper">
+            <Button onClick={downloadReport}>Download PDF</Button>
+            <div className="insights-wrapper" ref={insightsRef}>
               <div className="to-hide">
                 <ActionTable data={thirdPartyWithNetwork} />
               </div>

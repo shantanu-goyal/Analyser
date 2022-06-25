@@ -3,12 +3,17 @@
     width: 100%;
 }
 
-.insights-title{
+.insight-title{
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap:40px;
 }
 
 .insights-wrapper{
+    display: flex;
+    flex-direction: column;
     padding: 1em;
     align-items: center;
     justify-content: center;
