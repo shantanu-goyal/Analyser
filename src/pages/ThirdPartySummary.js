@@ -8,6 +8,7 @@ import "../styles/ThirdPartySummary.css"
 import Pie from "../components/Graphs/Pie";
 import Table from "../components/Table";
 import Select from "../components/Select";
+import Title from "../components/Title";
 
 /**
  * 
@@ -244,6 +245,22 @@ export default function ThirdPartySummary() {
     return data;
   }
 
+  function addKey(e, index, value) {
+    setUserInput([
+      ...userInput.slice(0, index),
+      { key: e.target.value, value },
+      ...userInput.slice(index + 1),
+    ]);
+  }
+
+  function addValue(e, index, key) {
+    setUserInput([
+      ...userInput.slice(0, index),
+      { key, value: e.target.value },
+      ...userInput.slice(index + 1),
+    ]);
+  }
+
 
 
 
@@ -252,41 +269,38 @@ export default function ThirdPartySummary() {
     <>
       {!data && <Navigate to="/" />}
       {data && (
-        <div>
+        <>
           <NavBar />
           {data.details ? (
-            <>
-              <h1 style={{ textAlign: "center" }}>Third Party Summary</h1>
-              <h4 style={{ textAlign: "center" }}> {data.title} </h4>
-              <h6 style={{ textAlign: "center" }}>
-                {" "}
+            <div>
+              <Title heading={"Third Party Summary"} subHeading={data.title} >
                 Third-party code can significantly impact load performance.
                 Limit the number of redundant third-party providers and try to
                 load third-party code after your page has primarily finished
-                loading.{" "}
-              </h6>
-              <div className="table-container">
-                <ThirdPartyTable
-                  id={"third-party-summary"}
-                  scripts={thirdPartyScriptsArray}
-                  userInput={userInput}
-                  domainWiseScripts={dropdownScripts}
-                  passData={passData}
+                loading
+              </Title>
+              <ThirdPartyTable
+                id={"third-party-summary"}
+                scripts={thirdPartyScriptsArray}
+                userInput={userInput}
+                domainWiseScripts={dropdownScripts}
+                passData={passData}
+              />
+              <h2 style={{ textAlign: "center", marginTop: "1em" }}>Summary View</h2>
+              <div className="table-container ml-1">
+                <Table id={'summary-thirdparty-table'} notShowInput={true} showPagination={false}
+                  headings={[
+                    { key: "url", text: "Summary", itemType: "text" },
+                    { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
+                    { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
+                    { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
+                    { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
+                  ]}
+                  items={itemState}
                 />
-                <h2 style={{textAlign:"center", marginTop:"1em"}}>Summary View</h2>
-                <div className="table-container-thirdparty">
-                  <Table id={'summary-thirdparty-table'} notShowInput={true} showPagination={false}
-                    headings={[
-                      { key: "url", text: "Summary", itemType: "text" },
-                      { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
-                      { key: "blockingTime", text: "Main Thread Blocking Time", itemType: "ms" },
-                      { key: "resourceSize", text: "Resource Size", itemType: "bytes" },
-                      { key: "transferSize", text: "Transfer Size", itemType: "bytes" },
-                    ]}
-                    items={itemState}
-                  />
-                </div>
+              </div>
 
+              <div className="table-container">
                 <Select
                   value={graphValue}
                   onChange={graphChange}
@@ -299,89 +313,6 @@ export default function ThirdPartySummary() {
                 <div className="big-pie graph-inner-container">
                   <Pie data={renderGraph()} title={'Domain Specific Scripts vs Third Party Scirpts'} />
                 </div>
-
-
-                <h1>Add your own entities below:-</h1>
-                <table className="entity-input">
-                  <thead>
-                    <tr>
-                      <th>URL</th>
-                      <th>ENTITY NAME</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {userInput.map(({ key, value }, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>
-                            <input
-                              type="text"
-                              value={key}
-                              onChange={(e) => {
-                                setUserInput([
-                                  ...userInput.slice(0, index),
-                                  { key: e.target.value, value },
-                                  ...userInput.slice(index + 1),
-                                ]);
-                              }}
-                              spellCheck="false"
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="text"
-                              value={value}
-                              onChange={(e) => {
-                                setUserInput([
-                                  ...userInput.slice(0, index),
-                                  { key, value: e.target.value },
-                                  ...userInput.slice(index + 1),
-                                ]);
-                              }}
-                              spellCheck="false"
-                            />
-                          </td>
-                          <td>
-                            <img
-                              src="remove.png"
-                              alt="Remove"
-                              onClick={
-                                (e) => {
-                                  onRemove(index);
-                                }
-                              }
-                            />
-                          </td>
-                        </tr>
-                      );
-                    })}
-                    <tr>
-                      <td>
-                        <select className='entity-select'
-                          ref={keyRef}
-                          placeholder="Key"
-                        >
-                          {dropdownScripts.map(script => {
-                            return <option key={script} value={"https://" + script}>{script}</option>
-                          })}
-                        </select>
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          ref={valueRef}
-                          placeholder="Value"
-                          spellCheck="false"
-                        />
-                      </td>
-                      <td>
-                        <img src="add.png" alt="Add" onClick={onAdd} />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
               </div>
 
               <div className="graph-container">
@@ -404,11 +335,83 @@ export default function ThirdPartySummary() {
                   </>
                 )}
               </div>
-            </>
+            </div>
           ) : (
             <h2 style={{ textAlign: "center" }}> Nothing to show here... </h2>
           )}
-        </div>
+          <table className="entity-input">
+            <thead>
+              <tr>
+                <th>URL</th>
+                <th>ENTITY NAME</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {userInput.map(({ key, value }, index) => {
+                return (
+                  <tr key={index}>
+                    <td>
+                      <input
+                        type="text"
+                        value={key}
+                        onChange={(e) => {
+                          addKey(e, index, value);
+                        }}
+                        spellCheck="false"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={value}
+                        onChange={(e) => {
+                          addValue(e, index, key);
+                        }}
+                        spellCheck="false"
+                      />
+                    </td>
+                    <td>
+                      <img
+                        src="remove.png"
+                        alt="Remove"
+                        onClick={
+                          (e) => {
+                            onRemove(index);
+                          }
+                        }
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr>
+                <td>
+                  <select className='entity-select'
+                    ref={keyRef}
+                    placeholder="Key"
+                  >
+                    {dropdownScripts.map(script => {
+                      return <option key={script} value={"https://" + script}>{script}</option>
+                    })}
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    ref={valueRef}
+                    placeholder="Value"
+                    spellCheck="false"
+                  />
+                </td>
+                <td>
+                  <img src="add.png" alt="Add" onClick={onAdd} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </>
       )}
     </>
   );

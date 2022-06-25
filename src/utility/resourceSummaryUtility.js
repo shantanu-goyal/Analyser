@@ -12,7 +12,7 @@ function extractTransferSize(data) {
             data: item.transferSize / 1024
         }
     })
-    return transferSizeData;
+    return transferSizeData.slice(1);
 }
 
 /**

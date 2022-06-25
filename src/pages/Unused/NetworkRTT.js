@@ -1,9 +1,9 @@
 import { Navigate } from "react-router";
 import React, { useContext, useState } from "react";
-import { DataContext } from "../contexts/DataContext";
-import Graph from "../components/Graphs/Graph";
-import { NavBar } from "../components/NavBar";
-import Table from "../components/Table";
+import { DataContext } from "../../contexts/DataContext";
+import Graph from "../../components/Graphs/Graph";
+import { NavBar } from "../../components/NavBar";
+import Table from "../../components/Table";
 import "../styles/Graph.css";
 
 /**

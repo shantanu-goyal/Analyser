@@ -1,80 +1,76 @@
 .entity-input {
-    margin-top: 2em;
-    width: 90%;
-    margin-left: 5%;
-    border-collapse: collapse;
-    text-align: center;
-  }
-  
-  .entity-input input {
-    border: 1px solid rgb(180, 180, 180);
-    padding: 1em;
-    box-sizing: border-box;
-    font-size: 1em;
-    width:90%;
-    text-overflow: ellipsis;
-    margin: 0.5em;
-    height: 1em;
-  }
-  
-  .graph-inner-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-bottom: 2em;
-    margin-top: 4em;
-  }
+  margin-top: 2em;
+  width: 80%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.entity-input input {
+  border: 1px solid rgb(180, 180, 180);
+  padding: 1em;
+  box-sizing: border-box;
+  font-size: 1em;
+  width: 80%;
+  text-overflow: ellipsis;
+  margin: 0.5em;
+  height: 1em;
+}
+
+.entity-select {
+  width: 80%;
+  text-overflow: ellipsis;
+  margin: 0.5em;
+  height: 2em;
+  border: 1px solid rgb(180, 180, 180);
+  box-sizing: border-box;
+  font-size: 1em;
+  padding-left: 1em;
+  text-align: left;
+}
+
+.entity-select option {
+  text-overflow: ellipsis;
+}
+
+.entity-input th {
+  background-color: #107eff;
+  color: white;
+  font-size: large;
+  max-width: 80%;
+}
+
+.entity-input th:hover {
+  background-color: #126ed8;
+}
+
+.entity-input th:last-of-type {
+  background-color: white;
+}
+
+.entity-input img {
+  margin-top: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
 
 
-  .entity-select{
-    width: 90%;
-    text-overflow:ellipsis;
-    margin: 0.5em;
-    height: 2em;
-    border: 1px solid rgb(180, 180, 180);
-    box-sizing: border-box;
-    font-size: 1em;
-    padding-left:1em;
-    text-align: left;
-  }
-  
-  .entity-select option{
-    text-overflow: ellipsis;
-  }
-  
-  .entity-input th {
-    background-color: #107eff;
-    color: white;
-    font-size: large;
-    max-width: 80%;
-  }
-  
-  .entity-input th:hover{
-    background-color: #126ed8;
-  }
-  
-  .entity-input th:last-of-type {
-    background-color: white;
-  }
-  
-  .entity-input img {
-    margin-top: 10px;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-  }
-  
-  .big-pie{
-    padding: 0 !important;
-    margin: 0 !important ;
-  }
+.big-pie {
+  padding: 0 !important;
+  margin: 0 !important;
+}
 
-  .table-container-thirdparty{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left:1em;
-    margin-top: 2em;
-  }
+.table-container-thirdparty {
+  width: 50m;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1em;
+  margin-top: 2em;
+}
+
+.ml-1{
+  margin-left: 1em;
+  box-sizing: content-box;
+  width: 100%;
+}

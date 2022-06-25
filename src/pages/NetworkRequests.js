@@ -5,6 +5,7 @@ import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
 import "../styles/Graph.css"
 import { generateGraph } from "../utility/networkRequestUtility";
+import Title from "../components/Title";
 
 
 /**
@@ -31,9 +32,9 @@ export default function NetworkRequests() {
       {data && (
         <div>
           <NavBar />
-          <h1 style={{ textAlign: "center" }}>Network Requests</h1>
-          <h4 style={{ textAlign: "center" }}> {data.title}  </h4>
-          <h6 style={{ textAlign: "center" }}> {data.description} </h6>
+          <Title heading={"Network Requests"} subHeading={data.title}>
+            {data.description}
+          </Title>
           <div className="table-container">
             <Table id={'network-requests'} headings={data.details.headings} items={data.details.items} passData={passData} />
           </div>

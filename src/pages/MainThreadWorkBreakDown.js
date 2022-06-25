@@ -5,6 +5,7 @@ import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
 import '../styles/Graph.css'
 import { generateGraph } from "../utility/mainThreadUtility";
+import Title from "../components/Title";
 /**
  * Function to render the jsx of the main thread work breakdown component
  * @returns {JSX} - It renders the Main Thread Work Breakdown Component
@@ -30,9 +31,9 @@ export default function MainThreadWorkBreakdown() {
       )}
       {data && (<div>
         <NavBar />
-        <h1 style={{ textAlign: "center" }}>Main Thread Work Breakdown</h1>
-        <h4 style={{ textAlign: "center" }}> {data.title}  </h4>
-          <h6 style={{ textAlign: "center" }}> Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this.  </h6>
+        <Title heading={"Main Thread Work Breakdown"} subHeading={data.title}>
+          Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this.
+        </Title>
         <div className="table-container">
           <Table id={'mainthread-work-breakdown'} headings={data.details.headings} items={data.details.items} passData={passData} />
         </div>

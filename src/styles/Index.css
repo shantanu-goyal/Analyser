@@ -5,6 +5,35 @@
   line-height: 1.6;
 }
 
+.custom-legend ul {
+  max-width: 60%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.custom-legend  li {
+  max-width: 500px;
+  text-overflow: ellipsis;
+  list-style: none;
+  padding: 1em;
+  overflow: hidden;
+  cursor: pointer;
+  color: black;
+}
+.custom-legend span {
+  height: 15px;
+  width: 15px;
+  display: inline-block;
+  margin-right: 0px;
+  vertical-align: middle; 
+  border: 2px solid black;
+}
+
+
 #root{
   padding-bottom: 1em;
 }
+
+

@@ -5,6 +5,7 @@ import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
 import "../styles/Graph.css"
 import { generateGraph } from "../utility/resourceSummaryUtility";
+import Title from "../components/Title";
 
 /**
  *  Function to render the jsx of the Resource Summary component
@@ -30,8 +31,7 @@ export default function ResourceSummary() {
       {!data && (<Navigate to="/" />)}
       {data && (<div>
         <NavBar />
-        <h1 style={{ textAlign: "center" }}>Resource Summary</h1>
-        <h4 style={{ textAlign: "center" }}> {data.title}  </h4>
+        <Title heading={"Resource Summary"} subHeading={data.title} />
         <div className="table-container">
           <Table id={'resource-summary'} headings={data.details.headings} items={data.details.items} passData={passData} />
         </div>
