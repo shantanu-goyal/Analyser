@@ -20,6 +20,7 @@ function ThirdPartyTable({
   scripts,
   passData,
   domainWiseScripts,
+  children
 }) {
   // State to hold current third party headings according to the view
   const dataContext = useContext(DataContext);
@@ -229,14 +230,15 @@ function ThirdPartyTable({
         <option value="entity">Entity View</option>
         <option value="script">Script View</option>
       </select>
-
       <Table
         id={id}
         headings={thirdPartyHeadings}
         items={thirdPartyItems}
         passData={passData}
         showPagination={selectRef.current.value !== "entity"}
-      />
+      >
+         {children}
+      </Table>
 
     </div>
   );

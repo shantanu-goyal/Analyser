@@ -11,28 +11,28 @@
   background: rgba(0, 0, 0, 0.6);
 }
 
-.modal-content{
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-}    
-
-.modal-close{
-    align-self: flex-end;
-    height: 1em;
-    width: 1em;
-    cursor: pointer;
+.modal-content {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
 }
 
-.modal-button{
-    font-size: 1em;
+.modal-close {
+  align-self: flex-end;
+  height: 1em;
+  width: 1em;
+  cursor: pointer;
+}
+
+.modal-button {
+  font-size: 1em;
   background-color: rgb(24, 88, 206);
-    padding:0  1em;
+  padding: 0 1em;
   color: aliceblue;
-  height: 3em;
+  height: 2.5em;
   margin: 1em 0;
   border: none;
   cursor: pointer;
-  border-radius: 0.25rem;
+  border-radius: 4px;
 }

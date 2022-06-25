@@ -12,3 +12,8 @@
   align-items: center;
   flex-direction: column;
 }
+
+.modal-container{
+  display: flex;
+  margin-left: 9%;
+}

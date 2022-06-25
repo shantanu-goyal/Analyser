@@ -19,6 +19,7 @@ function Table({
   passData,
   showPagination,
   notShowInput,
+  children
 }) {
   // State to hold table data items filtered on the search text
   const [filteredItems, setFilteredItems] = useState([]);
@@ -153,6 +154,7 @@ function Table({
                 <Button onClick={handleGraphToggle}>Toggle Graph</Button>
               )}
               <Button onClick={downloadJSON}>Download JSON</Button>
+              {children}
             </div>
           </div>
         </>

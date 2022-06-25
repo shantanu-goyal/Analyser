@@ -289,8 +289,7 @@ export default function ThirdPartySummary() {
                 userInput={userInput}
                 domainWiseScripts={dropdownScripts}
                 passData={passData}
-              />
-              <div className="table-container">
+              >
                 <Modal name={"Update Entities"} >
                   <table className="entity-input">
                     <thead>
@@ -327,7 +326,7 @@ export default function ThirdPartySummary() {
                             </td>
                             <td>
                               <Button
-                               style={{color:"red",border:"1px solid red", padding:"0.5em", borderRadius:"0px"}}
+                                style={{ color: "red", border: "1px solid red", padding: "0.5em", borderRadius: "0px" }}
                                 onClick={
                                   (e) => {
                                     onRemove(index);
@@ -361,14 +360,14 @@ export default function ThirdPartySummary() {
                         </td>
                         <td>
                           <Button
-                          style={{color:"green",border:"1px solid green", padding:"0.5em", borderRadius:"0px"}}
-                          onClick={onAdd}>Add</Button>
+                            style={{ color: "green", border: "1px solid green", padding: "0.5em", borderRadius: "0px" }}
+                            onClick={onAdd}>Add</Button>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </Modal>
-              </div>
+              </ThirdPartyTable>
               <h2 style={{ textAlign: "center", marginTop: "1em", marginBottom: "1em" }}>Summary View</h2>
               <div className="table-container ml-1">
                 <Table id={'summary-thirdparty-table'} notShowInput={true} showPagination={false}
