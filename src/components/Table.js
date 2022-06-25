@@ -37,7 +37,7 @@ function Table({
   // State to hold current page data for pagination
   const [currentPage, setCurrentPage] = useState({
     indexOfFirstPost: 0,
-    indexOfLastPost: items.length ? Math.min(10, items.length) : 10,
+    indexOfLastPost: 10,
   });
 
   /**
@@ -45,8 +45,8 @@ function Table({
    * @param {Number} pageNumber
    */
   function paginate(pageNumber) {
-    let indexOfLastPost = pageNumber * Math.min(10, filteredItems.length);
-    let indexOfFirstPost = indexOfLastPost - Math.min(10, filteredItems.length);
+    let indexOfLastPost = pageNumber * 10;
+    let indexOfFirstPost = indexOfLastPost - 10;
     setCurrentPage({
       indexOfFirstPost,
       indexOfLastPost,
@@ -175,42 +175,40 @@ function Table({
         </thead>
         <tbody>
           {/* Slice filtered items array to get current page items */}
-          {showPagination === false ? (
-            filteredItems.map((item, index) => {
-              return (
-                <tr key={index}>
-                  {headings.map(({ key, itemType }) => (
-                    <td
-                      key={key}
-                      title={typeof item[key] === "string" ? item[key] : ""}
-                    >
-                      {isNaN(item[key]) ? (
-                        item[key] &&
-                        item[key].type &&
-                        item[key].type === "link" ? (
-                          <a href={item[key].url}>{item[key].text}</a>
+          {showPagination === false
+            ? filteredItems.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    {headings.map(({ key, itemType }) => (
+                      <td
+                        key={key}
+                        title={typeof item[key] === "string" ? item[key] : ""}
+                      >
+                        {isNaN(item[key]) ? (
+                          item[key] &&
+                          item[key].type &&
+                          item[key].type === "link" ? (
+                            <a href={item[key].url}>{item[key].text}</a>
+                          ) : (
+                            item[key]
+                          )
+                        ) : // Round the number to two digits past decimal point
+                        itemType === "bytes" ? (
+                          Math.round((item[key] / 1024) * 100) / 100
+                        ) : itemType === "binary" ? (
+                          item[key] && <>&#x2713;</>
                         ) : (
-                          item[key]
-                        )
-                      ) : // Round the number to two digits past decimal point
-                      itemType === "bytes" ? (
-                        Math.round((item[key] / 1024) * 100) / 100
-                      ) : itemType === "binary" ? (
-                        item[key] && <>&#x2713;</>
-                      ) : (
-                        Math.round(item[key] * 100) / 100
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })
-          ) : (
-            <>
-              {filteredItems
+                          Math.round(item[key] * 100) / 100
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })
+            : filteredItems
                 .slice(
                   currentPage.indexOfFirstPost,
-                  currentPage.indexOfLastPost
+                  currentPage.indexOfLastPost + 1
                 )
                 .map((item, index) => {
                   return (
@@ -241,26 +239,12 @@ function Table({
                     </tr>
                   );
                 })}
-              {currentPage.indexOfLastPost > filteredItems.length &&
-                [
-                  ...Array(currentPage.indexOfLastPost - filteredItems.length),
-                ].map((index) => {
-                  return (
-                    <tr key={index} style={{height: '2rem'}}>
-                      {headings.map(({ key, itemType }) => (
-                        <td key={key}></td>
-                      ))}
-                    </tr>
-                  );
-                })}
-            </>
-          )}
         </tbody>
       </table>
       {showPagination !== false && (
         <div className="paginate">
           <Pagination
-            dataPerPage={Math.min(filteredItems.length, 10)}
+            dataPerPage={10}
             dataLength={filteredItems.length}
             paginate={paginate}
           />
