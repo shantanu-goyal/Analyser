@@ -44,6 +44,7 @@ export default function ThirdPartySummary() {
 
   // State to store whether the graph should be shown or not.
   const [displayGraph, setDisplayGraph] = useState();
+  const [summaryGraph, setSummaryGraph] = useState();
 
   /* State to store the type of the graph to be generated. Defaults to the main thread time graph.*/
   const [value, setValue] = useState("mainthread");
@@ -55,6 +56,10 @@ export default function ThirdPartySummary() {
   // This function updates the state of the graph to be shown or not
   function passData(data) {
     setDisplayGraph(data);
+  }
+
+  function thirdPartySummaryGraphToggle(data){
+    setSummaryGraph(data);
   }
 
   // This function is fired whenever a different type of graph is requested and it sets the value of the type of graph requested in the state
@@ -368,9 +373,10 @@ export default function ThirdPartySummary() {
                   </table>
                 </Modal>
               </ThirdPartyTable>
-              <h2 style={{ textAlign: "center", marginTop: "1em", marginBottom: "1em" }}>Summary View</h2>
+              <h2 style={{ textAlign: "center", marginTop: "1em" }}>Summary View</h2>
               <div className="table-container ml-1">
-                <Table id={'summary-thirdparty-table'} notShowInput={true} showPagination={false}
+                <Table id={'summary-thirdparty-table'}  showPagination={false}
+                passData={thirdPartySummaryGraphToggle}
                   headings={[
                     { key: "url", text: "Summary", itemType: "text" },
                     { key: "mainThreadTime", text: "Main Thread Time", itemType: "ms" },
@@ -382,7 +388,8 @@ export default function ThirdPartySummary() {
                 />
               </div>
 
-              <div className="table-container">
+              {summaryGraph && (
+                <div className="table-container">
                 <Select
                   value={graphValue}
                   onChange={graphChange}
@@ -396,6 +403,7 @@ export default function ThirdPartySummary() {
                   <Pie data={renderGraph()} title={'Domain Specific Scripts vs Third Party Scirpts'} />
                 </div>
               </div>
+              )}
 
               <div className="graph-container" ref={graphRef}>
                 {displayGraph && (
