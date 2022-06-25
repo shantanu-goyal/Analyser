@@ -9,22 +9,23 @@
   padding: 1em;
   box-sizing: border-box;
   font-size: 1em;
+  float: left;
   width: 100%;
   text-overflow: ellipsis;
   height: 1em;
-  margin-right: 3em;
+  margin: 0;
 }
 
 .entity-select {
   width: 100%;
+  float: left;
   text-overflow: ellipsis;
   height: 2em;
   border: 1px solid rgb(180, 180, 180);
   box-sizing: border-box;
   font-size: 1em;
   text-align: left;
-  margin-right: 3em;
-  padding-left: 0.5em;
+  padding-left: 1em;
 }
 
 .entity-select option {
@@ -32,10 +33,11 @@
 }
 
 .entity-input th {
-  background-color: #107eff;
+  background-color: rgb(24, 88, 206);
   color: white;
-  gap:10px;  
-  font-size: large;
+  font-size: 16px;
+  text-align: left;
+  padding: 0.5em;
 }
 
 
