@@ -239,69 +239,71 @@ export default function Insights() {
               )}
             </div>
           </Title>
-          <Button onClick={downloadReport}>Download PDF</Button>
-            <div className="to-hide">
-                <ActionTable data={thirdPartyWithNetwork} />
-              </div>
-            <div className="insights-wrapper" ref={insightsRef}>
-              {thirdPartyWithNetwork.map((item, idx) => {
-                return (
-                  <div key={idx} id={item.entityName.name}>
-                    <h1 style={{ textAlign: "center" }}>
-                      {item.entityName.name}
-                    </h1>
-                    <div className="table-container">
-                      <Table
-                        id={item.entityName.name}
-                        headings={
-                          renderBlockingResources
-                            ? [
-                              ...headings,
-                              {
-                                key: "renderBlocking",
-                                text: "Render Blocking Time",
-                                itemType: "ms",
-                              },
-                            ]
-                            : headings
-                        }
-                        items={item.subItems.items.filter(
-                          (item) => typeof item.url === "string"
-                        )}
-                        showPagination={false}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        marginTop: "1em",
-                        textAlign: "center",
-                        marginBottom: "10em",
-                      }}
-                    >
-                      {item.opportunities.user.length > 0 && (
-                        <>
-                          <h4> What You Can Do: </h4>
-                          {item.opportunities.user.map((opportunity, idx) => {
-                            return <p key={idx}>{opportunity}</p>;
-                          })}
-                        </>
+          <div className="download-btn">
+            <Button onClick={downloadReport}>Download PDF</Button>
+          </div>
+          <div className="to-hide">
+            <ActionTable data={thirdPartyWithNetwork} />
+          </div>
+          <div className="insights-wrapper" ref={insightsRef}>
+            {thirdPartyWithNetwork.map((item, idx) => {
+              return (
+                <div key={idx} id={item.entityName.name}>
+                  <h1 style={{ textAlign: "center" }}>
+                    {item.entityName.name}
+                  </h1>
+                  <div className="table-container">
+                    <Table
+                      id={item.entityName.name}
+                      headings={
+                        renderBlockingResources
+                          ? [
+                            ...headings,
+                            {
+                              key: "renderBlocking",
+                              text: "Render Blocking Time",
+                              itemType: "ms",
+                            },
+                          ]
+                          : headings
+                      }
+                      items={item.subItems.items.filter(
+                        (item) => typeof item.url === "string"
                       )}
-
-                      {item.opportunities.thirdParty.length > 0 && (
-                        <>
-                          <h4> What {item.entityName.name} Can Do: </h4>
-                          {item.opportunities.thirdParty.map(
-                            (opportunity, idx) => {
-                              return <p key={idx}>{opportunity}</p>;
-                            }
-                          )}
-                        </>
-                      )}
-                    </div>
+                      showPagination={false}
+                    />
                   </div>
-                );
-              })}
-            </div>
+                  <div
+                    style={{
+                      marginTop: "1em",
+                      textAlign: "center",
+                      marginBottom: "10em",
+                    }}
+                  >
+                    {item.opportunities.user.length > 0 && (
+                      <>
+                        <h4> What You Can Do: </h4>
+                        {item.opportunities.user.map((opportunity, idx) => {
+                          return <p key={idx}>{opportunity}</p>;
+                        })}
+                      </>
+                    )}
+
+                    {item.opportunities.thirdParty.length > 0 && (
+                      <>
+                        <h4> What {item.entityName.name} Can Do: </h4>
+                        {item.opportunities.thirdParty.map(
+                          (opportunity, idx) => {
+                            return <p key={idx}>{opportunity}</p>;
+                          }
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </>
       )}
     </>
