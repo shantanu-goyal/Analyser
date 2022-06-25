@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
+import Button from '../components/Button'
 import "../styles/Form.css";
 
 /**
@@ -48,7 +49,7 @@ function Form({ onFormSubmit }) {
         <div className="form-options">
           <div className="form-group">
           <label htmlFor="device-input">Device Type: </label>
-          <select ref={deviceRef} id="device-input">
+          <select className="select-tag" ref={deviceRef} id="device-input">
             <option value="mobile">Mobile</option>
             <option value="desktop">Desktop</option>
           </select>
@@ -56,7 +57,7 @@ function Form({ onFormSubmit }) {
           <div className="form-group">
           <label htmlFor="flow-input">Analysis Type: </label>
           <select
-            className="select-box"
+            className="select-tag"
             id="device-input"
             onChange={(e) => {
               setFlow(e.target.value);
@@ -77,7 +78,7 @@ function Form({ onFormSubmit }) {
               />
             </div>
           )}
-           <button onClick={handleUrlSubmit}>Submit &#8594;</button>
+           <Button style={{marginTop:"1em"}} height={"3em"} onClick={handleUrlSubmit}>Submit &#8594;</Button>
         </div>
       </div>
     </div>

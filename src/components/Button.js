@@ -1,7 +1,7 @@
 import "../styles/Button.css"
-function Button({children,height, width, onClick}){
+function Button({children,height, width, onClick, style}){
     return(
-        <button className="tbl-btn" style={{height, width}} onClick={onClick}>
+        <button className="tbl-btn" style={{...style, height, width}} onClick={onClick}>
             {children}
         </button>
     )

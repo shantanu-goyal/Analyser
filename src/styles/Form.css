@@ -36,13 +36,14 @@
 .form-title{
   float: left;
   margin: 1rem 1rem 1rem 0;
+  font-size: 24px;
 }
 
 .form-text-input{
   display: block;
   width: 100%;
   padding: .375rem .75rem;
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   margin: 0 1em 1em 0;
@@ -76,24 +77,13 @@
   margin-right: 1em;
 }
 
-.form-options button {
-  font-size: 1em;
-  background-color: rgb(24, 88, 206);
-  width: 10em;
-  color: aliceblue;
-  height: 3em;
-  margin: 1em 0;
-  border: none;
-  cursor: pointer;
-  border-radius: 0.25rem;
-}
-
 .form-group input{
   padding: .375rem .75rem;
+  height: 2em;
   font-size: 0.8rem;
   width: 8em;
   border: 1px solid #ced4da;
-  border-radius: 0.5rem;
+  border-radius:4px;
   margin: 0 1em 1em 1em;
 } 
 
