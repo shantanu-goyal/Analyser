@@ -87,6 +87,22 @@
   margin: 0 1em 1em 1em;
 } 
 
+.form-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta-data h3{
+  color: black;
+}
+
+.meta-details{
+  display: flex;
+  justify-content: space-between;
+  width: 60vw;
+}
+
 @media screen and  (max-width: 960px){
   .form-options{
     flex-direction: column;

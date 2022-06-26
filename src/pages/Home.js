@@ -23,13 +23,13 @@ export default function Home() {
 
   const navigate = useNavigate();
 
-  function getThirdPartyData(data){
-    const details=data.details||{};
-    const items=details.items||[];
-    const thirdParty=transformData(items);
+  function getThirdPartyData(data) {
+    const details = data.details || {};
+    const items = details.items || [];
+    const thirdParty = transformData(items);
     dataContext.setData({
-      type:'thirdPartySummary',
-      data:thirdParty
+      type: "thirdPartySummary",
+      data: thirdParty,
     });
 
     return items;
@@ -41,19 +41,29 @@ export default function Home() {
    * @param {Object} headers Headers that need to be sent in request along with url
    * @param {String} formFactor Type of device
    */
-  async function onFormSubmit(url, formFactor, waitTime) {
-    waitTime = Number(waitTime)
+  async function onFormSubmit(url, formFactor, waitTime, dateString) {
+    waitTime = Number(waitTime);
     setFormSubmitted(true);
     setLoading(true);
     try {
-      const result = await axios.get(REACT_APP_SERVER_URL, {
-        method: "GET",
-        params: {
-          url,
-          formFactor,
-          waitTime:  isNaN(waitTime) ? 0 : waitTime * 1000,
-        },
-      });
+      let result;
+      if (dateString) {
+        result = await axios.get(`${REACT_APP_SERVER_URL}audit`, {
+          method: "GET",
+          params: {
+            filename: dateString,
+          },
+        });
+      } else {
+        result = await axios.get(REACT_APP_SERVER_URL, {
+          method: "GET",
+          params: {
+            url,
+            formFactor,
+            waitTime: isNaN(waitTime) ? 0 : waitTime * 1000,
+          },
+        });
+      }
       console.log(result.data);
       setLoading(false);
       dataContext.setData({
@@ -61,7 +71,7 @@ export default function Home() {
         data: {
           deviceType: formFactor,
           url,
-          waitTime : isNaN(waitTime) ? 0 : waitTime * 1000,
+          waitTime: isNaN(waitTime) ? 0 : waitTime * 1000,
         },
       });
       const thirdParty = getThirdPartyData(result.data["third-party-summary"]);
@@ -72,7 +82,7 @@ export default function Home() {
           thirdParty: thirdParty,
         },
       });
-      navigate('/third-party-summary')
+      navigate("/third-party-summary");
     } catch (error) {
       setError(true);
       console.log(error);
@@ -81,11 +91,11 @@ export default function Home() {
 
   return (
     <>
-    <div className="container">
-      {!formSubmitted && <Form onFormSubmit={onFormSubmit} />}
-      {formSubmitted && loading && !error && <div className="loader"></div>}
-      {formSubmitted && error && <h1>Error..</h1>}
-    </div>
+      <div className="container">
+        {!formSubmitted && <Form onFormSubmit={onFormSubmit} />}
+        {formSubmitted && loading && !error && <div className="loader"></div>}
+        {formSubmitted && error && <h1>Error..</h1>}
+      </div>
     </>
   );
 }
