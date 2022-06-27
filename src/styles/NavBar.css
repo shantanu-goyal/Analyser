@@ -33,11 +33,11 @@
   transition: 0.3s;
 }
 .topnav a:hover {
-  background-color: var(--bg-nav);
+  background-color: var(--bg-nav-select);
   color:var(--color-text);
 }
 .topnav a.active {
-  background-color: var(--bg-nav);
+  background-color: var(--bg-nav-select);
   color:var(--color-text);
 
 }
