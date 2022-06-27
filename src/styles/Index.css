@@ -57,11 +57,13 @@ html{
   --even-color:#f3f3f3;
   --border:#000;
   --color-text-tbl:#fff;
-  --hover-tbl:#1287f2
+  --hover-tbl:#1287f2;
+  --bg-btn:white;
 }
 
 html[data-theme='dark'] {
   --bg: #000;
+  --bg-btn:#000;
   --bg-nav:#000;
   --color-text: #fff;
   --color-text-rev:#000;

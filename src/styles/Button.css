@@ -4,7 +4,7 @@
     border-radius: 8px;
     border: 1px solid var(--hover-border);
     box-sizing: border-box;
-    background-color: var(--bg);
+    background-color: var(--bg-btn);
     color-scheme: light;
     cursor: pointer;
     font-size: 14px;
