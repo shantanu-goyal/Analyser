@@ -44,8 +44,9 @@ function AuditHistory({ metaData, clickHandler }) {
             </div>
           );
         })}
-      <div className="paginate">
+      <div className="pg">
         <Pagination
+          style={{backgroundColor:"var(--bg-nav)"}}
           dataPerPage={5}
           dataLength={metaData.length}
           paginate={paginate}

@@ -9,7 +9,7 @@ import "../styles/Pagination.css";
  * @param {Function} paginate Function to set pagination data in parent component
  * @returns JSX for pagination
  */
-const Pagination = ({ dataPerPage, dataLength, paginate }) => {
+const Pagination = ({style, dataPerPage, dataLength, paginate }) => {
   // State to hold the active page number
   const [active, setActive] = useState(1);
 
@@ -37,9 +37,9 @@ const Pagination = ({ dataPerPage, dataLength, paginate }) => {
   return (
     <>
       {(LENGTH > 1) && (
-        <nav>
-          <div className="pagination">
-            <div className="page-item-btn">
+        <nav style={{...style}} >
+          <div style={{...style}} className="pagination">
+            <div style={{...style}} className="page-item-btn">
               <button className="page-link-button"
                 onClick={(e) => {
                   e.preventDefault();
@@ -49,7 +49,7 @@ const Pagination = ({ dataPerPage, dataLength, paginate }) => {
               > &#x2190; First</button>
             </div>
             {getPageNumbers(active).map((number) => (
-              <div key={number} className="page-item page-item-btn">
+              <div key={number} style={{...style}} className="page-item page-item-btn">
                 <button
                   id={number}
                   onClick={(e) => {
@@ -63,8 +63,8 @@ const Pagination = ({ dataPerPage, dataLength, paginate }) => {
                 </button>
               </div>
             ))}
-            <div className="page-item-btn">
-              <button className="page-link-button"
+            <div style={{...style}} className="page-item-btn">
+              <button  className="page-link-button"
                 onClick={(e) => {
                   e.preventDefault();
                   setActive(LENGTH);

@@ -23,13 +23,14 @@
   float: left;
   text-overflow: ellipsis;
   height: 2em;
-  border: 1px solid rgb(180, 180, 180);
+  border: 1px solid var(--border);
   border-radius: 0.25rem;
   box-sizing: border-box;
   font-size: 15px;
   text-align: left;
   padding-left: 1em;
   margin: 0.5em;
+  color:var(--color-text)
 }
 
 .entity-select option {
@@ -37,16 +38,11 @@
 }
 
 .entity-input th {
-  background-color: rgb(24, 88, 206 );
+  background-color:var(--hover-btn);
   color: white;
   font-size: 16px;
   text-align: center;
   padding: 0.5em;
-}
-
-
-.entity-input th:hover {
-  background-color: #126ed8;
 }
 
 .big-pie {
