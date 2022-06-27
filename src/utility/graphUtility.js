@@ -135,7 +135,7 @@ function renderBar(data, title, type,dark) {
         y: {
           beginAtZero: true,
           ticks:{
-            display:false
+            display:false,
           },
           title: {
             display: true,

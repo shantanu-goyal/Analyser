@@ -60,6 +60,7 @@ html{
   --color-text-tbl:#fff;
   --hover-tbl:#1287f2;
   --hover-btn:rgb(24,88,206);
+  --hover-btn-pag:rgb(24,88,206);
   --bg-btn:white;
   --nav-text-color:#fff;
   --modal-bg:#fff;
@@ -79,6 +80,7 @@ html[data-theme='dark'] {
   --hover-border:#fff;
   --bg-color:#333333;
   --hover-btn:#333333;
+  --hover-btn-pag:#000;
   --last-line:#fff;
   --even-color:#333333;
   --color-text-tbl:#fff;
