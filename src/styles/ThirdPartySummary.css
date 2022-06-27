@@ -5,7 +5,7 @@
   text-align: center;
 }
 .entity-input input {
-  border: 1px solid rgb(180, 180, 180);
+  border: 1px solid var(--border);
   padding: 1em;
   box-sizing: border-box;
   font-size: 1em;
@@ -33,7 +33,7 @@
 }
 
 .entity-input th {
-  background-color: rgb(24, 88, 206);
+  background-color: rgb(24, 88, 206 );
   color: white;
   font-size: 16px;
   text-align: left;

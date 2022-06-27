@@ -3,6 +3,7 @@ import React, { Suspense, lazy } from "react";
 import DataContextProvider from "./contexts/DataContext";
 import ThirdPartySummary from "./pages/ThirdPartySummary";
 import ScrollToTop from "./components/ScrollToTop";
+import ThemeButton from './components/ThemeButton';
 // Code Splitting
 const BootupTime = lazy(() => import("./pages/BootupTime"));
 const MainThreadWorkBreakdown = lazy(() =>
@@ -29,6 +30,7 @@ export default function App() {
             </div>
           }
         >
+          <ThemeButton>Toggle</ThemeButton>
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/bootup-time" element={<BootupTime />}></Route>
@@ -40,11 +42,6 @@ export default function App() {
               path="/network-requests"
               element={<NetworkRequests />}
             ></Route>
-            {/* <Route path="/network-rtt" element={<NetworkRTT />}></Route>
-            <Route
-              path="/network-server-latency"
-              element={<NetworkServerLatency />}
-            ></Route> */}
             <Route
               path="/resource-summary"
               element={<ResourceSummary />}
@@ -56,8 +53,9 @@ export default function App() {
             <Route path="/insights" element={<Insights />} />
           </Routes>
         </Suspense>
+
       </DataContextProvider>
-      <ScrollToTop/>
+      <ScrollToTop />
     </>
   );
 }

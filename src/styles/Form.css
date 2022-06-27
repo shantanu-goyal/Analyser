@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   height: max(30vh, 300px);
-  color: aliceblue;
+  color:var(--color-text);
   text-align: center;
 }
 
@@ -22,7 +22,7 @@
 .website-title .description{
   font-family: signpainter;
   font-size: 30px;
-  color: black;
+  color: var(--color-text);
 
 }
 .form{
@@ -42,16 +42,17 @@
 .form-text-input{
   display: block;
   width: 100%;
+  color:var(--color-text);
   padding: .375rem .75rem;
   font-size: 0.8rem;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--border);
   border-radius: 0.25rem;
   margin: 0 1em 1em 0;
   height: 2em;
 }
 
 .form-text-input input:focus {
-  outline: none;
+  outline: none;;
 }
 
 .form-options{
@@ -69,12 +70,13 @@
 .form-group select{
   display: inline;
   padding: .375rem .75rem;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--border);
   border-radius: .25rem;
   outline: none;
   text-align: left;
   margin-top: 0;
   margin-right: 1em;
+  color:var(--color-text);
 }
 
 .form-group input{
@@ -82,9 +84,10 @@
   height: 2em;
   font-size: 0.8rem;
   width: 8em;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--border);
   border-radius:4px;
   margin: 0 1em 1em 1em;
+  color:var(--color-text);
 } 
 
 .form-header{
@@ -100,7 +103,7 @@
 .meta-details{
   display: flex;
   justify-content: space-between;
-  width: 60vw;
+  width: 100%;
 }
 
 @media screen and  (max-width: 960px){

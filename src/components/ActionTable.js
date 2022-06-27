@@ -72,7 +72,8 @@ function ActionTable({ data }) {
           notShowInput={true}
           showPagination={false}
         />
-        <h6>
+       <div className="action-table-subheading">
+       <h6>
           If web worker is checked in any case, then try to shift the scripts to
           a web worker
         </h6>
@@ -88,6 +89,7 @@ function ActionTable({ data }) {
         <h6>
           Finally check if your script matches with the latest available version
         </h6>
+       </div>
       </div>
     </div>
   );

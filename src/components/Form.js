@@ -70,7 +70,7 @@ function Form({ onFormSubmit }) {
               }}>
                 <h3>{url}</h3>
                 <div >
-                  <h6>{formFactor}</h6>
+                  <h6>{formFactor.toUpperCase()}</h6>
                   <h6>{waitTime} ms</h6>
                   <h6>{new Date(dateString).toLocaleString()}</h6>
                 </div>

@@ -10,11 +10,12 @@
   width: 20px;
   margin: 2px;
   height: 2px;
-  background-color: black;
+  color:var(--color-text);
+  background-color: var(--color-text) !important;
 }
 
 .topnav {
-  background-color: #000;
+  background-color: var(--color-text);
   overflow: hidden;
   margin-bottom: 2em
 }
@@ -23,7 +24,8 @@
   font-family: Arial, Helvetica, sans-serif;
   float: left;
   display: block;
-  color: #fff;
+  color: var(--color-text-rev);
+  background-color: var(--color-text);
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -31,12 +33,12 @@
   transition: 0.3s;
 }
 .topnav a:hover {
-  background-color: #fff;
-  color: #000;
+  background-color: var(--bg-nav);
+  color: var(--color-text);
 }
 .topnav a.active {
-  background-color: #fff;
-  color: #000;
+  background-color: var(--bg-nav);
+  color: var(--color-text);
 
 }
 .topnav .icon {

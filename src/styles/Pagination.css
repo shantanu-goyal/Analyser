@@ -12,19 +12,20 @@
 .page-link-button{
     width:  60px ;
     height: 30px ;
-    border: 1px solid rgb(24, 88, 206) ;
+    border: 1px solid var(--border) ;
     margin: 5px ;
-    color: rgb(24, 88, 206);
-    background-color: white;
+    color: var(--color-text);
+    background-color: var(--bg);
     border-radius: 8px;
 }
 
 .page-item button{
     width:  30px ;
-    background-color: white;
+    background-color: var(--bg);
     border-radius:10px;
+    color: var(--color-text);
+    border: 1px solid var(--border);
     height: 30px ;
-    border: 1px solid black ;
     margin: 5px ;
 }
 
@@ -36,6 +37,6 @@
 
 .active-btn{
     font-weight: bold;  
-    color: white;
+    color: white !important;
     background-color: rgb(24, 88, 206) !important;
 }

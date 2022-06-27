@@ -1,6 +1,7 @@
 .insight-summary{
     text-align: center;
     width: 100%;
+    color: var(--color-text);
 }
 
 .insight-title{
@@ -9,6 +10,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap:40px;
+    color: var(--color-text);
 }
 
 .insights-wrapper{
@@ -17,6 +19,7 @@
     padding: 1em;
     align-items: center;
     justify-content: center;
+    color: var(--color-text);
 }
 
 .download-btn{
