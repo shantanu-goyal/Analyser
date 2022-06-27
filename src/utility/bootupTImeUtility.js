@@ -11,6 +11,8 @@ function extractTotalTime(data) {
             url: item.url,
             data: item.total
         }
+    }).filter(item=>{
+        return item.url!=="Unattributable";
     })
     return totalTimeData;
 }
@@ -26,6 +28,8 @@ function extractScriptEvaluationTime(data) {
             url: item.url,
             data: item.scripting
         }
+    }).filter(item=>{
+        return item.url!=="Unattributable";
     })
     return scriptEvaluationTimeData;
 }
@@ -41,6 +45,8 @@ function extractScriptParsingTime(data) {
             url: item.url,
             data: item.scriptParseCompile
         }
+    }).filter(item=>{
+        return item.url!=="Unattributable";
     })
     return scriptParsingTimeData;
 }
