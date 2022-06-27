@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "../styles/Modal.css";
 import Button from "./Button";
-
 function Modal({ name, children }) {
   const [visible, setVisible] = useState(false);
 
