@@ -26,7 +26,7 @@ function AuditHistory({ metaData, clickHandler }) {
     <>
         {!metaData.length && <h2 style={{margin: "0 1em 1em 1em"}}>Nothing To Show Here..</h2>}
       {metaData
-        .slice(currentPage.indexOfFirstPost, currentPage.indexOfLastPost + 1)
+        .slice(currentPage.indexOfFirstPost, currentPage.indexOfLastPost)
         .map(({ url, dateString, formFactor }, idx) => {
           const date = new Date(dateString);
           return (
