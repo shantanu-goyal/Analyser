@@ -70,6 +70,7 @@ html{
   --bg-btn:white;
   --nav-text-color:#fff;
   --modal-bg:#fff;
+  --bg-nav-select:#fff;
 }
 
 html[data-theme='dark'] {
@@ -77,6 +78,7 @@ html[data-theme='dark'] {
   --bg-btn:#000;
   --bg-nav:#404040;
   --bg-nav-2:#333333;
+  --bg-nav-select:#262626;
   --color-text: #fff;
   --color-text-rev:#000;
   --color-text-btn:#fff;
