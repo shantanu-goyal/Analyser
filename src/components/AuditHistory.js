@@ -30,7 +30,7 @@ function AuditHistory({ metaData, clickHandler }) {
         .map(({ url, dateString, formFactor }, idx) => {
           const date = new Date(dateString);
           return (
-            <div className="meta-data">
+            <div className="meta-data" key={dateString}>
               <h3>{url}</h3>
               <div className="meta-details">
                 <small>

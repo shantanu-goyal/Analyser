@@ -57,10 +57,8 @@ function Form({ onFormSubmit }) {
   }
 
   function prevAuditsClickHandler(index) {
-    const url = urlRef.current.value;
-    const deviceType = deviceRef.current.value;
-    const waitTime = waitTimeRef.current ? waitTimeRef.current.value : 0;
-    onFormSubmit(url, deviceType, waitTime, prevAudits[index].dateString);
+    const { url, formFactor, waitTime, dateString } = prevAudits[index];
+    onFormSubmit(url, formFactor, waitTime, dateString);
   }
 
   return (
