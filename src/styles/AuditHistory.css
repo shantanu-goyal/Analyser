@@ -5,6 +5,7 @@
     margin: 0 1em 1em 1em;
     padding: 0.5em;
     min-width: 40em;
+    color: var(--color-text);
 }
 
 .meta-details{
@@ -13,7 +14,10 @@
     align-items: center;
 }
 
-.paginate{
-    width: 90%;
-    margin: 0 1em 1em 1em;
+.pg{
+    width: 100%;
+    display: flex;
+    background-color:var(--bg-nav) ;
+    justify-content: flex-end;
+    margin-bottom: 1em;
 }
