@@ -12,7 +12,7 @@
 }
 
 .modal-content {
-  background-color: var(--bg-btn);
+  background-color: var(--modal-bg);
   display: flex;
   flex-direction: column;
   padding: 1em;

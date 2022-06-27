@@ -18,7 +18,7 @@
 }
 
 .tbl-btn:hover{
-    background-color: var(--hover);
-    color: var(--color-text);
+    background-color: var(--hover-btn);
+    color:white;
     border: 1px solid var(--hover-border) !important;
 }

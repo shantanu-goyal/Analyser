@@ -34,11 +34,11 @@
 }
 .topnav a:hover {
   background-color: var(--bg-nav);
-  color:white;
+  color:var(--color-text);
 }
 .topnav a.active {
   background-color: var(--bg-nav);
-  color: white;
+  color:var(--color-text);
 
 }
 .topnav .icon {

@@ -28,7 +28,7 @@ function generateRandomBackgroundColors() {
  * @param {string} type - The type of chart to be generated
  * @returns {object} - The configuration for the chart
  */
-function processChart(data, title, type) {
+function processChart(data, title, type,dark) {
   const length = data.length;
 
   // Initialising the background color array
@@ -69,6 +69,7 @@ function processChart(data, title, type) {
           display: true,
           text: title,
           position: "top",
+          color:(dark?"white":'black')
         },
         legend: {
           display: false,
@@ -88,7 +89,7 @@ function processChart(data, title, type) {
  * @param {string} type - The type of chart to be generated
  * @returns {object} - The configuration for the chart
  */
-function renderBar(data, title, type) {
+function renderBar(data, title, type,dark) {
   const length = data.length;
   data=data.sort((a, b) =>
     b.data -
@@ -138,13 +139,15 @@ function renderBar(data, title, type) {
           },
           title: {
             display: true,
-            text: 'Labels'
+            text: 'Labels',
+            color:(dark?"white":'black')
           }
         },
         x:{
           title: {
             display: true,
-            text: title+' in '+type
+            text: title+' in '+type,
+            color:(dark?"white":'black')
           }
         }
       },
@@ -152,6 +155,7 @@ function renderBar(data, title, type) {
         title: {
           display: true,
           text: title,
+          color:(dark?"white":'black'),
           position: "top",
         },
         legend: {
