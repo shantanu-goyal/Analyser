@@ -19,6 +19,7 @@ function Table({
   passData,
   showPagination,
   notShowInput,
+  clickHandler,
   children
 }) {
   // State to hold table data items filtered on the search text
@@ -183,7 +184,7 @@ function Table({
           {showPagination === false
             ? filteredItems.map((item, index) => {
                 return (
-                  <tr key={index}>
+                  <tr key={index} onClick={clickHandler ? () => {clickHandler(index)} : () => {}} style = {clickHandler ? {cursor: "pointer"} : {}}>
                     {headings.map(({ key, itemType }) => (
                       <td
                         key={key}
@@ -217,7 +218,7 @@ function Table({
                 )
                 .map((item, index) => {
                   return (
-                    <tr key={index}>
+                    <tr key={index} onClick={clickHandler ? () => {clickHandler(index)} : () => {}} style = {clickHandler ? {cursor: "pointer"} : {}}>
                       {headings.map(({ key, itemType }) => (
                         <td
                           key={key}

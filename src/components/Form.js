@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import Button from "../components/Button";
 import "../styles/Form.css";
-import Modal from "../components/Modal";
+import Modal from "./Modal";
 import axios from "axios";
+import Table from "./Table";
 import { REACT_APP_SERVER_URL } from "../config";
 
 /**
@@ -52,6 +53,13 @@ function Form({ onFormSubmit }) {
     onFormSubmit(url, deviceType, waitTime);
   }
 
+  function prevAuditsClickHandler(index) {
+    const url = urlRef.current.value;
+    const deviceType = deviceRef.current.value;
+    const waitTime = waitTimeRef.current ? waitTimeRef.current.value : 0;
+    onFormSubmit(url, deviceType, waitTime, prevAudits[index].dateString);
+  }
+
   return (
     <div className="home-page">
       <div className="website-title">
@@ -63,21 +71,20 @@ function Form({ onFormSubmit }) {
       <div className="form">
         <div className="form-header">
           <h1 className="form-title">Start a new analysis!</h1>
-          <Modal name={"View Previous Analysis"}>{
-            prevAudits.map(({url, formFactor, waitTime, dateString}) => {
-              return (<Button key={dateString} className="meta-data" onClick={() => {
-                onFormSubmit(url, formFactor, waitTime, dateString)
-              }}>
-                <h3>{url}</h3>
-                <div >
-                  <h6>{formFactor}</h6>
-                  <h6>{waitTime} ms</h6>
-                  <h6>{new Date(dateString).toLocaleString()}</h6>
-                </div>
-                </Button>
-              )
-            })
-          }</Modal>
+          <Modal name={"View Previous Analysis"}>
+            <Table
+              items={prevAudits}
+              clickHandler={prevAuditsClickHandler}
+              headings={[
+                { key: "url", text: "URL", itemType: "text" },
+                { key: "formFactor", text: "Device Type", itemType: "text" },
+                { key: "waitTime", text: "Waiting Time", itemType: "ms" },
+                { key: "dateString", text: "Date Time", itemType: "text" },
+              ]}
+              notShowInput={true}
+              showPagination={true}
+            />
+          </Modal>
         </div>
         <input
           className="form-text-input"
