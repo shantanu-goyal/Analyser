@@ -47,7 +47,8 @@ a{
 
 html{
   --color-text: #000;
-  --bg-nav:#fff;
+  --bg-nav:#000;
+  --bg-nav-2:#000;
   --color-text-rev:#fff;
   --color-text-btn:rgb(24, 88, 206);
   --hover:rgb(237, 237, 237);
@@ -59,12 +60,14 @@ html{
   --color-text-tbl:#fff;
   --hover-tbl:#1287f2;
   --bg-btn:white;
+  --nav-text-color:#fff;
 }
 
 html[data-theme='dark'] {
-  --bg: #000;
+  --bg:  #262626;
   --bg-btn:#000;
-  --bg-nav:#000;
+  --bg-nav:#404040;
+  --bg-nav-2:#333333;
   --color-text: #fff;
   --color-text-rev:#000;
   --color-text-btn:#fff;
@@ -76,4 +79,5 @@ html[data-theme='dark'] {
   --last-line:#fff;
   --even-color:#333333;
   --color-text-tbl:#fff;
+  --nav-text-color:#eee;
 }

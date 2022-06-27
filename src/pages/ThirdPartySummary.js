@@ -376,7 +376,7 @@ export default function ThirdPartySummary() {
                   </table>
                 </Modal>
               </ThirdPartyTable>
-              <h2 style={{ textAlign: "center", marginTop: "1em" }}>Summary View</h2>
+              <h2 style={{ textAlign: "center", marginTop: "1em",color:"var(--color-text)" }}>Summary View</h2>
               <div className="table-container ml-1">
                 <Table id={'summary-thirdparty-table'}  showPagination={false}
                 passData={thirdPartySummaryGraphToggle}

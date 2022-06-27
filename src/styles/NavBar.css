@@ -9,13 +9,13 @@
 .bars{
   width: 20px;
   margin: 2px;
-  height: 2px;
+  height: 3px;
   color:var(--color-text);
   background-color: var(--color-text) !important;
 }
 
 .topnav {
-  background-color: var(--color-text);
+  background-color: var(--bg-nav-2);
   overflow: hidden;
   margin-bottom: 2em
 }
@@ -24,8 +24,8 @@
   font-family: Arial, Helvetica, sans-serif;
   float: left;
   display: block;
-  color: var(--color-text-rev);
-  background-color: var(--color-text);
+  color: var(--nav-text-color);
+  background-color: var(--bg-nav-2);
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -34,11 +34,11 @@
 }
 .topnav a:hover {
   background-color: var(--bg-nav);
-  color: var(--color-text);
+  color:white;
 }
 .topnav a.active {
   background-color: var(--bg-nav);
-  color: var(--color-text);
+  color: white;
 
 }
 .topnav .icon {
