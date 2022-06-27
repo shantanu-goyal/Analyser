@@ -36,7 +36,7 @@ export default function NetworkRequests() {
       {data && (
         <div>
           <NavBar />
-          <div style={{position:"absolute",right:"0"}}>
+          <div className="tog-container">
             <ThemeButton>Toggle Dark Mode</ThemeButton>
           </div>
           <Title heading={"Network Requests"} subHeading={data.title}>

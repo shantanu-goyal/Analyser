@@ -280,7 +280,7 @@ export default function ThirdPartySummary() {
       {data && (
         <>
           <NavBar />
-          <div style={{position:"absolute",right:"0"}}>
+          <div className="tog-container">
             <ThemeButton>Toggle Dark Mode</ThemeButton>
           </div>
           {data.details ? (

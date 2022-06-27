@@ -1,24 +1,50 @@
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import '../styles/ThemeButton.css'
 
 function ThemeButton() {
     const { darkMode, setDarkMode } = useContext(ThemeContext);
-    const handleSubmit = () => {
-        setDarkMode(!darkMode);
-        if (!darkMode) {
-            document.documentElement.setAttribute("data-theme", "dark")
+
+
+    function setDark(){
+        setDarkMode(true);
+        document.documentElement.setAttribute("data-theme", "dark");
+    }
+
+    function setLight(){
+        setDarkMode(false);
+        document.documentElement.removeAttribute("data-theme");
+    }
+
+    const handleSubmit = (e) => {
+        if(e.target.checked){
+            setDark();
         }
-        else {
-            document.documentElement.removeAttribute('data-theme')
+        else{
+            setLight();
         }
     }
 
-    return (<label class="switch">
-        <input class="switch-input" type="checkbox" onChange={handleSubmit} />
-        <span class="switch-label" data-on="On" data-off="Off"></span>
-        <span class="switch-handle"></span>
-    </label>)
+    const defaultDark=(darkMode===true);
+    if(defaultDark){
+        setDark();
+    }
+
+    return (
+        <div className="toggle-theme-wrapper">
+            <span>☀️</span>
+            <label className="toggle-theme" htmlFor="checkbox">
+                <input
+                    type="checkbox"
+                    id="checkbox"
+                    onChange={handleSubmit}
+                    defaultChecked={defaultDark}
+                />
+                <div className="slider round"></div>
+            </label>
+            <span>🌒</span>
+        </div>
+    )
 
 }
 

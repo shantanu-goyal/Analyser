@@ -43,6 +43,12 @@ a{
   color: var(--color-text);
 }
 
+.tog-container{
+  display: flex;
+  justify-content: right;
+  width: 100%;
+}
+
 
 
 html{

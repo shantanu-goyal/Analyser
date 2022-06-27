@@ -91,9 +91,9 @@ export default function Home() {
 
   return (
     <>
-     <div style={{position:"absolute",right:"0"}}>
+     <div className="tog-container">
             <ThemeButton>Toggle Dark Mode</ThemeButton>
-          </div>
+        </div>
       <div className="container">
         {!formSubmitted && <Form onFormSubmit={onFormSubmit} />}
         {formSubmitted && loading && !error && <div className="loader"></div>}

@@ -102,7 +102,7 @@ export default function Insights() {
       {data && (
         <>
           <NavBar />
-          <div style={{position:"absolute",right:"0"}}>
+          <div className="tog-container">
             <ThemeButton>Toggle Dark Mode</ThemeButton>
           </div>
           <Title heading={"Insights"}>

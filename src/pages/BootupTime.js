@@ -49,7 +49,7 @@ export default function BootupTime() {
       {data && (
         <div>
           <NavBar />
-          <div style={{position:"absolute",right:"0"}}>
+          <div className="tog-container">
             <ThemeButton dark={darkMode}>Toggle Dark Mode</ThemeButton>
           </div>
         

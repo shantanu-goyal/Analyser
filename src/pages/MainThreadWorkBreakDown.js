@@ -35,9 +35,9 @@ export default function MainThreadWorkBreakdown() {
       )}
       {data && (<div>
         <NavBar />
-        <div style={{position:"absolute",right:"0"}}>
+        <div className="tog-container">
             <ThemeButton>Toggle Dark Mode</ThemeButton>
-          </div>
+        </div>
         <Title heading={"Main Thread Work Breakdown"} subHeading={data.title}>
           Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this.
         </Title>

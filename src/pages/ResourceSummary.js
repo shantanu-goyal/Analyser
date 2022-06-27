@@ -34,7 +34,7 @@ export default function ResourceSummary() {
       {!data && (<Navigate to="/" />)}
       {data && (<div>
         <NavBar />
-        <div style={{position:"absolute",right:"0"}}>
+        <div className="tog-container">
             <ThemeButton>Toggle Dark Mode</ThemeButton>
           </div>
         <Title heading={"Resource Summary"} subHeading={data.title} />
