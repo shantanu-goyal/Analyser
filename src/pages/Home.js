@@ -1,12 +1,12 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "../components/Form";
+import ThemeButton from "../components/ThemeButton";
 import { REACT_APP_SERVER_URL } from "../config";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Home.css";
 import { transformData } from "../utility/thirdPartyUtility";
-import ThemeButton from "../components/ThemeButton";
 /**
  * Function to return JSX for Home page
  * @returns jsx for the form element Home

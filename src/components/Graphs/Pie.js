@@ -1,10 +1,8 @@
-import { processChart } from '../../utility/graphUtility';
-import React, { useContext, useEffect, useRef } from "react";
+import { Chart, registerables } from 'chart.js';
+import { useContext, useEffect, useRef } from "react";
+import { ThemeContext } from '../../contexts/ThemeContext';
 import "../../styles/DoughnutChart.css";
-import { Chart, registerables } from 'chart.js';import { ThemeContext } from '../../contexts/ThemeContext';
-;
-
-
+import { processChart } from '../../utility/graphUtility';
 
 // Register the component with the chart.js library
 Chart.register(...registerables);

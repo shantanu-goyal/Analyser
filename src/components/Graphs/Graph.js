@@ -1,6 +1,6 @@
 import { Chart, registerables } from 'chart.js';
 import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { ThemeContext } from '../../contexts/ThemeContext';
 import "../../styles/DoughnutChart.css";
 import { processChart } from '../../utility/graphUtility';

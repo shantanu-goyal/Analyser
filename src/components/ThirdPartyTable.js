@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
-import "../styles/ThirdPartyTable.css";
+import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
-import Table from "./Table";
+import "../styles/ThirdPartyTable.css";
 import { getHostname } from "../utility/thirdPartyUtility";
+import Table from "./Table";
 
 /**
  * Function to create JSX of ThirdPartyTable element

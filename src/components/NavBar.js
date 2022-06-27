@@ -1,7 +1,6 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import '../styles/NavBar.css';
-import ThemeButton from "./ThemeButton";
 
 /**
 * Function to create JSX of navbar element

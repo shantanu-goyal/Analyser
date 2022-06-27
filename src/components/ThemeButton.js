@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
-import '../styles/ThemeButton.css'
+import '../styles/ThemeButton.css';
 
 function ThemeButton() {
     const { darkMode, setDarkMode } = useContext(ThemeContext);

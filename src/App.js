@@ -1,8 +1,8 @@
-import { Routes, Route } from "react-router-dom";
-import React, { Suspense, lazy } from "react";
+import { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import DataContextProvider from "./contexts/DataContext";
 import ThirdPartySummary from "./pages/ThirdPartySummary";
-import ScrollToTop from "./components/ScrollToTop";
 // Code Splitting
 const BootupTime = lazy(() => import("./pages/BootupTime"));
 const MainThreadWorkBreakdown = lazy(() =>

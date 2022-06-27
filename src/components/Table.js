@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState, memo } from "react";
+import { memo, useEffect, useState } from "react";
 import "../styles/Table.css";
 import Button from "./Button";
 import Pagination from "./Pagination";

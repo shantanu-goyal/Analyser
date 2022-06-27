@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import Table from "./Table";
+import { useContext } from "react";
 import { DataContext } from "../contexts/DataContext";
+import Table from "./Table";
 
 function ActionTable({ data }) {
   const dataContext = useContext(DataContext);
