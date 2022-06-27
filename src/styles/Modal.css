@@ -13,9 +13,9 @@
 
 .modal-content {
   background-color: white;
+  border-radius: 0.25rem;
   display: flex;
   flex-direction: column;
-  padding: 1em;
 }
 
 .modal-close {
@@ -23,6 +23,7 @@
   height: 1em;
   width: 1em;
   cursor: pointer;
+  margin: 0.5em;
 }
 
 .modal-button {

@@ -4,8 +4,8 @@ import Button from "../components/Button";
 import "../styles/Form.css";
 import Modal from "./Modal";
 import axios from "axios";
-import Table from "./Table";
 import { REACT_APP_SERVER_URL } from "../config";
+import AuditHistory from "./AuditHistory";
 
 /**
  * Function to handle form submission to get url and headers of website
@@ -28,6 +28,9 @@ function Form({ onFormSubmit }) {
     async function gatherMetaData() {
       const result = await axios.get(`${REACT_APP_SERVER_URL}audits`);
       if (isSubscribed) {
+        result.data = result.data.sort((a, b) => {
+          return a.dateString < b.dateStrin ? 1 : -1;
+        });
         setPrevAudits(result.data);
       }
       console.log(result.data);
@@ -72,17 +75,9 @@ function Form({ onFormSubmit }) {
         <div className="form-header">
           <h1 className="form-title">Start a new analysis!</h1>
           <Modal name={"View Previous Analysis"}>
-            <Table
-              items={prevAudits}
+            <AuditHistory
+              metaData={prevAudits}
               clickHandler={prevAuditsClickHandler}
-              headings={[
-                { key: "url", text: "URL", itemType: "text" },
-                { key: "formFactor", text: "Device Type", itemType: "text" },
-                { key: "waitTime", text: "Waiting Time", itemType: "ms" },
-                { key: "dateString", text: "Date Time", itemType: "text" },
-              ]}
-              notShowInput={true}
-              showPagination={true}
             />
           </Modal>
         </div>

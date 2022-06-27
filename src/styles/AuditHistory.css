@@ -1,0 +1,19 @@
+.meta-data{
+    border: 1px solid black;
+    border-radius: 0.25rem;
+    color: black;
+    margin: 0 1em 1em 1em;
+    padding: 0.5em;
+    min-width: 40em;
+}
+
+.meta-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.paginate{
+    width: 90%;
+    margin: 0 1em 1em 1em;
+}
