@@ -1,6 +1,6 @@
 .entity-input {
-  margin-top: 2em;
-  width: 100%;
+  margin: 1em;
+  width: 60vw;
   border-collapse: collapse;
   text-align: center;
 }
@@ -8,24 +8,28 @@
   border: 1px solid rgb(180, 180, 180);
   padding: 1em;
   box-sizing: border-box;
-  font-size: 1em;
   float: left;
-  width: 100%;
+  font-size: 15px;
+  width: calc(100% - 1em);
   text-overflow: ellipsis;
   height: 1em;
-  margin: 0;
+  margin: 0.5em;
+  border-radius: 0.25rem;
+  margin: 0.5em;;
 }
 
 .entity-select {
-  width: 100%;
+  width: calc(100% - 1em);
   float: left;
   text-overflow: ellipsis;
   height: 2em;
   border: 1px solid rgb(180, 180, 180);
+  border-radius: 0.25rem;
   box-sizing: border-box;
-  font-size: 1em;
+  font-size: 15px;
   text-align: left;
   padding-left: 1em;
+  margin: 0.5em;
 }
 
 .entity-select option {
@@ -36,7 +40,7 @@
   background-color: rgb(24, 88, 206);
   color: white;
   font-size: 16px;
-  text-align: left;
+  text-align: center;
   padding: 0.5em;
 }
 

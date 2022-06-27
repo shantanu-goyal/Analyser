@@ -331,7 +331,7 @@ export default function ThirdPartySummary() {
                             </td>
                             <td>
                               <Button
-                                style={{ color: "red", border: "1px solid red", padding: "0.5em", borderRadius: "0px" }}
+                                style={{ color: "red", border: "1px solid red", padding: "0.5em" }}
                                 onClick={
                                   (e) => {
                                     onRemove(index);
@@ -365,7 +365,7 @@ export default function ThirdPartySummary() {
                         </td>
                         <td>
                           <Button
-                            style={{ color: "green", border: "1px solid green", padding: "0.5em", borderRadius: "0px" }}
+                            style={{ color: "green", border: "1px solid green", padding: "0.5em"}}
                             onClick={onAdd}>Add</Button>
                         </td>
                       </tr>
