@@ -11,7 +11,7 @@ import Select from "../components/Select";
 import Title from "../components/Title";
 import Modal from "../components/Modal";
 import Button from "../components/Button";
-
+import ThemeButton from "../components/ThemeButton";
 /**
  * 
  * @returns JSX for Third Party Summary Component
@@ -280,6 +280,9 @@ export default function ThirdPartySummary() {
       {data && (
         <>
           <NavBar />
+          <div style={{position:"absolute",right:"0"}}>
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+          </div>
           {data.details ? (
             <div>
               <Title heading={"Third Party Summary"} subHeading={data.title} >

@@ -7,7 +7,7 @@ import "../styles/Graph.css"
 import { generateGraph } from "../utility/bootupTImeUtility";
 import Select from "../components/Select";
 import Title from "../components/Title";
-
+import ThemeButton from '../components/ThemeButton';
 /**
  * Function to render the jsx of the bootup time component
  * @returns {JSX} - It renders the Bootup Time Component
@@ -46,11 +46,14 @@ export default function BootupTime() {
       {data && (
         <div>
           <NavBar />
+          <div style={{position:"absolute",right:"0"}}>
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+          </div>
+        
           <Title heading={"Bootup Time"} subHeading={data.title}>
             Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this.
           </Title>
           <div className="table-container">
-
             <Table id={'bootup-time'} headings={data.details.headings} items={data.details.items.filter(({url}) => url !== 'Unattributable')} passData={passData} />
 
           </div>

@@ -6,6 +6,7 @@ import Table from "../components/Table";
 import '../styles/Graph.css'
 import { generateGraph } from "../utility/mainThreadUtility";
 import Title from "../components/Title";
+import ThemeButton from "../components/ThemeButton";
 /**
  * Function to render the jsx of the main thread work breakdown component
  * @returns {JSX} - It renders the Main Thread Work Breakdown Component
@@ -34,6 +35,9 @@ export default function MainThreadWorkBreakdown() {
       )}
       {data && (<div>
         <NavBar />
+        <div style={{position:"absolute",right:"0"}}>
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+          </div>
         <Title heading={"Main Thread Work Breakdown"} subHeading={data.title}>
           Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this.
         </Title>

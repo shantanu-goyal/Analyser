@@ -12,7 +12,7 @@ import "../styles/Insights.css";
 import html2pdf from "html2pdf.js/src";
 import Button from "../components/Button";
 import Title from "../components/Title";
-
+import ThemeButton from "../components/ThemeButton";
 export default function Insights() {
   const dataContext = useContext(DataContext);
   const insightsRef = useRef(null);
@@ -102,6 +102,9 @@ export default function Insights() {
       {data && (
         <>
           <NavBar />
+          <div style={{position:"absolute",right:"0"}}>
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+          </div>
           <Title heading={"Insights"}>
             <div className="insight-title" style={{ textAlign: "left" }}>
               <div>

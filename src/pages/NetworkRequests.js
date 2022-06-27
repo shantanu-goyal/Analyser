@@ -6,7 +6,7 @@ import Table from "../components/Table";
 import "../styles/Graph.css"
 import { generateGraph } from "../utility/networkRequestUtility";
 import Title from "../components/Title";
-
+import ThemeButton from "../components/ThemeButton";
 
 /**
  * Function to render the jsx of the network request component
@@ -36,6 +36,9 @@ export default function NetworkRequests() {
       {data && (
         <div>
           <NavBar />
+          <div style={{position:"absolute",right:"0"}}>
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+          </div>
           <Title heading={"Network Requests"} subHeading={data.title}>
             {data.description}
           </Title>

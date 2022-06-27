@@ -6,7 +6,7 @@ import Table from "../components/Table";
 import "../styles/Graph.css"
 import { generateGraph } from "../utility/resourceSummaryUtility";
 import Title from "../components/Title";
-
+import ThemeButton from "../components/ThemeButton";
 /**
  *  Function to render the jsx of the Resource Summary component
  * @returns {JSX} - It renders the Resource Summary Component
@@ -34,6 +34,9 @@ export default function ResourceSummary() {
       {!data && (<Navigate to="/" />)}
       {data && (<div>
         <NavBar />
+        <div style={{position:"absolute",right:"0"}}>
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+          </div>
         <Title heading={"Resource Summary"} subHeading={data.title} />
         <div className="table-container">
           <Table id={'resource-summary'} headings={data.details.headings} items={data.details.items} passData={passData} />

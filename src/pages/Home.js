@@ -6,7 +6,7 @@ import { REACT_APP_SERVER_URL } from "../config";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Home.css";
 import { transformData } from "../utility/thirdPartyUtility";
-
+import ThemeButton from "../components/ThemeButton";
 /**
  * Function to return JSX for Home page
  * @returns jsx for the form element Home
@@ -91,6 +91,9 @@ export default function Home() {
 
   return (
     <>
+     <div style={{position:"absolute",right:"0"}}>
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+          </div>
       <div className="container">
         {!formSubmitted && <Form onFormSubmit={onFormSubmit} />}
         {formSubmitted && loading && !error && <div className="loader"></div>}
