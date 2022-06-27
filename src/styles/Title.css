@@ -8,9 +8,9 @@
 }
 
 .heading{
-    font-size: 70px;
+    font-size: 42px;
     font-weight: bold;
-    font-family:  signpainter;
+    font-family:'Times New Roman', Times, serif;
     text-align: center;
     color: var(--color-text);
 }
