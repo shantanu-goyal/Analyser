@@ -30,7 +30,7 @@
 }
 
 .page-item button:hover, .page-item-btn button:hover{
-    background-color: #126ed8 ;
+    background-color: var(--hover-btn) ;
     color: white ;
     font-weight: bold ;
 }
@@ -38,5 +38,5 @@
 .active-btn{
     font-weight: bold;  
     color: white !important;
-    background-color: rgb(24, 88, 206) !important;
+    background-color: var(--hover-btn) !important;
 }
