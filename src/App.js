@@ -1,8 +1,8 @@
-import { Routes, Route } from "react-router-dom";
-import React, { Suspense, lazy } from "react";
+import { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import DataContextProvider from "./contexts/DataContext";
 import ThirdPartySummary from "./pages/ThirdPartySummary";
-import ScrollToTop from "./components/ScrollToTop";
 // Code Splitting
 const BootupTime = lazy(() => import("./pages/BootupTime"));
 const MainThreadWorkBreakdown = lazy(() =>
@@ -40,11 +40,6 @@ export default function App() {
               path="/network-requests"
               element={<NetworkRequests />}
             ></Route>
-            {/* <Route path="/network-rtt" element={<NetworkRTT />}></Route>
-            <Route
-              path="/network-server-latency"
-              element={<NetworkServerLatency />}
-            ></Route> */}
             <Route
               path="/resource-summary"
               element={<ResourceSummary />}
@@ -56,8 +51,9 @@ export default function App() {
             <Route path="/insights" element={<Insights />} />
           </Routes>
         </Suspense>
+
       </DataContextProvider>
-      <ScrollToTop/>
+      <ScrollToTop />
     </>
   );
 }

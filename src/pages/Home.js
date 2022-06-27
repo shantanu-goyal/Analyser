@@ -1,12 +1,12 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "../components/Form";
+import ThemeButton from "../components/ThemeButton";
 import { REACT_APP_SERVER_URL } from "../config";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Home.css";
 import { transformData } from "../utility/thirdPartyUtility";
-
 /**
  * Function to return JSX for Home page
  * @returns jsx for the form element Home
@@ -91,6 +91,9 @@ export default function Home() {
 
   return (
     <>
+     <div className="tog-container">
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+        </div>
       <div className="container">
         {!formSubmitted && <Form onFormSubmit={onFormSubmit} />}
         {formSubmitted && loading && !error && <div className="loader"></div>}

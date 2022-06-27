@@ -1,18 +1,18 @@
-import React, { useContext, useRef } from "react";
+import html2pdf from "html2pdf.js/src";
+import { useContext, useRef } from "react";
 import { Navigate } from "react-router-dom";
+import ActionTable from "../components/ActionTable";
+import Button from "../components/Button";
 import { NavBar } from "../components/NavBar";
-import { DataContext } from "../contexts/DataContext";
 import Table from "../components/Table";
+import ThemeButton from "../components/ThemeButton";
+import Title from "../components/Title";
+import { DataContext } from "../contexts/DataContext";
+import "../styles/Insights.css";
 import {
   getThirdPartyDataWithNetworkDetails,
-  headings,
+  headings
 } from "../utility/insightsUtility";
-import ActionTable from "../components/ActionTable";
-import "../styles/Insights.css";
-import html2pdf from "html2pdf.js/src";
-import Button from "../components/Button";
-import Title from "../components/Title";
-
 export default function Insights() {
   const dataContext = useContext(DataContext);
   const insightsRef = useRef(null);
@@ -102,6 +102,9 @@ export default function Insights() {
       {data && (
         <>
           <NavBar />
+          <div className="tog-container">
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+          </div>
           <Title heading={"Insights"}>
             <div className="insight-title" style={{ textAlign: "left" }}>
               <div>

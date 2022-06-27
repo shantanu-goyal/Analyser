@@ -1,11 +1,12 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Navigate } from "react-router";
-import { DataContext } from "../contexts/DataContext";
 import { NavBar } from "../components/NavBar";
 import Table from "../components/Table";
-import '../styles/Graph.css'
-import { generateGraph } from "../utility/mainThreadUtility";
+import ThemeButton from "../components/ThemeButton";
 import Title from "../components/Title";
+import { DataContext } from "../contexts/DataContext";
+import '../styles/Graph.css';
+import { generateGraph } from "../utility/mainThreadUtility";
 /**
  * Function to render the jsx of the main thread work breakdown component
  * @returns {JSX} - It renders the Main Thread Work Breakdown Component
@@ -34,6 +35,9 @@ export default function MainThreadWorkBreakdown() {
       )}
       {data && (<div>
         <NavBar />
+        <div className="tog-container">
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+        </div>
         <Title heading={"Main Thread Work Breakdown"} subHeading={data.title}>
           Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this.
         </Title>

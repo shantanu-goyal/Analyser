@@ -1,5 +1,5 @@
-import React, { createContext, useReducer } from "react";
 import PropTypes from "prop-types";
+import { createContext, useReducer } from "react";
 // Create the context
 export const DataContext = createContext({});
 

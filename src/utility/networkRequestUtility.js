@@ -34,4 +34,4 @@ function generateGraph(data) {
     return <Bar data={{ result: durationTimeData, type: "ms" }} title={"Durartion of Network Requests"} />
 }
 
-export {generateGraph}
+export { generateGraph };

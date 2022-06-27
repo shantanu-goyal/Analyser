@@ -1,12 +1,12 @@
 import { Chart, registerables } from 'chart.js';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
+import { ThemeContext } from '../../contexts/ThemeContext';
 import "../../styles/DoughnutChart.css";
 import { processChart } from '../../utility/graphUtility';
 
 // Register the component with the chart.js library
 Chart.register(...registerables);
-
 /**
  * Function to generate doughnut shaped graph from data
  * @param {Array} data Array of objects containing data for the chart
@@ -14,6 +14,7 @@ Chart.register(...registerables);
  * @returns JSX for the chart
  */
 function Graph({ data, title, type, hideLegend }) {
+  const {darkMode}=useContext(ThemeContext);
   function makeid(length) {
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -32,7 +33,7 @@ function Graph({ data, title, type, hideLegend }) {
   const id = makeid(100);
   useEffect(() => {
     // We get the initial configuration of the chart
-    const cfg = processChart(data, title, type === 'pie' ? 'pie' : 'doughnut');
+    const cfg = processChart(data, title, type === 'pie' ? 'pie' : 'doughnut',darkMode);
     // Storing reference to the canvas element
     const canvas = canvasRef.current;
     // Storing reference to the legend element 
@@ -67,7 +68,7 @@ function Graph({ data, title, type, hideLegend }) {
     return () => { 
       chart.destroy();
       legendDiv.innerHTML = ""; }
-  }, [data, title,type]);
+  }, [data, title,type,darkMode]);
 
 
   return (

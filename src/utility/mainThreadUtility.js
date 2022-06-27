@@ -28,4 +28,4 @@ function generateGraph(data) {
     return <Graph data={durationData} title={"Main Thread Work Breakdown"} />
 }
 
-export {generateGraph}
+export { generateGraph };

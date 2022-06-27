@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import Table from "./Table";
+import { useContext } from "react";
 import { DataContext } from "../contexts/DataContext";
+import Table from "./Table";
 
 function ActionTable({ data }) {
   const dataContext = useContext(DataContext);
@@ -52,7 +52,7 @@ function ActionTable({ data }) {
 
   return (
     <div style={{ marginBottom: "10em" }}>
-      <h1 style={{ textAlign: "center", margin: "1em" }}>Possible Optimisations </h1>
+      <h1 style={{ textAlign: "center", margin: "1em", color:"var(--color-text)" }}>Possible Optimisations </h1>
       <div className="table-container">
         <Table
           headings={
@@ -72,7 +72,8 @@ function ActionTable({ data }) {
           notShowInput={true}
           showPagination={false}
         />
-        <h6>
+       <div className="action-table-subheading">
+       <h6>
           If web worker is checked in any case, then try to shift the scripts to
           a web worker
         </h6>
@@ -88,6 +89,7 @@ function ActionTable({ data }) {
         <h6>
           Finally check if your script matches with the latest available version
         </h6>
+       </div>
       </div>
     </div>
   );

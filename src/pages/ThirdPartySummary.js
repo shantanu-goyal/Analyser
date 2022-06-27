@@ -1,17 +1,17 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
-import { DataContext } from "../contexts/DataContext";
-import { NavBar } from "../components/NavBar";
-import ThirdPartyTable from '../components/ThirdPartyTable'
-import { getHostname, generateGraph } from '../utility/thirdPartyUtility';
+import { useContext, useEffect, useRef, useState } from "react";
 import { Navigate } from 'react-router-dom';
-import "../styles/ThirdPartySummary.css"
-import Pie from "../components/Graphs/Pie";
-import Table from "../components/Table";
-import Select from "../components/Select";
-import Title from "../components/Title";
-import Modal from "../components/Modal";
 import Button from "../components/Button";
-
+import Pie from "../components/Graphs/Pie";
+import Modal from "../components/Modal";
+import { NavBar } from "../components/NavBar";
+import Select from "../components/Select";
+import Table from "../components/Table";
+import ThemeButton from "../components/ThemeButton";
+import ThirdPartyTable from '../components/ThirdPartyTable';
+import Title from "../components/Title";
+import { DataContext } from "../contexts/DataContext";
+import "../styles/ThirdPartySummary.css";
+import { generateGraph, getHostname } from '../utility/thirdPartyUtility';
 /**
  * 
  * @returns JSX for Third Party Summary Component
@@ -280,6 +280,9 @@ export default function ThirdPartySummary() {
       {data && (
         <>
           <NavBar />
+          <div className="tog-container">
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
+          </div>
           {data.details ? (
             <div>
               <Title heading={"Third Party Summary"} subHeading={data.title} >
@@ -373,7 +376,7 @@ export default function ThirdPartySummary() {
                   </table>
                 </Modal>
               </ThirdPartyTable>
-              <h2 style={{ textAlign: "center", marginTop: "1em" }}>Summary View</h2>
+              <h2 style={{ textAlign: "center", marginTop: "1em",color:"var(--color-text)" }}>Summary View</h2>
               <div className="table-container ml-1">
                 <Table id={'summary-thirdparty-table'}  showPagination={false}
                 passData={thirdPartySummaryGraphToggle}

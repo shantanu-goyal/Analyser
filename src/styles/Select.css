@@ -1,5 +1,5 @@
 .select-tag{
-    border: 1px solid rgb(24, 88, 206);
+    border: 1px solid var(--border);
     height: 2em;
     margin-top: 2em;
     margin-bottom: 1em;
@@ -7,4 +7,5 @@
     text-align: center;
     box-sizing: content-box;
     padding: 3px;
+    color: var(--color-text);
 }

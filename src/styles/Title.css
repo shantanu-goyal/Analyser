@@ -4,13 +4,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: var(--color-text);
 }
 
 .heading{
-    font-size: 70px;
+    font-size: 42px;
     font-weight: bold;
-    font-family:  signpainter;
+    font-family:'Times New Roman', Times, serif;
     text-align: center;
+    color: var(--color-text);
 }
 
 .subHeading{
@@ -18,9 +20,11 @@
     font-weight: 600;
     font-style: italic;
     font-size: 20px;
+    color: var(--color-text);
 }
 
 .children{
     text-align: center;
     font-weight:400;
+    color: var(--color-text);
 }

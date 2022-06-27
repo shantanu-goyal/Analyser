@@ -1,5 +1,6 @@
 import { Chart, registerables } from 'chart.js';
-import React, { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
+import { ThemeContext } from '../../contexts/ThemeContext';
 import "../../styles/DoughnutChart.css";
 import { renderBar } from '../../utility/graphUtility';
 
@@ -13,7 +14,7 @@ Chart.register(...registerables);
  * @returns JSX for the chart
  */
 function Bar({ data, title}) {
-    
+    const {darkMode}=useContext(ThemeContext);
     function makeid(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -30,7 +31,7 @@ function Bar({ data, title}) {
         const n=Math.min(30,data.result.length);
         data.result=data.result.slice(0,n);
         // We get the initial configuration of the chart
-        const cfg = renderBar(data.result, title, data.type);
+        const cfg = renderBar(data.result, title, data.type,darkMode);
         const div=divRef.current;
         div.innerHTML=`<canvas id=${id} />`
 
@@ -42,7 +43,7 @@ function Bar({ data, title}) {
             chart.destroy();
             div.innerHTML="";
         }
-    }, [data, title,id]);
+    }, [data, title,id,darkMode]);
 
 
     return (

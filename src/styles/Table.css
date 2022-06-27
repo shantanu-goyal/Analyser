@@ -1,21 +1,25 @@
 .styled-table {
-  border: 1px solid rgb(24, 88, 206);
+  border: 1px solid var(--border);
   box-sizing: border-box;
   border-collapse: collapse;
   font-size: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   width: 85%;
+  color: var(--color-text);
 }
+
+
 .styled-table thead tr {
-  background-color: rgb(24, 88, 206);
-  color: #fff;
+  background-color: var(--bg-table);
+  color: var(--color-text-tbl);
   text-align: left;
   cursor: pointer;
   font-size: 12px;
+  border-bottom: 1px solid #ddd;
 }
 
 .styled-table thead tr:hover{
-  background-color: #126ed8;
+  background-color: var(--hover-tbl);
 }
 
 .styled-table td,
@@ -37,22 +41,24 @@
   max-width: 25em;
 }
 .styled-table tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
+  background-color: var(--even-color);
 }
 .styled-table tbody tr:last-of-type {
-  border-bottom: 2px solid rgb(24, 88, 206);
+  border-bottom: 2px solid var(--last-line);
 }
 .toolbar input {
   width: 18em;
   height: 2em;
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--border);
   margin: 2em;
   font-size: 1em;
+  color: var(--color-text);
 }
 
 .toolbar input:focus {
   outline: 0;
+  color: var(--color-text);
 }
 .toolbar {
   display: flex;
@@ -67,6 +73,7 @@
   display: flex;
   flex-direction: row;
   justify-content: right;
+  gap: 10px;
 }
 
 .left-row{
@@ -90,4 +97,10 @@
   display: flex;
   width: 80%;
   justify-content: right;
+}
+
+.action-table-subheading{
+  margin-top: 1em;
+  text-align: center;
+  color: var(--color-text);
 }

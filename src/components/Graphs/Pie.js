@@ -1,9 +1,8 @@
-import { processChart } from '../../utility/graphUtility';
-import React, { useEffect, useRef } from "react";
+import { Chart, registerables } from 'chart.js';
+import { useContext, useEffect, useRef } from "react";
+import { ThemeContext } from '../../contexts/ThemeContext';
 import "../../styles/DoughnutChart.css";
-import { Chart, registerables } from 'chart.js';;
-
-
+import { processChart } from '../../utility/graphUtility';
 
 // Register the component with the chart.js library
 Chart.register(...registerables);
@@ -15,7 +14,7 @@ Chart.register(...registerables);
  * @returns JSX for the chart
  */
 function Pie({ data, title}) {
-
+  const {darkMode}=useContext(ThemeContext);
   let divRef=useRef();
   let legendRef=useRef();
   function makeid(length) {
@@ -32,7 +31,7 @@ function Pie({ data, title}) {
   const id = makeid(100);
   useEffect(() => {
     // We get the initial configuration of the chart
-    const cfg = processChart(data, title, 'pie');
+    const cfg = processChart(data, title, 'pie',darkMode);
     let div=divRef.current;
     div.innerHTML=`<canvas id=${id} />`
     const legendDiv = legendRef.current;
@@ -66,7 +65,7 @@ function Pie({ data, title}) {
       div.innerHTML="";
       legendDiv.innerHTML = "";
     }
-  }, [data, title, id]);
+  }, [data, title, id,darkMode]);
 
 
   return (

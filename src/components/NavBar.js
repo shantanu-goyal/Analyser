@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import '../styles/NavBar.css';
 
@@ -9,7 +9,6 @@ import '../styles/NavBar.css';
 export const NavBar = function () {
   // Referencing the navbar element
   const navRef = useRef(null);
-
   // Function to handle the click event of the navbar
   function handleNavItemClick(e) {
     // The page won't reload when the button is clicked. `e.preventDefault()` prevents this. 
