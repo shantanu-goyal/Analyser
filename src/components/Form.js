@@ -62,6 +62,18 @@ function Form({ onFormSubmit }) {
     onFormSubmit(url, formFactor, waitTime, dateString);
   }
 
+  function updateSuggestions() {
+    setSuggestions(
+      [
+        ...new Set(
+          prevAudits
+            .filter(({ url }) => url.indexOf(urlRef.current.value) !== -1)
+            .map(({ url }) => url)
+        ),
+      ].slice(0, 5)
+    );
+  }
+
   return (
     <div className="home-page">
       <div className="website-title">
@@ -87,16 +99,8 @@ function Form({ onFormSubmit }) {
             id="url-input"
             placeholder="Enter a website URL..."
             ref={urlRef}
-            onChange={(e) => {
-              e.target.value
-                ? setSuggestions([
-                    ...new Set(
-                      prevAudits
-                        .filter(({ url }) => url.indexOf(e.target.value) !== -1)
-                        .map(({ url }) => url)
-                    ),
-                  ])
-                : setSuggestions([]);
+            onChange={() => {
+              updateSuggestions();
             }}
             autoComplete="off"
           />
@@ -109,6 +113,7 @@ function Form({ onFormSubmit }) {
                     key={url}
                     onClick={(event) => {
                       urlRef.current.value = event.target.innerText;
+                      updateSuggestions();
                     }}
                   >
                     {url}

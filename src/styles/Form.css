@@ -107,9 +107,11 @@
   display: none;
   position: absolute;
   background-color: var(--modal-bg);
-  width: 30em;
+  width: 35em;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 3;
+  border-radius: 0.25rem;
+  font-size: smaller;
 }
 
 .form-autosuggest-container:hover .form-autosuggest-content{
