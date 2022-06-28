@@ -22,9 +22,15 @@ export default function ThirdPartySummary() {
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
   data = data["third-party-summary"];
+  if(!data){
+    return <Navigate to='/' />
+  }
   let allData = dataContext.data.thirdParty;
   let thirdPartyData = dataContext.data.thirdPartySummary;
-  let details = data.details || {};
+  let details = data.details;
+  if(!details){
+    return <Navigate to='/' />
+  }
   // Getting data from the context
   const userData = thirdPartyData.userInput;
   const domainWiseScripts = thirdPartyData.domainScripts;
