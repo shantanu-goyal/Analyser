@@ -14,6 +14,7 @@ import AuditHistory from "./AuditHistory";
  */
 function Form({ onFormSubmit }) {
   const [flow, setFlow] = useState("navigation");
+  const [suggestions, setSuggestions] = useState([]);
 
   // Reference to input field for the website url
   const urlRef = useRef(null);
@@ -79,13 +80,44 @@ function Form({ onFormSubmit }) {
             />
           </Modal>
         </div>
-        <input
-          className="form-text-input"
-          type="text"
-          id="url-input"
-          placeholder="Enter a website URL..."
-          ref={urlRef}
-        />
+        <div className="form-autosuggest-container">
+          <input
+            className="form-text-input"
+            type="text"
+            id="url-input"
+            placeholder="Enter a website URL..."
+            ref={urlRef}
+            onChange={(e) => {
+              e.target.value
+                ? setSuggestions([
+                    ...new Set(
+                      prevAudits
+                        .filter(({ url }) => url.indexOf(e.target.value) !== -1)
+                        .map(({ url }) => url)
+                    ),
+                  ])
+                : setSuggestions([]);
+            }}
+            autoComplete="off"
+          />
+          {suggestions.length > 0 && (
+            <div className="form-autosuggest-content">
+              {suggestions.map((url) => {
+                return (
+                  <p
+                    className="form-autosuggest-element"
+                    key={url}
+                    onClick={(event) => {
+                      urlRef.current.value = event.target.innerText;
+                    }}
+                  >
+                    {url}
+                  </p>
+                );
+              })}
+            </div>
+          )}
+        </div>
         <div className="form-options">
           <div className="form-group">
             <label htmlFor="device-input">Device Type: </label>
