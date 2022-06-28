@@ -106,7 +106,7 @@
 .form-autosuggest-content{
   display: none;
   position: absolute;
-  background-color: var(--modal-bg);
+  background-color: var(--bg-nav);
   width: 35em;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 3;
@@ -121,7 +121,7 @@
 .form-autosuggest-element{
   padding: 0.5em;
   height: 100%;
-  color: black;
+  color: var(--color-text);
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
@@ -129,8 +129,8 @@
 }
 
 .form-autosuggest-element:hover{
-  color: blue;
-  background-color: beige;
+  color:var(--color-text);
+  background-color: var(--hover-autosuggest);
 }
 
 @media screen and  (max-width: 960px){
