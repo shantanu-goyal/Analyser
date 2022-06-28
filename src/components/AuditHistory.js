@@ -39,7 +39,7 @@ function AuditHistory({ metaData, clickHandler }) {
                     : date.toLocaleDateString()}{" "}
                   | {formFactor}
                 </small>
-                <Button onClick={() => clickHandler(idx)}>View Analysis</Button>
+                <Button onClick={() => clickHandler(currentPage.indexOfFirstPost+idx)}>View Analysis</Button>
               </div>
             </div>
           );
