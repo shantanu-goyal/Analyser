@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import DataContextProvider from "./contexts/DataContext";
 import ThirdPartySummary from "./pages/ThirdPartySummary";
+
 // Code Splitting
 const BootupTime = lazy(() => import("./pages/BootupTime"));
 const MainThreadWorkBreakdown = lazy(() =>
@@ -14,6 +15,7 @@ const NetworkRequests = lazy(() => import("./pages/NetworkRequests"));
 const ResourceSummary = lazy(() => import("./pages/ResourceSummary"));
 const Home = lazy(() => import("./pages/Home"));
 const Insights = lazy(() => import("./pages/Insights"));
+const NetworkMap = lazy(() => import("./pages/NetworkMap"));
 /**
  * The main component of the application that renders the different components. It also handles the routing of the different components.
  * @returns {JSX} - The JSX to be rendered
@@ -39,6 +41,10 @@ export default function App() {
             <Route
               path="/network-requests"
               element={<NetworkRequests />}
+            ></Route>
+            <Route
+              path="/network-map"
+              element={<NetworkMap />}
             ></Route>
             <Route
               path="/resource-summary"

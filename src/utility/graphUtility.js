@@ -170,4 +170,4 @@ function renderBar(data, title, type,dark) {
 
 
 
-export { processChart, renderBar, round };
+export { processChart, renderBar, round , generateRandomBackgroundColors};

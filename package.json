@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "chart.js": "^3.8.0",
+    "chartjs-chart-graph": "^3.8.0",
     "html2pdf.js": "^0.10.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
