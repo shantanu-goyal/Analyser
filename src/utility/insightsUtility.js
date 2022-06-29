@@ -123,7 +123,7 @@ export function getThirdPartyDataWithNetworkDetails(
             subitem.minified = "No";
           } else subitem.minified = "Yes";
 
-          if (renderBlockingResources  && renderBlockingResources.details) {
+          if (renderBlockingResources && renderBlockingResources.details) {
             let renderBlockingResource =
               renderBlockingResources.details.items.find(
                 ({ url }) => url === subitem.url
