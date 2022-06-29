@@ -20,8 +20,8 @@
 }
 
 .website-title .description{
-  font-family: signpainter;
-  font-size: 30px;
+  font-family: sans-serif;
+  font-size: 18px;
   color: var(--color-text);
 
 }

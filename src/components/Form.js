@@ -53,7 +53,7 @@ function Form({ onFormSubmit }) {
     // Covert header list into header object
     const url = urlRef.current.value;
     const deviceType = deviceRef.current.value;
-    const waitTime = waitTimeRef.current ? waitTimeRef.current.value : 0;
+    const waitTime = flow==="timespan" ? waitTimeRef.current.value : 0;
     onFormSubmit(url, deviceType, waitTime);
   }
 
@@ -138,25 +138,27 @@ function Form({ onFormSubmit }) {
               id="device-input"
               onChange={(e) => {
                 setFlow(e.target.value);
+                if(e.target.value==="navigation"){
+                  waitTimeRef.current.value=0;
+                }
               }}
             >
               <option value="navigation">Navigation</option>
               <option value="timespan">Timespan</option>
             </select>
           </div>
-          {flow === "timespan" && (
-            <div className="form-group">
-              <label htmlFor="wait-input">Wait Time</label>
-              <input
-                type="number"
-                id="wait-input"
-                placeholder="in seconds"
-                ref={waitTimeRef}
-              />
-            </div>
-          )}
+          <div className="form-group">
+            <label htmlFor="wait-input">Wait Time</label>
+            <input
+              disabled={flow==="navigation"}
+              type="number"
+              defaultValue={0}
+              id="wait-input"
+              placeholder="in seconds"
+              ref={waitTimeRef}
+            />
+          </div>
           <Button
-            style={{ marginTop: "1em" }}
             height={"3em"}
             onClick={handleUrlSubmit}
           >
