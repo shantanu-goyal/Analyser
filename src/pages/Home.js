@@ -91,7 +91,7 @@ export default function Home() {
 
   return (
     <>
-     <div className="tog-container">
+     <div style={{marginTop:"1em"}} className="tog-container">
             <ThemeButton>Toggle Dark Mode</ThemeButton>
         </div>
       <div className="container">

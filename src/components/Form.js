@@ -53,7 +53,7 @@ function Form({ onFormSubmit }) {
     // Covert header list into header object
     const url = urlRef.current.value;
     const deviceType = deviceRef.current.value;
-    const waitTime = flow==="timespan" ? waitTimeRef.current.value : 0;
+    const waitTime = flow === "timespan" ? waitTimeRef.current.value : 0;
     onFormSubmit(url, deviceType, waitTime);
   }
 
@@ -82,88 +82,95 @@ function Form({ onFormSubmit }) {
           Analyse Impact of Third Party Scripts on Your Website
         </div>
       </div>
-      <div className="form">
-        <div className="form-header">
-          <h1 className="form-title">Start a new analysis!</h1>
-          <Modal name={"View Previous Analysis"}>
-            <AuditHistory
-              metaData={prevAudits}
-              clickHandler={prevAuditsClickHandler}
-            />
-          </Modal>
-        </div>
-        <div className="form-autosuggest-container">
-          <input
-            className="form-text-input"
-            type="text"
-            id="url-input"
-            placeholder="Enter a website URL..."
-            ref={urlRef}
-            onChange={() => {
-              updateSuggestions();
-            }}
-            autoComplete="off"
-          />
-          {suggestions.length > 0 && (
-            <div className="form-autosuggest-content">
-              {suggestions.map((url) => {
-                return (
-                  <p
-                    className="form-autosuggest-element"
-                    key={url}
-                    onClick={(event) => {
-                      urlRef.current.value = event.target.innerText;
-                      updateSuggestions();
-                    }}
-                  >
-                    {url}
-                  </p>
-                );
-              })}
+      <div className="table-container">
+        <div className="form">
+          <div className="form-header">
+            <div>
+              <h1 className="form-title">Start a new analysis!</h1>
             </div>
-          )}
-        </div>
-        <div className="form-options">
-          <div className="form-group">
-            <label htmlFor="device-input">Device Type: </label>
-            <select className="select-tag" ref={deviceRef} id="device-input">
-              <option value="mobile">Mobile</option>
-              <option value="desktop">Desktop</option>
-            </select>
+            <Modal name={"View Previous Analysis"}>
+              <AuditHistory
+                metaData={prevAudits}
+                clickHandler={prevAuditsClickHandler}
+              />
+            </Modal>
           </div>
-          <div className="form-group">
-            <label htmlFor="flow-input">Analysis Type: </label>
-            <select
-              className="select-tag"
-              id="device-input"
-              onChange={(e) => {
-                setFlow(e.target.value);
-                if(e.target.value==="navigation"){
-                  waitTimeRef.current.value=0;
-                }
-              }}
+          <div className="form-autosuggest-container">
+            <div>
+              <input
+                className="form-text-input"
+                type="text"
+                id="url-input"
+                placeholder="Enter a website URL..."
+                ref={urlRef}
+                onChange={() => {
+                  updateSuggestions();
+                }}
+                autoComplete="off"
+              />
+            </div>
+
+            {suggestions.length > 0 && (
+              <div className="form-autosuggest-content">
+                {suggestions.map((url) => {
+                  return (
+                    <p
+                      className="form-autosuggest-element"
+                      key={url}
+                      onClick={(event) => {
+                        urlRef.current.value = event.target.innerText;
+                        updateSuggestions();
+                      }}
+                    >
+                      {url}
+                    </p>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          <div className="form-options">
+            <div className="form-group">
+              <label htmlFor="device-input">Device Type: </label>
+              <select className="select-tag" ref={deviceRef} id="device-input">
+                <option value="mobile">Mobile</option>
+                <option value="desktop">Desktop</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="flow-input">Analysis Type: </label>
+              <select
+                className="select-tag"
+                id="device-input"
+                onChange={(e) => {
+                  setFlow(e.target.value);
+                  if (e.target.value === "navigation") {
+                    waitTimeRef.current.value = 0;
+                  }
+                }}
+              >
+                <option value="navigation">Navigation</option>
+                <option value="timespan">Timespan</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="wait-input">Wait Time:</label>
+              <input
+                disabled={flow === "navigation"}
+                type="number"
+                defaultValue={0}
+                id="wait-input"
+                placeholder="in seconds"
+                ref={waitTimeRef}
+              />
+            </div>
+            <Button
+              height={"3em"}
+              onClick={handleUrlSubmit}
             >
-              <option value="navigation">Navigation</option>
-              <option value="timespan">Timespan</option>
-            </select>
+              Submit &#8594;
+            </Button>
           </div>
-          <div className="form-group">
-            <label htmlFor="wait-input">Wait Time</label>
-            <input
-              disabled={flow==="navigation"}
-              type="number"
-              defaultValue={0}
-              id="wait-input"
-              placeholder="in seconds"
-              ref={waitTimeRef}
-            />
-          </div>
-          <Button
-            height={"3em"}
-            onClick={handleUrlSubmit}
-          >
-            Submit &#8594;
-          </Button>
         </div>
       </div>
     </div>
