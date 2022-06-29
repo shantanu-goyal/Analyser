@@ -97,7 +97,7 @@ export default function Home() {
       <div className="container">
         {!formSubmitted && <Form onFormSubmit={onFormSubmit} />}
         {formSubmitted && loading && !error && <div className="loader"></div>}
-        {formSubmitted && error && <h1>Error..</h1>}
+        {formSubmitted && error && <h1 style={{color:'var(--color-text)'}}>Error..</h1>}
       </div>
     </>
   );

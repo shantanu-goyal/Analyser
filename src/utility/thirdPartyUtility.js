@@ -74,7 +74,7 @@ function generateGraph(scripts, value,type="doughnut") {
         ></Bar>
       );
     } else {
-      return <h3>Nothing to show here...</h3>;
+      return <h3 style={{textAlign:"center", color:"var(--color-text)"}}>Nothing to show here...</h3>;
     }
   }
   // If user requests resource size graph
@@ -87,7 +87,7 @@ function generateGraph(scripts, value,type="doughnut") {
         ></Bar>
       );
     } else {
-      return <h3>Nothing to show here...</h3>;
+      return <h3 style={{textAlign:"center", color:"var(--color-text)"}}>Nothing to show here...</h3>;
     }
   }
 
@@ -101,7 +101,7 @@ function generateGraph(scripts, value,type="doughnut") {
         ></Bar>
       );
     } else {
-      return <h3>Nothing to show here...</h3>;
+      return <h3 style={{textAlign:"center", color:"var(--color-text)"}}>Nothing to show here...</h3>;
     }
   }
 
@@ -112,7 +112,7 @@ function generateGraph(scripts, value,type="doughnut") {
         <Bar title={"Main Thread Time"} data={mainThreadTimeData} />
       );
     } else {
-      return <h3>Nothing to show here...</h3>;
+      return <h3 style={{textAlign:"center", color:"var(--color-text)"}}>Nothing to show here...</h3>;
     }
   }
 }

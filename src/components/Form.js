@@ -77,7 +77,7 @@ function Form({ onFormSubmit }) {
   return (
     <div className="home-page">
       <div className="website-title">
-        <div className="title">Third Party Analyser</div>
+        <div className="title">Third Party Analyzer</div>
         <div className="description">
           Analyse Impact of Third Party Scripts on Your Website
         </div>
