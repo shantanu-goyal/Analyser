@@ -35,7 +35,7 @@ function NetworkMap() {
         const Graph=ForceGraph()(document.getElementById('network-graph-container')).graphData(config)
         .nodeRelSize(6)
         .nodeAutoColorBy('name')
-        .linkColor(() => 'rgba(0,0,0,0.2)')
+        .linkColor(() => 'steelblue')
         .linkDirectionalParticles(1)
 
         Graph.d3Force('center', null);

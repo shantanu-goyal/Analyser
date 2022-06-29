@@ -34,7 +34,6 @@ function Form({ onFormSubmit }) {
         });
         setPrevAudits(result.data);
       }
-      console.log(result.data);
     }
     gatherMetaData()
       // make sure to catch any error
