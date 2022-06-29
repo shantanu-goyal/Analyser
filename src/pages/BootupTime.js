@@ -8,7 +8,6 @@ import { generateGraph } from "../utility/bootupTImeUtility";
 import Select from "../components/Select";
 import Title from "../components/Title";
 import ThemeButton from '../components/ThemeButton';
-import { ThemeContext } from "../contexts/ThemeContext";
 /**
  * Function to render the jsx of the bootup time component
  * @returns {JSX} - It renders the Bootup Time Component
@@ -37,7 +36,6 @@ export default function BootupTime() {
     setDisplayGraph(data);
   }
 
-  const {darkMode}=useContext(ThemeContext);
 
   return (
     <>
@@ -50,7 +48,7 @@ export default function BootupTime() {
         <div>
           <NavBar />
           <div className="tog-container">
-            <ThemeButton dark={darkMode}>Toggle Dark Mode</ThemeButton>
+            <ThemeButton>Toggle Dark Mode</ThemeButton>
           </div>
         
           <Title heading={"Bootup Time"} subHeading={data.title}>

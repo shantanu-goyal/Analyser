@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import DataContextProvider from "./contexts/DataContext";
+import NetworkMap from "./pages/NetworkMap";
 import ThirdPartySummary from "./pages/ThirdPartySummary";
 // Code Splitting
 const BootupTime = lazy(() => import("./pages/BootupTime"));
@@ -39,6 +40,10 @@ export default function App() {
             <Route
               path="/network-requests"
               element={<NetworkRequests />}
+            ></Route>
+               <Route
+              path="/network-map"
+              element={<NetworkMap />}
             ></Route>
             <Route
               path="/resource-summary"
