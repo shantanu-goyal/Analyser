@@ -35,8 +35,9 @@ function NetworkMap() {
         const Graph = ForceGraph()(document.getElementById('network-graph-container')).graphData(config)
             .nodeRelSize(6)
             .nodeAutoColorBy('name')
+            .linkCurvature('curvature')
             .linkColor(() => 'steelblue')
-            .linkDirectionalParticles(1)
+            .linkDirectionalArrowLength(6)
             .nodeLabel('id')
             .onNodeDragEnd(node => {
                 node.fx = node.x;
@@ -44,11 +45,10 @@ function NetworkMap() {
             }).onNodeClick(node => {
                 Graph.centerAt(node.x, node.y, 1000);
                 Graph.zoom(8, 2000);
-            }).d3VelocityDecay(0.3);
+            });
 
 
         Graph.d3Force('center', null);
-
 
     })
     return <>
