@@ -2,7 +2,6 @@ import ForceGraph from 'force-graph';
 import { useContext, useEffect, useState, useCallback } from 'react';
 import { NavBar } from '../components/NavBar';
 import ThemeButton from '../components/ThemeButton';
-import Title from '../components/Title';
 import { DataContext } from '../contexts/DataContext';
 
 function NetworkMap() {
@@ -10,7 +9,9 @@ function NetworkMap() {
     let data = dataContext.data.data;
     data = data['request-initiators'];
     let [graphData, setGraphData] = useState(data);
-
+    const size = new Map();
+    const vis = new Map();
+    const adjList = new Map();
     const debounce = (func) => {
         let timer;
         return function (...args) {
@@ -33,29 +34,65 @@ function NetworkMap() {
                 (element.url.toLowerCase().indexOf(value.toLowerCase()) !== -1) || (element.initiator.toLowerCase().indexOf(value.toLowerCase()) !== -1)
             )
         })
-        console.log(newData);
         setGraphData(newData);
+    }
+
+    function dfs(url) {
+        if (vis.get(url)) return
+        vis.set(url, 1);
+        let children = adjList.get(url)||[];
+        let sz = size.get(url);
+        children.forEach(child => {
+            dfs(child);
+            sz += size.get(child)
+        });
+        size.set(url, sz);
+    }
+
+    function getSuccessorSizes(urlMap) {
+        const entriesArray = Array.from(urlMap.keys());
+        entriesArray.forEach(entry => {
+            if (!vis.get(entry)) {
+                dfs(entry)
+            }
+        })
     }
 
     useEffect(() => {
         const urlMap = new Map();
+        size.clear();
+        vis.clear();
+        adjList.clear();
+
         graphData.forEach(element => {
             urlMap.set(element.url, 1);
             urlMap.set(element.initiator, 1);
+            let children = adjList.get(element.initiator) || [];
+            children = [...children, element.url];
+            adjList.set(element.initiator, children);
+            size.set(element.url, 1);
+            size.set(element.initiator, 1);
+            vis.set(element.url, 0);
+            vis.set(element.initiator, 0);
         });
+
+
+        getSuccessorSizes(urlMap);
+
         const entriesArray = Array.from(urlMap.keys());
-        const nodes = entriesArray.map(entity => {
-            return {
-                id: entity,
-                name: entity
-            }
-        })
         const edges = graphData.map(element => {
             return {
                 source: element.initiator,
                 target: element.url
             }
         });
+        const nodes = entriesArray.map(entity => {
+            return {
+                id: entity,
+                name: entity,
+                val: size.get(entity)
+            }
+        })
         let config = {
             nodes,
             links: edges
@@ -84,7 +121,6 @@ function NetworkMap() {
         <div className="tog-container">
             <ThemeButton>Toggle Dark Mode</ThemeButton>
         </div>
-        <Title heading={"Network Map"}></Title>
         <div className='table-container'>
             <input onChange={(e) => {
                 optimizedFn(e.target.value)
