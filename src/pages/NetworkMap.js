@@ -104,6 +104,7 @@ function NetworkMap() {
             .linkColor(() => 'steelblue')
             .linkDirectionalArrowLength(6)
             .nodeLabel('id')
+            .linkWidth((link) => { return size.get(link.source)})
             .onNodeDragEnd(node => {
                 node.fx = node.x;
                 node.fy = node.y;
