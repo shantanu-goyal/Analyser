@@ -114,7 +114,7 @@ function NetworkMap() {
         id: entity,
         name:
           entity.length > 100
-            ? entity.substring(0, 50) + "..."
+            ? entity.substring(0, 50) + "..." + entity.slice(-50)
             : entity,
         val: size.get(entity),
       };
