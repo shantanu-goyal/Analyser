@@ -131,7 +131,7 @@ function NetworkMap() {
       .linkColor((link) => link.linkColor)
       .linkDirectionalArrowLength(10)
       .nodeLabel("name")
-      .linkWidth((link) => link.linkWidth)
+      .linkWidth((link) => link.linkColor==='red' ? 2 : 1)
       .onNodeDragEnd((node) => {
         node.fx = node.x;
         node.fy = node.y;
