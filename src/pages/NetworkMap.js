@@ -1,5 +1,5 @@
 import ForceGraph from "force-graph";
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState, useCallback, useRef } from "react";
 import { NavBar } from "../components/NavBar";
 import ThemeButton from "../components/ThemeButton";
 import { DataContext } from "../contexts/DataContext";
@@ -7,8 +7,11 @@ import { DataContext } from "../contexts/DataContext";
 function NetworkMap() {
   const dataContext = useContext(DataContext);
   let data = dataContext.data.data;
-  data = data["request-initiators"];
-  let [graphData, setGraphData] = useState(data);
+  const graphData = useRef(data["request-initiators"]);
+  const [filteredData, setFilteredData] = useState(
+    new Set(data["request-initiators"])
+  );
+  const hasFilteredSuccessorNode = new Map();
   const size = new Map();
   const vis = new Map();
   const adjList = new Map();
@@ -24,28 +27,42 @@ function NetworkMap() {
     };
   };
 
+  // eslint-disable-next-line
   const optimizedFn = useCallback(debounce(handleChange), []);
 
   function handleChange(value) {
-    let newData = data.filter((element) => {
-      return (
-        element.url.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
-        element.initiator.toLowerCase().indexOf(value.toLowerCase()) !== -1
-      );
-    });
-    setGraphData(newData);
+    if (value === "") {
+      setFilteredData(new Set());
+      return;
+    }
+    let newData = data["request-initiators"]
+      .filter((element) => {
+        return (
+          element.url.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+          element.initiator.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        );
+      })
+      .map((element) => {
+        return element.url.toLowerCase().indexOf(value.toLowerCase()) !== -1
+          ? element.url
+          : element.initiator;
+      });
+    setFilteredData(new Set(newData));
   }
 
   function dfs(url) {
-    if (vis.get(url)) return;
+    if (vis.get(url)) return hasFilteredSuccessorNode.get(url);
     vis.set(url, 1);
     let children = adjList.get(url) || [];
     let maxChildSize = 1;
+    hasFilteredSuccessorNode.set(url, filteredData.has(url));
     children.forEach((child) => {
-      dfs(child);
+      let hasNodeAsSuccessor = dfs(child);
       maxChildSize = Math.max(maxChildSize, size.get(child));
+      if (hasNodeAsSuccessor) hasFilteredSuccessorNode.set(url, 1);
     });
     size.set(url, maxChildSize + 1);
+    return hasFilteredSuccessorNode.get(url);
   }
 
   function getSuccessorSizes(urlMap) {
@@ -62,8 +79,8 @@ function NetworkMap() {
     size.clear();
     vis.clear();
     adjList.clear();
-
-    graphData.forEach((element) => {
+    hasFilteredSuccessorNode.clear();
+    graphData.current.forEach((element) => {
       urlMap.set(element.url, 1);
       urlMap.set(element.initiator, 1);
       let children = adjList.get(element.initiator) || [];
@@ -73,21 +90,32 @@ function NetworkMap() {
       size.set(element.initiator, 1);
       vis.set(element.url, 0);
       vis.set(element.initiator, 0);
+      hasFilteredSuccessorNode.set(element.url, 0);
+      hasFilteredSuccessorNode.set(element.initiator, 0);
     });
 
     getSuccessorSizes(urlMap);
 
     const entriesArray = Array.from(urlMap.keys());
-    const edges = graphData.map((element) => {
+    const edges = graphData.current.map((element) => {
       return {
         source: element.initiator,
         target: element.url,
+        linkColor:
+          filteredData.size > 0 &&
+          hasFilteredSuccessorNode.get(element.initiator) &&
+          hasFilteredSuccessorNode.get(element.url)
+            ? "red"
+            : "steelblue",
       };
     });
     const nodes = entriesArray.map((entity) => {
       return {
         id: entity,
-        name: entity.length > 100 ? entity.substring(0,100) + '...' : entity,
+        name:
+          entity.length > 100
+            ? entity.substring(0, 50) + "..." + entity.substring(-50)
+            : entity,
         val: size.get(entity),
       };
     });
@@ -100,9 +128,10 @@ function NetworkMap() {
     )
       .graphData(config)
       .nodeAutoColorBy(({ id }) => new URL(id).hostname)
-      .linkColor(() => "steelblue")
+      .linkColor((link) => link.linkColor)
       .linkDirectionalArrowLength(10)
       .nodeLabel("name")
+      .linkWidth((link) => link.linkWidth)
       .onNodeDragEnd((node) => {
         node.fx = node.x;
         node.fy = node.y;
@@ -113,7 +142,8 @@ function NetworkMap() {
       });
 
     Graph.d3Force("center", null);
-  }, [graphData]);
+    // eslint-disable-next-line
+  }, [graphData.current, filteredData]);
 
   return (
     <>
