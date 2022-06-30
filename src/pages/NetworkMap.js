@@ -6,10 +6,10 @@ import Title from '../components/Title';
 import { DataContext } from '../contexts/DataContext';
 
 function NetworkMap() {
-    const dataContext=useContext(DataContext);
+    const dataContext = useContext(DataContext);
     let data = dataContext.data.data;
     data = data['request-initiators'];
-    useEffect(()=>{
+    useEffect(() => {
         const urlMap = new Map();
         data.forEach(element => {
             urlMap.set(element.url, 1);
@@ -28,15 +28,24 @@ function NetworkMap() {
                 target: element.url
             }
         });
-        let config={
+        let config = {
             nodes,
-            links:edges
+            links: edges
         }
-        const Graph=ForceGraph()(document.getElementById('network-graph-container')).graphData(config)
-        .nodeRelSize(6)
-        .nodeAutoColorBy('name')
-        .linkColor(() => 'steelblue')
-        .linkDirectionalParticles(1)
+        const Graph = ForceGraph()(document.getElementById('network-graph-container')).graphData(config)
+            .nodeRelSize(6)
+            .nodeAutoColorBy('name')
+            .linkColor(() => 'steelblue')
+            .linkDirectionalParticles(1)
+            .nodeLabel('id')
+            .onNodeDragEnd(node => {
+                node.fx = node.x;
+                node.fy = node.y;
+            }).onNodeClick(node => {
+                Graph.centerAt(node.x, node.y, 1000);
+                Graph.zoom(8, 2000);
+            }).d3VelocityDecay(0.3);
+
 
         Graph.d3Force('center', null);
 
