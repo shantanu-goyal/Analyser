@@ -41,12 +41,12 @@ function NetworkMap() {
         if (vis.get(url)) return
         vis.set(url, 1);
         let children = adjList.get(url)||[];
-        let sz = size.get(url);
+        let mx=1;
         children.forEach(child => {
             dfs(child);
-            sz += size.get(child)
+            mx=Math.max(mx, size.get(child));
         });
-        size.set(url, sz);
+        size.set(url, mx+1);
     }
 
     function getSuccessorSizes(urlMap) {
@@ -109,7 +109,7 @@ function NetworkMap() {
                 node.fy = node.y;
             }).onNodeClick(node => {
                 Graph.centerAt(node.x, node.y, 1000);
-                Graph.zoom(8, 2000);
+                Graph.zoom(2, 1000);
             });
 
 
