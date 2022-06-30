@@ -41,7 +41,7 @@ function NetworkMap() {
         if (vis.get(url)) return
         vis.set(url, 1);
         let children = adjList.get(url)||[];
-        let mx=1;
+        let mx=0;
         children.forEach(child => {
             dfs(child);
             mx=Math.max(mx, size.get(child));
