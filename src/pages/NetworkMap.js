@@ -86,11 +86,9 @@ function NetworkMap() {
         </div>
         <Title heading={"Network Map"}></Title>
         <div className='table-container'>
-            <label htmlFor='search-network-graph'> Search:{" "}
-                <input onChange={(e)=>{
-                    optimizedFn(e.target.value)
-                }} id='search-network-graph' />
-            </label>
+            <input onChange={(e) => {
+                optimizedFn(e.target.value)
+            }} id='search-network-graph' placeholder='Search...' />
         </div>
 
 
