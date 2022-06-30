@@ -89,7 +89,7 @@ function NetworkMap() {
         const nodes = entriesArray.map(entity => {
             return {
                 id: entity,
-                name: entity,
+                name: entity.length>100?entity.slice(0,50)+"..."+entity.slice(-50):entity,
                 val: size.get(entity)
             }
         })
@@ -99,11 +99,11 @@ function NetworkMap() {
         }
         const Graph = ForceGraph()(document.getElementById('network-graph-container')).graphData(config)
             .nodeRelSize(6)
-            .nodeAutoColorBy('name')
+            .nodeAutoColorBy(({id})=>new URL(id).hostname)
             .linkCurvature('curvature')
             .linkColor(() => 'steelblue')
             .linkDirectionalArrowLength(6)
-            .nodeLabel('id')
+            .nodeLabel('name')
             .onNodeDragEnd(node => {
                 node.fx = node.x;
                 node.fy = node.y;
