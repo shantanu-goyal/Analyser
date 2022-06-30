@@ -22,115 +22,116 @@ function NetworkMap() {
         func.apply(context, args);
       }, 500);
     };
+  };
 
-    const optimizedFn = useCallback(debounce(handleChange), []);
+  const optimizedFn = useCallback(debounce(handleChange), []);
 
+  function handleChange(value) {
+    let newData = data.filter((element) => {
+      return (
+        element.url.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+        element.initiator.toLowerCase().indexOf(value.toLowerCase()) !== -1
+      );
+    });
+    setGraphData(newData);
+  }
 
+  function dfs(url) {
+    if (vis.get(url)) return;
+    vis.set(url, 1);
+    let children = adjList.get(url) || [];
+    let maxChildSize = 1;
+    children.forEach((child) => {
+      dfs(child);
+      maxChildSize = Math.max(maxChildSize, size.get(child));
+    });
+    size.set(url, maxChildSize + 1);
+  }
 
-    function handleChange(value) {
-        let newData = data.filter(element => {
-            return (
-                (element.url.toLowerCase().indexOf(value.toLowerCase()) !== -1) || (element.initiator.toLowerCase().indexOf(value.toLowerCase()) !== -1)
-            )
-        })
-        setGraphData(newData);
-    }
+  function getSuccessorSizes(urlMap) {
+    const entriesArray = Array.from(urlMap.keys());
+    entriesArray.forEach((entry) => {
+      if (!vis.get(entry)) {
+        dfs(entry);
+      }
+    });
+  }
 
-    function dfs(url) {
-        if (vis.get(url)) return
-        vis.set(url, 1);
-        let children = adjList.get(url)||[];
-        let mx=0;
-        children.forEach(child => {
-            dfs(child);
-            mx=Math.max(mx, size.get(child));
-        });
-        size.set(url, mx+1);
-    }
+  useEffect(() => {
+    const urlMap = new Map();
+    size.clear();
+    vis.clear();
+    adjList.clear();
 
-    function getSuccessorSizes(urlMap) {
-        const entriesArray = Array.from(urlMap.keys());
-        entriesArray.forEach(entry => {
-            if (!vis.get(entry)) {
-                dfs(entry)
-            }
-        })
-    }
+    graphData.forEach((element) => {
+      urlMap.set(element.url, 1);
+      urlMap.set(element.initiator, 1);
+      let children = adjList.get(element.initiator) || [];
+      children = [...children, element.url];
+      adjList.set(element.initiator, children);
+      size.set(element.url, 1);
+      size.set(element.initiator, 1);
+      vis.set(element.url, 0);
+      vis.set(element.initiator, 0);
+    });
 
-    useEffect(() => {
-        const urlMap = new Map();
-        size.clear();
-        vis.clear();
-        adjList.clear();
+    getSuccessorSizes(urlMap);
 
-        graphData.forEach(element => {
-            urlMap.set(element.url, 1);
-            urlMap.set(element.initiator, 1);
-            let children = adjList.get(element.initiator) || [];
-            children = [...children, element.url];
-            adjList.set(element.initiator, children);
-            size.set(element.url, 1);
-            size.set(element.initiator, 1);
-            vis.set(element.url, 0);
-            vis.set(element.initiator, 0);
-        });
+    const entriesArray = Array.from(urlMap.keys());
+    const edges = graphData.map((element) => {
+      return {
+        source: element.initiator,
+        target: element.url,
+      };
+    });
+    const nodes = entriesArray.map((entity) => {
+      return {
+        id: entity,
+        name: entity.length > 100 ? entity.substring(0,100) + '...' : entity,
+        val: size.get(entity),
+      };
+    });
+    let config = {
+      nodes,
+      links: edges,
+    };
+    const Graph = ForceGraph()(
+      document.getElementById("network-graph-container")
+    )
+      .graphData(config)
+      .nodeAutoColorBy(({ id }) => new URL(id).hostname)
+      .linkColor(() => "steelblue")
+      .linkDirectionalArrowLength(10)
+      .nodeLabel("name")
+      .onNodeDragEnd((node) => {
+        node.fx = node.x;
+        node.fy = node.y;
+      })
+      .onNodeClick((node) => {
+        Graph.centerAt(node.x, node.y, 1000);
+        Graph.zoom(8, 2000);
+      });
 
+    Graph.d3Force("center", null);
+  }, [graphData]);
 
-        getSuccessorSizes(urlMap);
+  return (
+    <>
+      <NavBar />
+      <div className="tog-container">
+        <ThemeButton>Toggle Dark Mode</ThemeButton>
+      </div>
+      <div className="table-container">
+        <input
+          onChange={(e) => {
+            optimizedFn(e.target.value);
+          }}
+          id="search-network-graph"
+          placeholder="Search..."
+        />
+      </div>
 
-        const entriesArray = Array.from(urlMap.keys());
-        const edges = graphData.map(element => {
-            return {
-                source: element.initiator,
-                target: element.url
-            }
-        });
-        const nodes = entriesArray.map(entity => {
-            return {
-                id: entity,
-                name: entity.length>100?entity.slice(0,50)+"..."+entity.slice(-50):entity,
-                val: size.get(entity)
-            }
-        })
-        let config = {
-            nodes,
-            links: edges
-        }
-        const Graph = ForceGraph()(document.getElementById('network-graph-container')).graphData(config)
-            .nodeRelSize(6)
-            .nodeAutoColorBy(({id})=>new URL(id).hostname)
-            .linkCurvature('curvature')
-            .linkColor(() => 'steelblue')
-            .linkDirectionalArrowLength(6)
-            .nodeLabel('name')
-            .onNodeDragEnd(node => {
-                node.fx = node.x;
-                node.fy = node.y;
-            }).onNodeClick(node => {
-                Graph.centerAt(node.x, node.y, 1000);
-                Graph.zoom(2, 1000);
-            });
-
-
-        Graph.d3Force('center', null);
-
-    }, [graphData]);
-    return <>
-        <NavBar />
-        <div className="tog-container">
-            <ThemeButton>Toggle Dark Mode</ThemeButton>
-        </div>
-        <div className='table-container'>
-            <input onChange={(e) => {
-                optimizedFn(e.target.value)
-            }} id='search-network-graph' placeholder='Search...' />
-        </div>
-
-
-        <div id="network-graph-container">
-
-        </div>
-
+      <div id="network-graph-container"></div>
     </>
   );
 }
