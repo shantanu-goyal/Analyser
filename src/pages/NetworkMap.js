@@ -4,6 +4,7 @@ import { NavBar } from '../components/NavBar';
 import ThemeButton from '../components/ThemeButton';
 import { DataContext } from '../contexts/DataContext';
 
+
 function NetworkMap() {
     const dataContext = useContext(DataContext);
     let data = dataContext.data.data;
@@ -80,6 +81,15 @@ function NetworkMap() {
         getSuccessorSizes(urlMap);
 
         const entriesArray = Array.from(urlMap.keys());
+<<<<<<< HEAD
+=======
+        const nodes = entriesArray.map(entity => {
+            return {
+                id: entity,
+                name: entity.length > 100 ? entity.substring(0, 100) + '...' : entity
+            }
+        })
+>>>>>>> 81c876978241bbb9363fce9fe85dec1f269a763c
         const edges = graphData.map(element => {
             return {
                 source: element.initiator,
@@ -103,8 +113,11 @@ function NetworkMap() {
             .linkCurvature('curvature')
             .linkColor(() => 'steelblue')
             .linkDirectionalArrowLength(6)
+<<<<<<< HEAD
             .nodeLabel('id')
             .linkWidth((link) => { return size.get(link.source)})
+=======
+>>>>>>> 81c876978241bbb9363fce9fe85dec1f269a763c
             .onNodeDragEnd(node => {
                 node.fx = node.x;
                 node.fy = node.y;
@@ -112,7 +125,6 @@ function NetworkMap() {
                 Graph.centerAt(node.x, node.y, 1000);
                 Graph.zoom(8, 2000);
             });
-
 
         Graph.d3Force('center', null);
 
