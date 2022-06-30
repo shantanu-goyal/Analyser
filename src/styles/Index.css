@@ -48,11 +48,6 @@ a{
   width: 100%;
 }
 
-#network-graph-container, .force-graph-container{
-  width: 100vw;
-  height: 100vh;
-}
-
 .force-graph-container canvas{
   width: 100% !important;
   height: 100% !important;
