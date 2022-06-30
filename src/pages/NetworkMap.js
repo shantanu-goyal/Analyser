@@ -23,7 +23,8 @@ function NetworkMap() {
             }, 500);
         };
     };
-
+    
+    // eslint-disable-next-line
     const optimizedFn = useCallback(debounce(handleChange), []);
 
 
@@ -114,7 +115,7 @@ function NetworkMap() {
 
 
         Graph.d3Force('center', null);
-
+    // eslint-disable-next-line
     }, [graphData]);
     return <>
         <NavBar />
