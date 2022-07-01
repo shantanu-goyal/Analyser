@@ -10,7 +10,7 @@ import Title from "../components/Title";
 import { DataContext } from "../contexts/DataContext";
 import "../styles/Insights.css";
 import {
-  getThirdPartyDataWithNetworkDetails,
+  getEntityMappings,
   headings,
 } from "../utility/insightsUtility";
 export default function Insights() {
@@ -24,16 +24,19 @@ export default function Insights() {
     thirdPartyData,
     config,
     fcp,
-    thirdPartyWithNetwork;
+    thirdPartyWithNetwork,
+    requestInitiators;
   try {
     data = dataContext.data.data;
     unminifiedJSData = data["unminified-javascript"];
     unusedJSData = data["unused-javascript"];
     renderBlockingResources = data["render-blocking-resources"];
+    requestInitiators = data["request-initiators"];
     thirdPartyData = dataContext.data.insights;
     config = dataContext.data.config;
     fcp = data["first-contentful-paint"].numericValue;
-    thirdPartyWithNetwork = getThirdPartyDataWithNetworkDetails(
+    thirdPartyWithNetwork = getEntityMappings(
+      requestInitiators,
       thirdPartyData,
       unminifiedJSData,
       renderBlockingResources,

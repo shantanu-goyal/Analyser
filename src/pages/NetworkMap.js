@@ -61,7 +61,7 @@ function NetworkMap() {
       maxChildSize = Math.max(maxChildSize, size.get(child));
       if (hasNodeAsSuccessor) hasFilteredSuccessorNode.set(url, 1);
     });
-    size.set(url, maxChildSize + 1);
+    size.set(url, maxChildSize + 3);
     return hasFilteredSuccessorNode.get(url);
   }
 
