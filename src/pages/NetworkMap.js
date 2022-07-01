@@ -142,6 +142,7 @@ function NetworkMap() {
       });
 
     Graph.d3Force("center", null);
+    Graph.d3Force('charge').strength(-100); 
     // eslint-disable-next-line
   }, [graphData.current, filteredData]);
 
