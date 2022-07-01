@@ -4,19 +4,22 @@ import Table from "./Table";
 
 function ActionTable({ data }) {
   const dataContext = useContext(DataContext);
+  console.log(data);
   const renderBlockingResources =
     dataContext.data.data["render-blocking-resources"];
   const fcp = dataContext.data.data["first-contentful-paint"].numericValue;
 
   const tableData = data.map((entity) => {
+    // let minStartTime = 100000000
+    // entity.subItems.items.forEach((subitem) => {
+    //   minStartTime = subitem.intervals.length > 0 ?  Math.min(minStartTime, subitem.intervals[0].startTime) : minStartTime
+    // })
     const obj = {
       entity: entity.entityName.name,
       unused:
         entity.subItems.items.some(
           ({ unusedPercentage }) => unusedPercentage === 100
-        ) ||
-        (entity.intervals.length > 0 &&
-          entity.intervals[0].startTime <= fcp + 500),
+        ),
       heavy:
         entity.subItems.items.length > 0 &&
         (entity.subItems.items.at(-1).blockingTime > 0 ||

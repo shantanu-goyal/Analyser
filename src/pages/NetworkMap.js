@@ -62,7 +62,7 @@ function NetworkMap() {
       maxChildSize = Math.max(maxChildSize, size.get(child));
       if (hasNodeAsSuccessor) hasFilteredSuccessorNode.set(url, 1);
     });
-    size.set(url, maxChildSize + 1);
+    size.set(url, maxChildSize + 3);
     return hasFilteredSuccessorNode.get(url);
   }
 
@@ -143,6 +143,7 @@ function NetworkMap() {
       });
 
     Graph.d3Force("center", null);
+    Graph.d3Force('charge').strength(-100); 
     // eslint-disable-next-line
   }, [graphData.current, filteredData]);
 
