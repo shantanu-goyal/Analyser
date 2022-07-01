@@ -1,5 +1,6 @@
 import ForceGraph from "force-graph";
 import { useContext, useEffect, useState, useCallback, useRef } from "react";
+import { Navigate } from "react-router-dom";
 import { NavBar } from "../components/NavBar";
 import ThemeButton from "../components/ThemeButton";
 import { DataContext } from "../contexts/DataContext";
@@ -131,7 +132,7 @@ function NetworkMap() {
       .linkColor((link) => link.linkColor)
       .linkDirectionalArrowLength(10)
       .nodeLabel("name")
-      .linkWidth((link) => link.linkColor==='red' ? 2 : 1)
+      .linkWidth((link) => (link.linkColor === "red" ? 2 : 1))
       .onNodeDragEnd((node) => {
         node.fx = node.x;
         node.fy = node.y;
@@ -147,6 +148,7 @@ function NetworkMap() {
 
   return (
     <>
+      {!graphData.current && <Navigate to="/" />}
       <NavBar />
       <div className="tog-container">
         <ThemeButton>Toggle Dark Mode</ThemeButton>
