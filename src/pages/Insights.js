@@ -23,7 +23,6 @@ export default function Insights() {
     renderBlockingResources,
     thirdPartyData,
     config,
-    domContentLoadTime,
     loadTime,
     thirdPartyWithNetwork,
     requestInitiators;
@@ -35,7 +34,6 @@ export default function Insights() {
     requestInitiators = data["request-initiators"];
     thirdPartyData = dataContext.data.insights;
     config = dataContext.data.config;
-    domContentLoadTime = data["dom-content-loaded"].numericValue;
     loadTime = data["load"].numericValue
     thirdPartyWithNetwork = getEntityMappings(
       requestInitiators,
@@ -121,14 +119,6 @@ export default function Insights() {
               <div>
                 <b>Device Type: </b>
                 {config.deviceType === "mobile" ? "Mobile" : "Desktop"}
-              </div>
-              <div>
-                <b>DomContentLoaded: </b>
-                {Math.round(domContentLoadTime * 100) / 100} ms
-              </div>
-              <div>
-                <b>Load: </b>
-                {Math.round(loadTime * 100) / 100} ms
               </div>
               {config.waitTime ? (
                 <div>
