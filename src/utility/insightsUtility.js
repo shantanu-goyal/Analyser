@@ -12,24 +12,27 @@ function getOpportunities(
     renderBlocking,
   },
   numItems,
-  fcp
+  loadTime
 ) {
   const opportunities = {
     user: [],
     thirdParty: [],
   };
-  if (mainThreadTime / numItems > 50) {
-    let opp = `Move scripts to web workers to save ${Math.round(mainThreadTime * 100) / 100
-      } ms of main thread time`;
+  if (mainThreadTime / numItems > 50 || mainThreadTime > 250) {
+    let opp = `Move scripts to web workers to save ${
+      Math.round(mainThreadTime * 100) / 100
+    } ms of main thread time`;
     if (blockingTime > 0)
-      opp += ` and to remove main-thread blocking time of ${Math.round(blockingTime * 100) / 100
-        } ms`;
+      opp += ` and to remove main-thread blocking time of ${
+        Math.round(blockingTime * 100) / 100
+      } ms`;
     opportunities.user.push(opp);
   }
   if (blockingTime > 0) {
-    if (mainThreadTime / numItems <= 50) {
+    if (mainThreadTime / numItems <= 50 && mainThreadTime <= 250) {
       opportunities.user.push(
-        `Move scripts to web workers to remove main-thread blocking time of ${Math.round(blockingTime * 100) / 100
+        `Move scripts to web workers to remove main-thread blocking time of ${
+          Math.round(blockingTime * 100) / 100
         } ms`
       );
       opportunities.thirdParty.push(
@@ -43,7 +46,7 @@ function getOpportunities(
       "Use code splitting to allow users reduce main-thread time and network time by importing and executing critical chunks"
     );
   }
-  if (unusedPercentage > 50 || startTime <= fcp + 500) {
+  if (unusedPercentage > 50 || startTime <= loadTime) {
     opportunities.user.push("Lazyload scripts which are not critical");
   }
   if (minified === "No") {
@@ -90,7 +93,10 @@ function getSummary(item) {
       summary.renderBlocking = summary.renderBlocking
         ? summary.renderBlocking + subitem.renderBlocking
         : subitem.renderBlocking;
-    minStartTime = subitem.intervals.length > 0 ?  Math.min(minStartTime, subitem.intervals[0].startTime) : minStartTime
+    minStartTime =
+      subitem.intervals.length > 0
+        ? Math.min(minStartTime, subitem.intervals[0].startTime)
+        : minStartTime;
   });
 
   summary.startTime = minStartTime;
@@ -102,68 +108,64 @@ function dfs(adjList, thirdPartySet, url) {
   visited.set(url, 1);
   let result = [];
   if (thirdPartySet.has(url)) {
-    result.push(url)
+    result.push(url);
   }
   const children = adjList.get(url) || [];
-  children.forEach(child => {
+  children.forEach((child) => {
     if (!visited.get(child)) {
       let childResult = dfs(adjList, thirdPartySet, child);
       result = [...result, ...childResult];
     }
-  })
+  });
   return result;
 }
 
 function getEntityName(thirdPartyData, url) {
-  const entity = thirdPartyData.find(item => {
+  const entity = thirdPartyData.find((item) => {
     let subItems = item.subItems || { items: [] };
     return subItems.items.some((subitem) => {
       if (subitem.url) {
         if (typeof subitem.url !== "string") return false;
-        return subitem.url === url
+        return subitem.url === url;
       }
       return false;
-    })
-  }
-  )
+    });
+  });
 
-  return entity.entityName.name
+  return entity.entityName.name;
 }
 
 function getDirectThirdParty(thirdPartyData, requestInitiators) {
-  const directThirdParty = []
+  const directThirdParty = [];
   const thirdPartySet = new Set();
-  thirdPartyData.forEach(item => {
+  thirdPartyData.forEach((item) => {
     item.subItems.items.forEach((subitem) => {
       if (typeof subitem.url !== "string") return;
       thirdPartySet.add(subitem.url);
-    })
-  }
-  )
-  const initiatorMap = new Map()
+    });
+  });
+  const initiatorMap = new Map();
   requestInitiators.forEach(({ url, initiator }) => {
-    initiatorMap.set(url, initiator)
-  })
+    initiatorMap.set(url, initiator);
+  });
 
-  thirdPartySet.forEach(script => {
-    const initiator = initiatorMap.get(script)
-    if (thirdPartySet.has(initiator)) return
+  thirdPartySet.forEach((script) => {
+    const initiator = initiatorMap.get(script);
+    if (thirdPartySet.has(initiator)) return;
     directThirdParty.push(script);
-  })
+  });
   const adjList = createAdjList(requestInitiators);
-  const entityMap = new Map()
-  directThirdParty.forEach(script => {
+  const entityMap = new Map();
+  directThirdParty.forEach((script) => {
     visited.clear();
     let result = dfs(adjList, thirdPartySet, script);
-    let entityName = getEntityName(thirdPartyData, script)
+    let entityName = getEntityName(thirdPartyData, script);
     let entityScripts = entityMap.get(entityName) || [];
     entityScripts = [...entityScripts, ...result];
     entityMap.set(entityName, entityScripts);
-  })
-  return entityMap
+  });
+  return entityMap;
 }
-
-
 
 function createAdjList(requestInitiators) {
   const adjList = new Map();
@@ -175,47 +177,56 @@ function createAdjList(requestInitiators) {
   return adjList;
 }
 
-export function getEntityMappings(requestInitiators, thirdPartyData,
+export function getEntityMappings(
+  requestInitiators,
+  thirdPartyData,
   unminifiedJSData,
   renderBlockingResources,
   unusedJSData,
-  fcp) {
+  loadTime
+) {
   const entityMap = getDirectThirdParty(thirdPartyData, requestInitiators);
-  const thirdPartyWithNetwork = getThirdPartyDataWithNetworkDetails(thirdPartyData, unminifiedJSData, renderBlockingResources, unusedJSData, fcp);
-  const scriptDataMap = new Map()
+  const thirdPartyWithNetwork = getThirdPartyDataWithNetworkDetails(
+    thirdPartyData,
+    unminifiedJSData,
+    renderBlockingResources,
+    unusedJSData
+  );
+  const scriptDataMap = new Map();
   thirdPartyWithNetwork.forEach((element) => {
-    element.subItems.items.forEach(subitem => {
+    element.subItems.items.forEach((subitem) => {
       if (typeof subitem.url !== "string") return;
-      scriptDataMap.set(subitem.url, subitem)
-    })
-  })
-  const result = []
+      scriptDataMap.set(subitem.url, subitem);
+    });
+  });
+  const result = [];
   entityMap.forEach((value, key) => {
     const obj = {
       entityName: {
-        name: key
+        name: key,
       },
       subItems: {
-        items: []
-      }
-    }
-    value.forEach(script => {
+        items: [],
+      },
+    };
+    value.forEach((script) => {
       const data = scriptDataMap.get(script) || {};
-      obj.subItems.items.push(data)
-    })
+      obj.subItems.items.push(data);
+    });
     let summary = getSummary(obj);
     let opportunities = getOpportunities(
       summary,
       obj.subItems.items.length,
-      fcp
+      loadTime
     );
     obj.subItems = {
-      items: obj.subItems.items.length > 1
-        ? [...obj.subItems.items, summary]
-        : [...obj.subItems.items],
-    }
-    obj.opportunities = opportunities
-    result.push(obj)
+      items:
+        obj.subItems.items.length > 1
+          ? [...obj.subItems.items, summary]
+          : [...obj.subItems.items],
+    };
+    obj.opportunities = opportunities;
+    result.push(obj);
   });
   return result;
 }
@@ -224,8 +235,7 @@ export function getThirdPartyDataWithNetworkDetails(
   thirdPartyData,
   unminifiedJSData,
   renderBlockingResources,
-  unusedJSData,
-  fcp
+  unusedJSData
 ) {
   let thirdPartyWithNetwork = [];
   if (thirdPartyData.length > 0) {
@@ -275,20 +285,10 @@ export function getThirdPartyDataWithNetworkDetails(
         if (prevItem) {
           if (prevItem.subItems.items.length > 1) prevItem.subItems.items.pop();
           newItems = [...prevItem.subItems.items, ...newItems];
-          let summary = getSummary(newItems);
-          let opportunities = getOpportunities(summary, newItems.length, fcp);
-          if (newItems.length > 1) newItems.push(summary);
-          prevItem.opportunities = opportunities;
           prevItem.subItems.items = newItems;
           return acc;
         }
         item.subItems.items = newItems;
-        let summary = getSummary(item);
-        let opportunities = getOpportunities(
-          summary,
-          item.subItems.items.length,
-          fcp
-        );
 
         return [
           ...acc,
@@ -296,22 +296,11 @@ export function getThirdPartyDataWithNetworkDetails(
             ...item,
             subItems: {
               ...item.subItems,
-              items:
-                item.subItems.items.length > 1
-                  ? [...item.subItems.items, summary]
-                  : [...item.subItems.items],
+              items: [...item.subItems.items],
             },
-            opportunities,
           },
         ];
       }, [])
-      .sort(
-        (a, b) =>
-          b.opportunities.user.length +
-          b.opportunities.thirdParty.length -
-          (a.opportunities.user.length + a.opportunities.thirdParty.length) ||
-          b.opportunities.user.length - a.opportunities.user.length
-      );
   }
   return thirdPartyWithNetwork;
 }
