@@ -64,7 +64,7 @@ export default function Home() {
           },
         });
       }
-      console.log(result.data);
+      // console.log(result.data);
       setLoading(false);
       dataContext.setData({
         type: "analysisSetup",

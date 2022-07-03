@@ -4,7 +4,6 @@ import Table from "./Table";
 
 function ActionTable({ data }) {
   const dataContext = useContext(DataContext);
-  console.log(data);
   const renderBlockingResources =
     dataContext.data.data["render-blocking-resources"];
   const loadTime = dataContext.data.data["load"].numericValue;

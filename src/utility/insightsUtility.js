@@ -19,20 +19,17 @@ function getOpportunities(
     thirdParty: [],
   };
   if (mainThreadTime / numItems > 50 || mainThreadTime > 250) {
-    let opp = `Move scripts to web workers to save ${
-      Math.round(mainThreadTime * 100) / 100
-    } ms of main thread time`;
+    let opp = `Move scripts to web workers to save ${Math.round(mainThreadTime * 100) / 100
+      } ms of main thread time`;
     if (blockingTime > 0)
-      opp += ` and to remove main-thread blocking time of ${
-        Math.round(blockingTime * 100) / 100
-      } ms`;
+      opp += ` and to remove main-thread blocking time of ${Math.round(blockingTime * 100) / 100
+        } ms`;
     opportunities.user.push(opp);
   }
   if (blockingTime > 0) {
     if (mainThreadTime / numItems <= 50 && mainThreadTime <= 250) {
       opportunities.user.push(
-        `Move scripts to web workers to remove main-thread blocking time of ${
-          Math.round(blockingTime * 100) / 100
+        `Move scripts to web workers to remove main-thread blocking time of ${Math.round(blockingTime * 100) / 100
         } ms`
       );
       opportunities.thirdParty.push(
@@ -104,16 +101,16 @@ function getSummary(item) {
   return summary;
 }
 
-function dfs(adjList, thirdPartySet, url) {
+function dfs(adjList, allScriptsSet, url) {
   visited.set(url, 1);
   let result = [];
-  if (thirdPartySet.has(url)) {
+  if (allScriptsSet.has(url)) {
     result.push(url);
   }
   const children = adjList.get(url) || [];
   children.forEach((child) => {
     if (!visited.get(child)) {
-      let childResult = dfs(adjList, thirdPartySet, child);
+      let childResult = dfs(adjList, allScriptsSet, child);
       result = [...result, ...childResult];
     }
   });
@@ -135,7 +132,7 @@ function getEntityName(thirdPartyData, url) {
   return entity.entityName.name;
 }
 
-function getDirectThirdParty(thirdPartyData, requestInitiators) {
+function getDirectThirdParty(thirdPartyData, requestInitiators, allScriptsSet) {
   const directThirdParty = [];
   const thirdPartySet = new Set();
   thirdPartyData.forEach((item) => {
@@ -156,13 +153,32 @@ function getDirectThirdParty(thirdPartyData, requestInitiators) {
   });
   const adjList = createAdjList(requestInitiators);
   const entityMap = new Map();
+  const scriptSet = new Set();
   directThirdParty.forEach((script) => {
     visited.clear();
-    let result = dfs(adjList, thirdPartySet, script);
-    let entityName = getEntityName(thirdPartyData, script);
-    let entityScripts = entityMap.get(entityName) || [];
-    entityScripts = [...entityScripts, ...result];
-    entityMap.set(entityName, entityScripts);
+    let result = dfs(adjList, allScriptsSet, script);
+
+    result = result.map(item => {
+      if (scriptSet.has(item)) {
+        return "";
+      }
+      return item;
+    }).filter(item => {
+      return item.length > 0;
+    })
+
+    result.forEach(item => {
+      scriptSet.add(item);
+    })
+
+    if (result.length > 0) {
+      let entityName = getEntityName(thirdPartyData, script);
+      let entityScripts = entityMap.get(entityName) || [];
+      entityScripts = [...entityScripts, ...result];
+      entityMap.set(entityName, entityScripts);
+    }
+
+
   });
   return entityMap;
 }
@@ -177,23 +193,63 @@ function createAdjList(requestInitiators) {
   return adjList;
 }
 
+
+function getAllScriptsArray(data) {
+  const scripts = new Set();
+  let details = data.details || {};
+  let items = details.items || [];
+  items.forEach(item => {
+    let subItems = item.subItems || {};
+    let subItemsArray = subItems.items || [];
+    subItemsArray.forEach(child => {
+      if (typeof (child.url) === "string") {
+        scripts.add(child.url);
+      }
+    })
+  })
+  return scripts;
+}
+
+
+
 export function getEntityMappings(
   requestInitiators,
   thirdPartyData,
   unminifiedJSData,
   renderBlockingResources,
   unusedJSData,
-  loadTime
+  loadTime,
+  allScripts
 ) {
-  const entityMap = getDirectThirdParty(thirdPartyData, requestInitiators);
-  const thirdPartyWithNetwork = getThirdPartyDataWithNetworkDetails(
-    thirdPartyData,
+  const allScriptsArray = getAllScriptsArray(allScripts);
+  const entityMap = getDirectThirdParty(thirdPartyData, requestInitiators, allScriptsArray);
+  const allDetails = allScripts.details || {};
+  const allItems = allDetails.items || [];
+  const allData = allItems.map(item => {
+    if (item.entityName) {
+      return item;
+    }
+    else {
+      return {
+        ...item,
+        entityName: {
+          name: 'Default'
+        }
+      }
+    }
+  })
+
+
+  const allWithNetwork = getThirdPartyDataWithNetworkDetails(
+    allData,
     unminifiedJSData,
     renderBlockingResources,
     unusedJSData
   );
+
+
   const scriptDataMap = new Map();
-  thirdPartyWithNetwork.forEach((element) => {
+  allWithNetwork.forEach((element) => {
     element.subItems.items.forEach((subitem) => {
       if (typeof subitem.url !== "string") return;
       scriptDataMap.set(subitem.url, subitem);

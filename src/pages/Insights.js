@@ -41,7 +41,8 @@ export default function Insights() {
       unminifiedJSData,
       renderBlockingResources,
       unusedJSData,
-      loadTime
+      loadTime,
+      data['third-party-summary']
     );
   } catch (err) {
     return <Navigate to="/" />;
