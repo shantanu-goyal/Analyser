@@ -45,6 +45,7 @@ export default function Insights() {
       data['third-party-summary']
     );
   } catch (err) {
+    console.log(err)
     return <Navigate to="/" />;
   }
 
