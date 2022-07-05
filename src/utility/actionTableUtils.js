@@ -43,4 +43,11 @@ function isRenderBlocking({ subItems }) {
   return subItems.items.at(-1).renderBlocking > 0;
 }
 
-export { shouldLazyload, isHeavy, isOld, isRenderBlocking };
+const headings = [
+  { key: "entity", text: "Entity", itemType: "binary" },
+  { key: "lazyload", text: "Lazyload", itemType: "binary" },
+  { key: "heavy", text: "Shift to web workers", itemType: "binary" },
+  { key: "old", text: "Check for latest version", itemType: "binary" },
+];
+
+export { shouldLazyload, isHeavy, isOld, isRenderBlocking, headings };

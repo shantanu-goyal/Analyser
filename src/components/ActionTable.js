@@ -1,12 +1,13 @@
 import { useContext } from "react";
 import { DataContext } from "../contexts/DataContext";
-import Table from "./Table";
 import {
-  shouldLazyload,
+  headings,
   isHeavy,
   isOld,
   isRenderBlocking,
+  shouldLazyload,
 } from "../utility/actionTableUtils";
+import Table from "./Table";
 
 function ActionTable({ data }) {
   const dataContext = useContext(DataContext);
@@ -24,13 +25,6 @@ function ActionTable({ data }) {
     if (renderBlockingResources) obj.renderBlocking = isRenderBlocking(entity);
     return obj;
   });
-
-  const headings = [
-    { key: "entity", text: "Entity", itemType: "binary" },
-    { key: "lazyload", text: "Lazyload", itemType: "binary" },
-    { key: "heavy", text: "Shift to web workers", itemType: "binary" },
-    { key: "old", text: "Check for latest version", itemType: "binary" },
-  ];
 
   return (
     <div style={{ marginBottom: "10em" }}>

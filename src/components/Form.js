@@ -2,10 +2,10 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
-import "../styles/Form.css";
-import Modal from "./Modal";
 import { REACT_APP_SERVER_URL } from "../config";
+import "../styles/Form.css";
 import AuditHistory from "./AuditHistory";
+import Modal from "./Modal";
 
 /**
  * Function to handle form submission to get url and headers of website

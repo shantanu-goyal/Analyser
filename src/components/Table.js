@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { memo, useEffect, useState } from "react";
 import "../styles/Table.css";
+import { getItemOrder, isItemFilterable } from "../utility/tableUtility";
 import Button from "./Button";
 import Pagination from "./Pagination";
-import { isItemFilterable, getItemOrder } from "../utility/tableUtility";
 /**
  * Function to create JSX of table element
  * @param {String} id id of the audit for which the table is rendered

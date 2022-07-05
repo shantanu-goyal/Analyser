@@ -1,7 +1,7 @@
-import Button from "./Button";
-import React, { useState } from "react";
-import Pagination from "./Pagination";
+import { useState } from "react";
 import "../styles/AuditHistory.css";
+import Button from "./Button";
+import Pagination from "./Pagination";
 
 function AuditHistory({ metaData, clickHandler }) {
   // State to hold current page data for pagination
