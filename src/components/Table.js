@@ -3,7 +3,7 @@ import { memo, useEffect, useState } from "react";
 import "../styles/Table.css";
 import Button from "./Button";
 import Pagination from "./Pagination";
-
+import { isItemFilterable, getItemOrder } from "../utility/tableUtility";
 /**
  * Function to create JSX of table element
  * @param {String} id id of the audit for which the table is rendered
@@ -18,8 +18,8 @@ function Table({
   items,
   passData,
   showPagination,
-  notShowInput,
-  children
+  hideInput,
+  children,
 }) {
   // State to hold table data items filtered on the search text
   const [filteredItems, setFilteredItems] = useState([]);
@@ -70,16 +70,7 @@ function Table({
     setFilteredItems(
       items.filter((item) => {
         // Return true if any of the columns match search value
-        return headings.some(({ key }) => {
-          if (!item[key]) return false;
-          if (isNaN(item[key])) {
-            if (item[key] && item[key].type && item[key].type === "link")
-              return item[key].text.toLowerCase().indexOf(searchText) !== -1;
-            else return item[key].toLowerCase().indexOf(searchText) !== -1;
-          } else {
-            return item[key].toString().indexOf(searchText) !== -1;
-          }
-        });
+        return isItemFilterable(item, headings, searchText);
       })
     );
   }
@@ -90,18 +81,11 @@ function Table({
    */
   function sortItems(event) {
     // Key of the column which was clicked
-    let columnKey = event.target.id;
+    const columnKey = event.target.id;
     setFilteredItems((prevItems) =>
       prevItems.sort((firstItem, secondItem) => {
         // Variable to store order between firstItem and secondItem
-        let itemOrder;
-        // Set the itemOrder using ascending order sorting
-        if (typeof firstItem[columnKey] === "number")
-          itemOrder = firstItem[columnKey] - secondItem[columnKey];
-        else if (firstItem[columnKey] && firstItem[columnKey].text)
-          itemOrder =
-            firstItem[columnKey].text < secondItem[columnKey].text ? -1 : 1;
-        else itemOrder = firstItem[columnKey] < secondItem[columnKey] ? -1 : 1;
+        const itemOrder = getItemOrder(firstItem, secondItem, columnKey);
         setOrder(order === "asc" ? "desc" : "asc");
         // Invert the itemOrder if the current sorting order is descending
         return order === "asc" ? itemOrder : itemOrder * -1;
@@ -141,11 +125,11 @@ function Table({
 
   return (
     <>
-      {!notShowInput && (
+      {!hideInput && (
         <>
           <div className="toolbar">
             <div className="left-row">
-            {children && children[1]}
+              {children && children[1]}
               <input
                 type="text"
                 placeholder="Type here to search..."

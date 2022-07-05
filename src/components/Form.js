@@ -15,6 +15,7 @@ import AuditHistory from "./AuditHistory";
 function Form({ onFormSubmit }) {
   const [flow, setFlow] = useState("navigation");
   const [suggestions, setSuggestions] = useState([]);
+  const [prevAudits, setPrevAudits] = useState([]);
 
   // Reference to input field for the website url
   const urlRef = useRef(null);
@@ -22,7 +23,6 @@ function Form({ onFormSubmit }) {
   const deviceRef = useRef(null);
   // Referencr to the waitime selector
   const waitTimeRef = useRef(null);
-  const [prevAudits, setPrevAudits] = useState([]);
 
   useEffect(() => {
     let isSubscribed = true;
@@ -163,10 +163,7 @@ function Form({ onFormSubmit }) {
                 ref={waitTimeRef}
               />
             </div>
-            <Button
-              height={"3em"}
-              onClick={handleUrlSubmit}
-            >
+            <Button height={"3em"} onClick={handleUrlSubmit}>
               Submit &#8594;
             </Button>
           </div>

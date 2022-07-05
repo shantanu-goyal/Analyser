@@ -22,9 +22,12 @@ function AuditHistory({ metaData, clickHandler }) {
       indexOfLastPost,
     });
   }
+
+  if (metaData.length === 0)
+    return <h2 style={{ margin: "0 1em 1em 1em" }}>Nothing To Show Here..</h2>;
+
   return (
     <>
-        {!metaData.length && <h2 style={{margin: "0 1em 1em 1em"}}>Nothing To Show Here..</h2>}
       {metaData
         .slice(currentPage.indexOfFirstPost, currentPage.indexOfLastPost)
         .map(({ url, dateString, formFactor }, idx) => {
@@ -39,14 +42,20 @@ function AuditHistory({ metaData, clickHandler }) {
                     : date.toLocaleDateString()}{" "}
                   | {formFactor}
                 </small>
-                <Button onClick={() => clickHandler(currentPage.indexOfFirstPost+idx)}>View Analysis</Button>
+                <Button
+                  onClick={() =>
+                    clickHandler(currentPage.indexOfFirstPost + idx)
+                  }
+                >
+                  View Analysis
+                </Button>
               </div>
             </div>
           );
         })}
       <div className="pg">
         <Pagination
-          style={{backgroundColor:"var(--bg-nav)"}}
+          style={{ backgroundColor: "var(--bg-nav)" }}
           dataPerPage={5}
           dataLength={metaData.length}
           paginate={paginate}
